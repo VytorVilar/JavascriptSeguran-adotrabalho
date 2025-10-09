@@ -5,9 +5,56 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Segurança do Trabalho - SST</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-<!-- ====== Bibliotecas para exportação ====== -->
+
+<!-- ====== Bibliotecas externas ====== -->
+<script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js">
 /* ======== CBO - Formatação e Cópia ======== */
+const listaCBO = [
+  ["1311-05", "Gerente Administrativo"],
+  ["2525-05", "Técnico de Segurança do Trabalho"],
+  ["4110-10", "Auxiliar Administrativo"],
+  ["5143-20", "Porteiro"],
+  ["7823-10", "Motorista de Caminhão"],
+  ["5136-05", "Cozinheiro Geral"],
+  ["7102-10", "Pedreiro"],
+  ["7233-10", "Soldador"],
+  ["5143-15", "Vigilante"],
+  ["5121-05", "Zelador"]
+];
+
+function formatarCBO(cbo){
+  const somenteNumeros = cbo.replace(/\D/g, "");
+  return somenteNumeros.replace(/(\d{4})(\d{2})/, "$1-$2");
+}
+
+function carregarTabelaCBO(){
+  const tbody = document.querySelector("#tabelaCBO tbody");
+  tbody.innerHTML = "";
+  listaCBO.forEach(([codigo, ocupacao]) => {
+    const codFormatado = formatarCBO(codigo);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>
+        <span>${codFormatado}</span>
+        <button class="copy-btn" title="Copiar CBO" onclick="copiarTexto('${codFormatado}')">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v16h14a2 2 0 0 0 2-2V5zm0 16H8V7h11v14z"/>
+          </svg>
+        </button>
+      </td>
+      <td>${ocupacao}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", carregarTabelaCBO);
+
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js">
 const listaCBO = [
   ["1311-05", "Gerente Administrativo"],
   ["2525-05", "Técnico de Segurança do Trabalho"],
