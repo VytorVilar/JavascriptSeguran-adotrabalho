@@ -432,7 +432,205 @@ body.dark .copy-btn:hover {
   <button aria-selected="false" onclick="mostrar('cbo', this)" role="tab">📑 CBO & Ocupações</button>
   <button aria-selected="false" onclick="mostrar('nrs', this)" role="tab">📎 Normas Regulamentadoras</button>
   <button aria-selected="false" onclick="mostrar('painel_tecnico', this)" role="tab">🛠 Painel Técnico</button>
+  <button aria-selected="false" onclick="mostrar('minigame', this)" role="tab">🕹️ Minigame</button>
 </nav>
+
+<!-- 🎮 Minigame: Jogo da Memória de EPIs -->
+<section id="minigame" aria-labelledby="tab-minigame">
+  <h2>🕹️ Jogo da Memória – EPIs</h2>
+  <p class="hint">Combine os pares de Equipamentos de Proteção Individual (EPI). Teste sua memória e aprenda brincando!</p>
+  
+  <div class="memory-info">
+    <span>Tentativas: <strong id="tries">0</strong></span>
+    <span>Acertos: <strong id="matches">0</strong></span>
+    <button class="action" onclick="restartGame()">🔁 Reiniciar</button>
+  </div>
+
+  <div id="memoryGame" class="memory-grid"></div>
+</section>
+
+<style>
+  /* ======== Estilos do Jogo da Memória ======== */
+  .memory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.3s;
+    position: relative;
+    perspective: 1000px;
+  }
+
+  .card.flip .card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+  }
+
+  .card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+  }
+
+  .card-front {
+    background: #1f2937;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+  }
+
+  .card-back {
+    transform: rotateY(180deg);
+    background: var(--card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-back img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+  }
+
+  .memory-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 16px 0;
+  }
+
+  @media (max-width: 600px) {
+    .memory-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+
+<script>
+  /* ======== Lógica do Jogo da Memória ======== */
+  const epiImages = [
+    { name: "Capacete", img: "https://imgs.search.brave.com/ANSIJ0-dkLqMbeAD118WAnB21XFTJlWra4QCkoIkD2E/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9odHRw/Mi5tbHN0YXRpYy5j/b20vRF9RX05QXzJY/XzY5MzE2OC1NTFU3/ODYyOTA1ODEwMl8w/OTIwMjQtRS53ZWJw" },
+    { name: "Óculos", img: "https://imgs.search.brave.com/wSUtS4ZGsT16rjwmvb-cem1S8BB3FNvg8mV1Bkvo7AM/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9lcGl6/ZXVzLmNvbS5ici9t/ZWRpYS9jYXRhbG9n/L3Byb2R1Y3QvY2Fj/aGUvZmNlYTgwMzlm/Yjc4MTE2NWM4NGIz/M2I4NzJhZmEwMmYv/MS84LzE4MDQzLTEu/anBlZw" },
+    { name: "Luva", img: "https://i.imgur.com/c9CLP9E.png" },
+    { name: "Botina", img: "https://imgs.search.brave.com/TVT_QfKeuJAZfxan_3ZSqPweK9_DzE5u6qE4OSTQylA/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9ub3Zh/ZXBpcy5jb20uYnIv/d3AtY29udGVudC91/cGxvYWRzLzIwMjQv/MDgvV2hhdHNBcHAt/SW1hZ2UtMjAyNC0w/OC0xNS1hdC0xMi4y/MC4yNC0zMDB4MzAw/LmpwZWc" },
+    { name: "Máscara", img: "https://imgs.search.brave.com/7VElam-SmTyTM0k63er-zEqIBGsw6qZf3_RP3sEzhLA/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/ZXBpYnJhLmNvbS5i/ci90aW0ucGhwP3Ny/Yz1odHRwczovL3d3/dy5lcGlicmEuY29t/LmJyL21lZGlhL3Np/Z192dENLcjhqNE9T/L2NhdGVnb3JpYXMv/bWFzY2FyYXMtZGUt/c2VndXJhbmNhL21h/c2NhcmFzLWRlLXNl/Z3VyYW5jYS0wNS5q/cGVnJnc9MjUwJmg9/MjAwJnE9NjAmcz0x" },
+    { name: "Avental", img: "https://imgs.search.brave.com/q4LK5i8WXk3pwN47TWAHGiv11Jjzq6JZI6eYFlnVYoo/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9zYWZl/dHl0cmFiLmNvbS5i/ci93cC1jb250ZW50/L3VwbG9hZHMvMjAy/MS8wMS9BdmVudGFs/LWRlLVByb3RlY2Fv/LWVtLVJhc3BhLVNp/bHZzZWctQ0EtMTk4/NTctMjQ3eDI0Ny5q/cGc" }
+  ];
+
+  let firstCard = null;
+  let secondCard = null;
+  let lock = false;
+  let tries = 0;
+  let matches = 0;
+
+  function createCard(epi) {
+    const card = document.createElement("div");
+    card.classList.add("card");
+    card.innerHTML = `
+      <div class="card-inner">
+        <div class="card-front">🧤</div>
+        <div class="card-back"><img src="${epi.img}" alt="${epi.name}" title="${epi.name}"/></div>
+      </div>
+    `;
+    card.addEventListener("click", () => flipCard(card, epi));
+    return card;
+  }
+
+  function loadGame() {
+    const gameBoard = document.getElementById("memoryGame");
+    const deck = [...epiImages, ...epiImages].sort(() => 0.5 - Math.random());
+    gameBoard.innerHTML = "";
+    deck.forEach(epi => gameBoard.appendChild(createCard(epi)));
+    tries = 0;
+    matches = 0;
+    updateStats();
+  }
+
+  function flipCard(card, epi) {
+    if (lock || card.classList.contains("flip")) return;
+    card.classList.add("flip");
+
+    if (!firstCard) {
+      firstCard = { card, epi };
+    } else {
+      secondCard = { card, epi };
+      tries++;
+      updateStats();
+      checkMatch();
+    }
+  }
+
+  function checkMatch() {
+    lock = true;
+    if (firstCard.epi.name === secondCard.epi.name) {
+      matches++;
+      disableCards();
+      showToast("✅ Par encontrado!", "ok");
+    } else {
+      unflipCards();
+    }
+    updateStats();
+  }
+
+  function disableCards() {
+    setTimeout(() => {
+      firstCard.card.style.pointerEvents = "none";
+      secondCard.card.style.pointerEvents = "none";
+      resetTurn();
+      if (matches === epiImages.length) {
+        showToast("🎉 Parabéns! Você completou o jogo!", "ok");
+      }
+    }, 500);
+  }
+
+  function unflipCards() {
+    setTimeout(() => {
+      firstCard.card.classList.remove("flip");
+      secondCard.card.classList.remove("flip");
+      resetTurn();
+    }, 800);
+  }
+
+  function resetTurn() {
+    [firstCard, secondCard] = [null, null];
+    lock = false;
+  }
+
+  function updateStats() {
+    document.getElementById("tries").textContent = tries;
+    document.getElementById("matches").textContent = matches;
+  }
+
+  function restartGame() {
+    loadGame();
+    showToast("🔁 Jogo reiniciado.", "ok");
+  }
+
+  document.addEventListener("DOMContentLoaded", loadGame);
+</script>
 
 <main>
   <!-- EPIs -->
