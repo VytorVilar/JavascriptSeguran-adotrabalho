@@ -800,7 +800,7 @@ button.action.exportar::before {
       <input id="data" type="text" placeholder="Data"/>
     </div>
     <div class="row">
-  
+    <button class="action" onclick="gerarFrases()">Gerar Frases</button>
     </div>
     <div id="resultado" class="output" aria-live="polite"></div>
   </section>
