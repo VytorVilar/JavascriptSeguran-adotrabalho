@@ -416,6 +416,90 @@ body.dark .copy-btn:hover {
   text-align: center;
 }
 
+/* Chat embutido */
+#openHelpChat { width:50px; height:50px; border-radius:50%; box-shadow:var(--shadow); background:var(--primary); color:#fff; border:none; cursor:pointer; }
+.chat-box {
+  position: fixed; right: 20px; bottom: 80px; width:320px; max-width:92vw; height:420px; display:none; flex-direction:column; background:var(--card); border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow); z-index:101;
+}
+.chat-box.active { display:flex; }
+#chatMsgs { padding:10px; overflow:auto; flex:1; font-size:0.95rem; background: linear-gradient(180deg,#fff, #f7f9fc); }
+.chat-msg.user{ text-align:right; margin:8px 0; }
+.chat-msg.bot{ text-align:left; margin:8px 0; }
+.chat-msg .bubble { display:inline-block; padding:8px 10px; border-radius:8px; max-width:85%; }
+.chat-msg.user .bubble{ background:#eef2ff; }
+.chat-msg.bot .bubble{ background:#f3f4f6; }
+
+.chat-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  display: none;
+  flex-direction: column;
+  height: 420px;
+  max-width: 320px;
+  position: fixed;
+  right: 20px;
+  bottom: 80px;
+  z-index: 101;
+}
+
+.chat-msg.user .bubble {
+  background: #dbeafe;
+  color: #1e3a8a;
+  text-align: right;
+}
+
+.chat-msg.bot .bubble {
+  background: #f3f4f6;
+  color: #111827;
+  text-align: left;
+}
+
+//* ====== Espaçamento mais confortável entre seções ====== */
+main section {
+  margin-top: 32px;           /* espaço entre seções */
+  padding-top: 16px;          /* espaço interno */
+  border-top: 1px solid var(--border); /* separador visual sutil */
+}
+
+/* ====== Botões com ícones e diferenciação por função ====== */
+button.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 500;
+  transition: background-color 0.25s ease, transform 0.1s ease;
+}
+
+button.action[data-copy] {
+  background-color: #2563eb; /* azul - ação de cópia */
+}
+button.action[data-copy]:hover {
+  background-color: #1e40af;
+  transform: translateY(-1px);
+}
+
+button.action.exportar {
+  background-color: #047857; /* verde - ação de exportar */
+}
+button.action.exportar:hover {
+  background-color: #065f46;
+  transform: translateY(-1px);
+}
+
+/* Ícones nos botões */
+button.action::before {
+  font-size: 1.1rem;
+}
+button.action[data-copy]::before {
+  content: "📋 ";
+}
+button.action.exportar::before {
+  content: "⬇️ ";
+}
+
 </style>
 </head>
 <body>
@@ -637,8 +721,6 @@ body.dark .copy-btn:hover {
   <section id="epis" class="active" aria-labelledby="tab-epis">
     <h2>Catálogo de EPIs
       <span class="tools">
-        <button class="action" aria-label="Exportar EPIs para Excel" onclick="exportEpisExcel()">Exportar Excel</button>
-        <button class="action" aria-label="Exportar EPIs para PDF" onclick="exportEpisPDF()">Exportar PDF</button>
       </span>
     </h2>
     <div class="row">
@@ -655,7 +737,6 @@ body.dark .copy-btn:hover {
   <section id="riscos" aria-labelledby="tab-riscos">
     <h2>Avaliação de Riscos
       <span class="tools">
-        <button class="action" onclick="exportTextoRiscosPDF()">Exportar PDF</button>
       </span>
     </h2>
     <div class="row">
@@ -719,8 +800,7 @@ body.dark .copy-btn:hover {
       <input id="data" type="text" placeholder="Data"/>
     </div>
     <div class="row">
-      <button class="action" onclick="gerarFrases()">Gerar Frases</button>
-      <button class="action" onclick="exportFrasesTXT()">Exportar TXT</button>
+  
     </div>
     <div id="resultado" class="output" aria-live="polite"></div>
   </section>
@@ -741,8 +821,7 @@ body.dark .copy-btn:hover {
   <section id="riscos_empresas" aria-labelledby="tab-riscos-empresas">
     <h2>Riscos por Empresa
       <span class="tools">
-        <button class="action" onclick="exportRiscosExcel()">Exportar Excel</button>
-        <button class="action" onclick="exportRiscosPDF()">Exportar PDF</button>
+ 
       </span>
     </h2>
     <input id="buscaRiscos" type="text" placeholder="Buscar risco, empresa ou setor..." onkeyup="filtrarRiscosEmpresas()"/>
@@ -813,9 +892,8 @@ body.dark .copy-btn:hover {
   <section id="painel_tecnico">
   <h2>📌 Painel Técnico - Segurança do Trabalho
     <span class="tools">
-      <button class="action" onclick="exportPainelExcel()">Exportar Excel</button>
-      <button class="action" onclick="exportPainelPDF()">Exportar PDF</button>
-    </span>
+    
+	</span>
   </h2>
 
   <div class="painel-grid">
@@ -869,10 +947,20 @@ body.dark .copy-btn:hover {
       </div>
 </section>
 
-<footer>
-  ⚙️ Desenvolvido para fins técnicos de SST • © 2025 • Vytor Suporte Técnico
-</footer>
+<!-- Chat de Ajuda (invisível até abrir) -->
+<button id="openHelpChat" class="panel-toggle" aria-label="Abrir ajuda" style="position:fixed; right:20px; bottom:20px; z-index:100;">💬</button>
 
+<div id="chatAjuda" class="chat-box" aria-hidden="true" role="dialog" aria-label="Chat de Ajuda">
+  <div id="chatMsgs" aria-live="polite"></div>
+  <div style="display:flex; gap:8px; padding:8px;">
+    <input id="chatInput" type="text" placeholder="Pergunte sobre EPI, NR-06, CA..." style="flex:1" />
+    <button class="action" id="chatSend">Enviar</button>
+  </div>
+</div>
+
+<footer>
+  © 2025 — Sistema Técnico SST • Desenvolvido por <strong>Vytor Vilar</strong>
+</footer>
 
 <!-- Modal de Senha -->
 <div class="modal-backdrop" id="modalSenha" role="dialog" aria-modal="true" aria-labelledby="tituloModalSenha" aria-describedby="descModalSenha">
@@ -4007,6 +4095,100 @@ function carregarTabelaCBO(){
 }
 
 document.addEventListener("DOMContentLoaded", carregarTabelaCBO);
+
+//* ====== CHAT DE AJUDA INTELIGENTE LOCAL - SST ====== */
+const chatBox = document.getElementById("chatAjuda");
+const chatButton = document.getElementById("openHelpChat");
+const chatMsgs = document.getElementById("chatMsgs");
+const chatInput = document.getElementById("chatInput");
+const chatSend = document.getElementById("chatSend");
+
+// Exibe / esconde o chat
+chatButton.addEventListener("click", () => {
+  chatBox.classList.toggle("active");
+  if (chatBox.classList.contains("active")) {
+    chatInput.focus();
+  }
+});
+
+// Envio de mensagens
+chatSend.addEventListener("click", enviarMensagem);
+chatInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    enviarMensagem();
+  }
+});
+
+function enviarMensagem() {
+  const msg = chatInput.value.trim();
+  if (!msg) return;
+  adicionarMensagem("user", msg);
+  chatInput.value = "";
+  setTimeout(() => {
+    const resposta = responderPergunta(msg);
+    adicionarMensagem("bot", resposta);
+  }, 500);
+}
+
+function adicionarMensagem(tipo, texto) {
+  const div = document.createElement("div");
+  div.classList.add("chat-msg", tipo);
+  div.innerHTML = `<div class="bubble">${texto}</div>`;
+  chatMsgs.appendChild(div);
+  chatMsgs.scrollTop = chatMsgs.scrollHeight;
+}
+
+/* ====== “Mini GPT” local com conhecimento técnico de SST ====== */
+function responderPergunta(msg) {
+  msg = msg.toLowerCase();
+
+  if (msg.includes("olá") || msg.includes("oi") || msg.includes("bom dia") || msg.includes("boa tarde")) {
+    return "Olá 👋! Sou o assistente de SST. Posso te ajudar com NR-06, EPI, CA, PGR, PCMSO e muito mais.";
+  }
+
+  if (msg.includes("epi")) {
+    return "Os EPIs (Equipamentos de Proteção Individual) são obrigatórios conforme a NR-06. Devem ser fornecidos gratuitamente, adequados ao risco e trocados quando danificados.";
+  }
+
+  if (msg.includes("nr-06")) {
+    return "A NR-06 define as regras sobre fornecimento, uso e controle de EPIs. O empregador deve treinar e registrar a entrega de cada equipamento.";
+  }
+
+  if (msg.includes("ca")) {
+    return "O CA (Certificado de Aprovação) é emitido pelo MTE e garante que o EPI foi testado e aprovado. Deve constar gravado ou impresso no equipamento.";
+  }
+
+  if (msg.includes("treinamento")) {
+    return "Os treinamentos de segurança devem ser realizados na admissão, mudança de função e periodicamente (mínimo uma vez ao ano).";
+  }
+
+  if (msg.includes("segurança") || msg.includes("trabalho")) {
+    return "A Segurança do Trabalho busca prevenir acidentes e doenças ocupacionais, conforme as Normas Regulamentadoras (NRs).";
+  }
+
+  if (msg.includes("pcms")) {
+    return "O PCMSO (NR-07) é o Programa de Controle Médico de Saúde Ocupacional. Deve ser elaborado por médico do trabalho e realizado periodicamente.";
+  }
+
+  if (msg.includes("pgr")) {
+    return "O PGR (NR-01) é o Programa de Gerenciamento de Riscos, elaborado por profissional de SST. Ele identifica e controla riscos físicos, químicos e biológicos.";
+  }
+
+  if (msg.includes("ltcat")) {
+    return "O LTCAT (Laudo Técnico das Condições Ambientais de Trabalho) avalia exposição a agentes nocivos e é base para aposentadoria especial.";
+  }
+
+  if (msg.includes("insalubridade") || msg.includes("periculosidade")) {
+    return "A insalubridade está definida na NR-15 e a periculosidade na NR-16. Ambas geram adicionais conforme exposição a riscos.";
+  }
+
+  if (msg.includes("aso")) {
+    return "O ASO (Atestado de Saúde Ocupacional) comprova a aptidão do trabalhador. É obrigatório nas admissões, mudanças de função, retornos e demissões.";
+  }
+
+  return "Desculpe, não entendi 🤔. Tente perguntar sobre 'EPI', 'NR-06', 'CA', 'treinamento', 'PGR' ou 'PCMSO'.";
+}
 
 </script>
 </body>
