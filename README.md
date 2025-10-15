@@ -500,6 +500,63 @@ button.action.exportar::before {
   content: "⬇️ ";
 }
 
+/* ====== MICROANIMAÇÕES E RESPONSIVIDADE ====== */
+
+/* Suaviza transições entre abas */
+section {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.3s ease;
+}
+section.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Efeito hover em cards */
+.item, .item-card, .bloco {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.item:hover, .item-card:hover, .bloco:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+}
+
+/* Botões com microanimação */
+button.action, nav button {
+  transition: background-color 0.25s ease, transform 0.1s ease;
+}
+button.action:hover, nav button:hover {
+  transform: translateY(-2px);
+}
+
+/* Fade suave no toast */
+.toast {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Fade-in para elementos carregados dinamicamente */
+.fade-in {
+  animation: fadeInUp 0.5s ease both;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ====== RESPONSIVIDADE ====== */
+
+/* Telas até 900px */
+@media (max-width: 900px) {
+  nav {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px;
+  }
+  .item img {
+    max-width: 130px;
+    heigh
+
 </style>
 </head>
 <body>
@@ -4188,6 +4245,24 @@ function responderPergunta(msg) {
   }
 
   return "Desculpe, não entendi 🤔. Tente perguntar sobre 'EPI', 'NR-06', 'CA', 'treinamento', 'PGR' ou 'PCMSO'.";
+}
+
+function ativarSecao(id, btnEl){
+  document.querySelectorAll("section").forEach(el => {
+    el.classList.remove("active");
+  });
+  const target = document.getElementById(id);
+  if (target) {
+    target.classList.add("active", "fade-in");
+  }
+  document.querySelectorAll("nav button").forEach(b => {
+    b.classList.remove("active");
+    b.setAttribute("aria-selected","false");
+  });
+  if(btnEl){
+    btnEl.classList.add("active");
+    btnEl.setAttribute("aria-selected","true");
+  }
 }
 
 </script>
