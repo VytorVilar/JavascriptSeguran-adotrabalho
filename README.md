@@ -4265,6 +4265,82 @@ function ativarSecao(id, btnEl){
   }
 }
 
+const OPENAI_API_KEY = "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"; // substitua pela sua chave real
+
+document.getElementById("chatSend").addEventListener("click", enviarMensagem);
+document.getElementById("chatInput").addEventListener("keydown", e => {
+  if (e.key === "Enter") enviarMensagem();
+});
+
+async function enviarMensagem() {
+  const input = document.getElementById("chatInput");
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  exibirMensagem(msg, "user");
+  input.value = "";
+
+  exibirMensagem("Digitando...", "bot");
+  
+  const resposta = await obterResposta(msg);
+  
+  document.querySelectorAll(".chat-msg.bot .bubble").forEach(el => {
+    if (el.textContent === "Digitando...") el.remove();
+  });
+
+  exibirMensagem(resposta, "bot");
+}
+
+async function obterResposta(pergunta) {
+  try {
+    const resposta = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: "Você é um assistente de segurança do trabalho, educado e técnico." },
+          { role: "user", content: pergunta }
+        ],
+        temperature: 0.7
+      })
+    });
+
+    const dados = await resposta.json();
+    return dados.choices[0].message.content.trim();
+  } catch (erro) {
+    return "Desculpe, ocorreu um erro ao conectar com a IA.";
+  }
+}
+
+function exibirMensagem(texto, tipo) {
+  const chat = document.getElementById("chatMsgs");
+  const msg = document.createElement("div");
+  msg.classList.add("chat-msg", tipo);
+  msg.innerHTML = `<div class="bubble">${texto}</div>`;
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+document.getElementById("openHelpChat").addEventListener("click", () => {
+  const box = document.getElementById("chatAjuda");
+  box.classList.toggle("active");
+});
+
+
+// === ABRIR E FECHAR CHAT DE AJUDA ===
+const botaoChat = document.getElementById("openHelpChat");
+const caixaChat = document.getElementById("chatAjuda");
+
+if (botaoChat && caixaChat) {
+  botaoChat.addEventListener("click", () => {
+    caixaChat.classList.toggle("active");
+  });
+}
+
 </script>
 </body>
 </html>
