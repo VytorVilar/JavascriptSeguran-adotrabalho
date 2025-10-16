@@ -4265,7 +4265,7 @@ function ativarSecao(id, btnEl){
   }
 }
 
-const OPENAI_API_KEY = "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"; // substitua pela sua chave real
+const OPENAI_API_KEY = "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"; // substitua pela sua chave real
 
 document.getElementById("chatSend").addEventListener("click", enviarMensagem);
 document.getElementById("chatInput").addEventListener("keydown", e => {
@@ -4293,24 +4293,14 @@ async function enviarMensagem() {
 
 async function obterResposta(pergunta) {
   try {
-    const resposta = await fetch("https://api.openai.com/v1/chat/completions", {
+    const resposta = await fetch("https://chat-proxy-35jb.onrender.com/chat", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: "Você é um assistente de segurança do trabalho, educado e técnico." },
-          { role: "user", content: pergunta }
-        ],
-        temperature: 0.7
-      })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pergunta })
     });
 
     const dados = await resposta.json();
-    return dados.choices[0].message.content.trim();
+    return dados.resposta;
   } catch (erro) {
     return "Desculpe, ocorreu um erro ao conectar com a IA.";
   }
