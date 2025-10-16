@@ -4293,24 +4293,14 @@ async function enviarMensagem() {
 
 async function obterResposta(pergunta) {
   try {
-    const resposta = await fetch("https://api.openai.com/v1/chat/completions", {
+    const resposta = await fetch("https://chat-proxy-35jb.onrender.com/chat", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: "Você é um assistente de segurança do trabalho, educado e técnico." },
-          { role: "user", content: pergunta }
-        ],
-        temperature: 0.7
-      })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pergunta })
     });
 
     const dados = await resposta.json();
-    return dados.choices[0].message.content.trim();
+    return dados.resposta;
   } catch (erro) {
     return "Desculpe, ocorreu um erro ao conectar com a IA.";
   }
