@@ -1016,7 +1016,11 @@ button.action:hover, nav button:hover {
 </div>
 
 <footer>
-  © 2025 — Sistema Técnico SST • Desenvolvido por <strong>Vytor Vilar</strong>
+  © 2025 — Sistema Técnico SST • Desenvolvido por <strong>Vytor Vilar</strong><br>
+  <audio controls>
+    <source src="Musica.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio.
+  </audio>
 </footer>
 
 <!-- Modal de Senha -->
