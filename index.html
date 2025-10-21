@@ -557,11 +557,82 @@ button.action:hover, nav button:hover {
     max-width: 130px;
     heigh
 
+/* ===== Botão Voltar ao Topo ===== */
+#topBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #1f2937;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,.3);
+  display: none;
+  transition: all 0.3s ease;
+  z-index: 99;
+}
+#topBtn:hover {
+  background: #374151;
+  transform: translateY(-3px);
+}
+
+/* ===== Acessibilidade de Foco ===== */
+button:focus, input:focus, select:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+#atalhosGuia {
+  background: #e5e7eb;
+  color: #374151;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 6px 10px;
+  border-bottom: 1px solid #d1d5db;
+}
+body.dark #atalhosGuia {
+  background: #1f2937;
+  color: #e5e7eb;
+  border-color: #374151;
+}
+
+#fontTools {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: flex;
+  gap: 6px;
+}
+#fontTools button {
+  background: #1f2937;
+  color: #fff;
+  border: 1px solid #4b5563;
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+#fontTools button:hover { background: #374151; }
+
+@media (max-width: 600px) {
+  body { font-size: 15px; }
+  header h1 { font-size: 1.1rem; }
+  .hint { font-size: 0.85rem; }
+  nav button { padding: 8px 10px; font-size: 0.85rem; }
+}
+
 </style>
 </head>
 <body>
 <header>
   <h1>Segurança do Trabalho</h1>
+<div id="fontTools">
+  <button onclick="ajustarFonte(1)">A+</button>
+  <button onclick="ajustarFonte(-1)">A-</button>
+</div>
 </header>
 
 <nav aria-label="Navegação principal" id="tabs" role="tablist">
@@ -575,6 +646,11 @@ button.action:hover, nav button:hover {
   <button aria-selected="false" onclick="mostrar('painel_tecnico', this)" role="tab">🛠 Painel Técnico</button>
   <button aria-selected="false" onclick="mostrar('minigame', this)" role="tab">🕹️ Minigame</button>
 </nav>
+
+<div id="atalhosGuia" class="hint">
+  💡 Dica: use <strong>Alt + número</strong> para navegar — 
+  [1] EPIs | [2] Riscos | [3] Empresas | [4] 5W2H | [5] Riscos/Empresas | [6] CBO | [7] NRs [8] Painel Técnico
+</div>
 
 <!-- 🎮 Minigame: Jogo da Memória de EPIs -->
 <section id="minigame" aria-labelledby="tab-minigame">
@@ -1016,6 +1092,7 @@ button.action:hover, nav button:hover {
 </div>
 
 <footer>
+  <button id="topBtn" title="Voltar ao topo">⬆️</button>
   © 2025 — Sistema Técnico SST • Desenvolvido por <strong>Vytor Vilar</strong><br>
   <audio controls>
     <source src="Musica.mp3" type="audio/mpeg">
@@ -1298,6 +1375,14 @@ button.action:hover, nav button:hover {
     renderRiscosEmpresas(filtrados);
   }
   renderRiscosEmpresas(riscosEmpresas);
+
+// ===== Botão Voltar ao Topo =====
+window.onscroll = function() {
+  document.getElementById("topBtn").style.display =
+    window.scrollY > 200 ? "block" : "none";
+};
+document.getElementById("topBtn").onclick = () =>
+  window.scrollTo({ top: 0, behavior: "smooth" });
 
   /* ===== Tema escuro com memória ===== */
   const THEME_KEY = 'sst_theme';
@@ -4333,6 +4418,39 @@ if (botaoChat && caixaChat) {
   botaoChat.addEventListener("click", () => {
     caixaChat.classList.toggle("active");
   });
+}
+
+// ======= Atalhos de teclado para acessibilidade =======
+document.addEventListener('keydown', e => {
+  if (e.altKey && e.key === '1') mostrar('epis');
+  if (e.altKey && e.key === '2') mostrar('riscos');
+  if (e.altKey && e.key === '3') mostrar('empresas');
+  if (e.altKey && e.key === '4') mostrar('treinamento');
+  if (e.altKey && e.key === '5') mostrar('riscos_empresas');
+  if (e.altKey && e.key === '6') mostrar('cbo');
+  if (e.altKey && e.key === '7') mostrar('nrs');
+  if (e.altKey && e.key === '8') mostrar('painel_tecnico');
+  if (e.altKey && e.key === '9') mostrar('minigame');
+});
+
+let tamanhoFonte = 100;
+function ajustarFonte(valor){
+  tamanhoFonte = Math.max(80, Math.min(130, tamanhoFonte + valor * 5));
+  document.body.style.fontSize = tamanhoFonte + "%";
+}
+
+function playSound(tipo) {
+  const som = new Audio(tipo === 'ok' ? 'success.mp3' : 'click.mp3');
+  som.volume = 0.4;
+  som.play();
+}
+
+function showToast(msg, tipo) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (tipo || '');
+  playSound(tipo);
+  setTimeout(() => { t.classList.remove('show'); }, 1800);
 }
 
 </script>
