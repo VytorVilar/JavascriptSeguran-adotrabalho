@@ -11,23 +11,30 @@
 <script defer src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js">
 
+<meta name="description" content="Painel Técnico de Segurança do Trabalho - SST">
+<meta name="author" content="Vytor Vilar">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data:;">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+
  </script>
 <style>
-  :root{
-    --bg:#f5f7fb;
-    --fg:#111827;
-    --muted:#6b7280;
-    --primary:#2c3e50;
-    --primary-700:#1f2b39;
-    --nav:#34495e;
-    --card:#ffffff;
-    --border:#e5e7eb;
-    --accent:#6366f1;
-    --ok:#22c55e;
-    --warn:#f59e0b;
-    --err:#ef4444;
-    --shadow:0 10px 20px rgba(0,0,0,.08), 0 6px 6px rgba(0,0,0,.06);
-  }
+  :root {
+  --bg: #f9fafb;           /* Fundo geral suave (quase branco) */
+  --fg: #0f172a;           /* Texto principal bem escuro */
+  --muted: #64748b;        /* Texto secundário */
+  --card: #ffffff;         /* Cartões e blocos */
+  --border: #e2e8f0;       /* Linhas e divisórias */
+  --primary: #1b7c4b;      /* Verde principal (corporativo) */
+  --primary-700: #166534;  /* Verde mais escuro para hover */
+  --accent: #22c55e;       /* Verde claro de destaque */
+  --nav: #155e33;          /* Verde profundo da barra de navegação */
+  --ok: #16a34a;           /* Verde sucesso */
+  --warn: #eab308;         /* Amarelo alerta */
+  --err: #dc2626;          /* Vermelho erro */
+  --shadow: 0 8px 16px rgba(0,0,0,0.08);
+}
+
   *{box-sizing:border-box}
   body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:0; background: var(--bg); color:var(--fg); }
   header { background: linear-gradient(135deg, var(--primary), #1d2935); color: #fff; padding: 22px 16px; text-align: center; position: sticky; top:0; z-index: 50; box-shadow: var(--shadow); }
@@ -314,8 +321,10 @@ button.action:hover, nav button:hover {
     padding: 8px;
   }
   .item img {
-    max-width: 130px;
-    heigh
+  max-width: 130px;
+  height: 130px;
+}
+
  /* ===== Botão Voltar ao Topo ===== */
 #topBtn {
   position: fixed;
@@ -338,10 +347,11 @@ button.action:hover, nav button:hover {
   transform: translateY(-3px);
 }
  /* ===== Acessibilidade de Foco ===== */
-button:focus, input:focus, select:focus {
-  outline: 2px solid #2563eb;
+button:focus-visible, input:focus-visible {
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+
  #atalhosGuia {
   background: #e5e7eb;
   color: #374151;
@@ -378,6 +388,250 @@ body.dark #atalhosGuia {
   .hint { font-size: 0.85rem; }
   nav button { padding: 8px 10px; font-size: 0.85rem; }
 }
+
+.bloco, .item, .output {
+  border-left: 6px solid var(--accent);
+  box-shadow: var(--shadow);
+}
+
+h2 {
+  color: var(--primary);
+  border-bottom: 2px solid var(--accent);
+}
+
+.badge {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.toast.ok { background: var(--ok); }
+.toast.err { background: var(--err); }
+.toast.warn { background: var(--warn); }
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  box-shadow: var(--shadow);
+}
+
+nav {
+  background: var(--nav);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+nav button {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+}
+
+nav button:hover {
+  background: rgba(255,255,255,0.25);
+  transform: translateY(-2px);
+}
+
+nav button.active {
+  background: #ffffff;
+  color: var(--primary);
+  font-weight: 600;
+  border-color: #e2e8f0;
+}
+
+button.action {
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-weight: 500;
+  box-shadow: var(--shadow);
+  transition: background 0.25s ease, transform 0.1s ease;
+}
+
+button.action:hover {
+  background-color: var(--primary-700);
+  transform: translateY(-1px);
+}
+
+.bloco {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  border: 1px solid var(--border);
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Borda lateral com brilho dinâmico */
+.bloco::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  border-radius: 6px 0 0 6px;
+  transition: all 0.4s ease;
+}
+
+/* Efeito de flutuação no hover */
+.bloco:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+}
+.bloco:hover::before {
+  height: 110%;
+  filter: brightness(1.2);
+}
+
+/* Cores específicas por tipo de risco */
+.bloco.fisico::before {
+  background: linear-gradient(180deg, #2563eb, #60a5fa); /* azul */
+}
+.bloco.biologico::before {
+  background: linear-gradient(180deg, #16a34a, #4ade80); /* verde */
+}
+.bloco.quimico::before {
+  background: linear-gradient(180deg, #dc2626, #f87171); /* vermelho */
+}
+
+button.action[data-copy] {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  transition: all 0.25s ease;
+}
+
+button.action[data-copy]:hover {
+  background: var(--primary-700);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+}
+
+button.action[data-copy]::before {
+  content: "📋";
+  font-size: 1.1rem;
+}
+
+section.active {
+  animation: fadeIn 0.6s ease both;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+h3 {
+  color: var(--primary);
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+p {
+  line-height: 1.5;
+  color: var(--fg);
+  font-size: 0.95rem;
+}
+
+/* Ícones coloridos em cada tipo */
+.bloco.fisico h3::before { content: "📘"; }
+.bloco.biologico h3::before { content: "🧬"; }
+.bloco.quimico h3::before { content: "🧪"; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bloco {
+  animation: fadeInUp 0.6s ease both;
+}
+
+/* ======== Animações elaboradas e em cascata ======== */
+
+/* Fade + slide para entrada sequencial */
+@keyframes fadeInCascade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Movimento suave (respiração leve) */
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Brilho lateral animado */
+@keyframes glowLine {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(1.5); }
+  100% { filter: brightness(1); }
+}
+
+/* Sombra pulsante */
+@keyframes pulseShadow {
+  0% { box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+  50% { box-shadow: 0 8px 22px rgba(0,0,0,0.14); }
+  100% { box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+}
+
+/* ======== Aplicações ======== */
+
+/* Posição inicial dos blocos */
+.bloco, .item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Quando visível (via JS) */
+.visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  animation: fadeInCascade 0.6s ease forwards;
+}
+
+/* Cascata com delays automáticos */
+.visible[data-delay="1"] { animation-delay: 0.1s; }
+.visible[data-delay="2"] { animation-delay: 0.2s; }
+.visible[data-delay="3"] { animation-delay: 0.3s; }
+.visible[data-delay="4"] { animation-delay: 0.4s; }
+.visible[data-delay="5"] { animation-delay: 0.5s; }
+
+/* Hover: respiração e sombra */
+.bloco:hover, .item:hover {
+  animation: floatCard 4s ease-in-out infinite, pulseShadow 3s ease-in-out infinite;
+}
+
+/* Borda lateral animada */
+.bloco::before {
+  animation: glowLine 4s ease-in-out infinite;
+}
+
  </style>
 </head>
 <body>
@@ -418,9 +672,9 @@ body.dark #atalhosGuia {
     <div class="row">
       <select id="filtro" onchange="filtrarRiscos()" aria-label="Filtro de riscos">
         <option value="todos">Todos</option>
-        <option value="fisico">Físico</option>
-        <option value="biologico">Biológico</option>
-        <option value="quimico">Químico</option>
+        <option value="fisico">Físico📘</option>
+        <option value="biologico">Biológico🧬</option>
+        <option value="quimico">Químico🧪</option>
       </select>
     </div>
     <div id="conteudo">
@@ -588,7 +842,7 @@ body.dark #atalhosGuia {
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
  <script>
   /* ===== Proteção por senha nas seções ===== */
-  const senhaCorreta = "SG393"; // mantém a senha original
+  const senhaCorreta = atob("U0czOTM="); // "SG393" codificada em base64
   const secoesProtegidas = ["riscos", "treinamento", "riscos_empresas"];
   let secaoSolicitada = null;
    function mostrar(id, btnEl, protegido = false) {
@@ -840,42 +1094,7 @@ window.onscroll = function() {
     window.scrollY > 200 ? "block" : "none";
 };
 document.getElementById("topBtn").onclick = () =>
-  window.scrollTo({ top: 0, behavior: "smooth" });
-   /* ===== Exportações (placeholders) ===== */
-  function exportEpisExcel(){
-    const dados = epis.map(e => ({ Categoria:e.categoria, Nome:e.nome, CA:e.ca, Imagem:e.imagem }));
-    const ws = XLSX.utils.json_to_sheet(dados);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "EPIs");
-    XLSX.writeFile(wb, "catalogo_epis.xlsx");
-  }
-  function exportEpisPDF(){
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ orientation:'p', unit:'pt', format:'a4' });
-    doc.setFontSize(14);
-    doc.text("Catálogo de EPIs", 40, 40);
-    const rows = epis.map(e => [e.categoria, e.nome, e.ca]);
-    doc.autoTable({ head:[["Categoria","Nome","CA"]], body: rows, startY: 60, styles: { fontSize: 9, cellPadding: 4 }, headStyles: { fillColor: [44, 62, 80] } });
-    doc.save("catalogo_epis.pdf");
-  }
-  function exportRiscosExcel(){
-    const dados = riscosEmpresas.map(r => ({ Emoji:r.emoji, Risco:r.risco, Empresa:r.empresa, Setor:r.setor }));
-    const ws = XLSX.utils.json_to_sheet(dados);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Riscos por Empresa");
-    XLSX.writeFile(wb, "riscos_por_empresa.xlsx");
-  }
-  function exportRiscosPDF(){
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ orientation:'p', unit:'pt', format:'a4' });
-    doc.setFontSize(14);
-    doc.text("Riscos por Empresa", 40, 40);
-    const rows = riscosEmpresas.map(r => [r.emoji, r.risco, r.empresa, r.setor]);
-    doc.autoTable({ head:[["", "Risco", "Empresa", "Setor"]], body: rows, startY: 60, styles: { fontSize: 9, cellPadding: 4 }, headStyles: { fillColor: [44, 62, 80] } });
-    doc.save("riscos_por_empresa.pdf");
-  }
-  function exportPainelExcel(){ showToast("Exportação Excel do Painel ainda não implementada.", "warn"); }
-  function exportPainelPDF(){ showToast("Exportação PDF do Painel ainda não implementada.", "warn"); }
+  window.scrollTo({ top: 0, behavior: "smooth" }); 
    /* ===== Accordion toggle ===== */
   document.addEventListener('click', (e)=>{
     const header = e.target.closest('.accordion-header');
@@ -1054,6 +1273,29 @@ function ajustarFonte(valor){
   playSound(tipo);
   setTimeout(() => { t.classList.remove('show'); }, 1800);
 }
- </script>
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) e.preventDefault();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const fadeEls = document.querySelectorAll(".bloco, .item");
+
+  const observer = new IntersectionObserver((entries) => {
+    let delayCounter = 0;
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        delayCounter++;
+        entry.target.classList.add("visible");
+        entry.target.setAttribute("data-delay", delayCounter % 5);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  fadeEls.forEach(el => observer.observe(el));
+});
+
+</script>
 </body>
 </html>
