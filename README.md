@@ -35,6 +35,12 @@
   --shadow: 0 8px 16px rgba(0,0,0,0.08);
 }
 
+body {
+  background: var(--bg) url('https://www.transparenttextures.com/patterns/gray-jean.png');
+  background-attachment: fixed;
+  background-size: 400px;
+}
+
   *{box-sizing:border-box}
   body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:0; background: var(--bg); color:var(--fg); }
   header { background: linear-gradient(135deg, var(--primary), #1d2935); color: #fff; padding: 22px 16px; text-align: center; position: sticky; top:0; z-index: 50; box-shadow: var(--shadow); }
@@ -635,8 +641,28 @@ p {
  </style>
 </head>
 <body>
-<header>
-  <h1>Segurança do Trabalho</h1>
+<header style="
+  background: linear-gradient(135deg, #14532d 0%, #1b7c4b 60%, #0f3d23 100%);
+  color: #e2e8f0;
+  padding: 28px 16px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  background-image: url('https://www.transparenttextures.com/patterns/hexellence.png');
+  background-repeat: repeat;
+  background-size: 250px;
+  border-bottom: 2px solid #166534;
+">
+  <div style="display:flex; align-items:center; justify-content:center; gap:14px;">
+    <span style="font-size:1.9rem; color:#22c55e; text-shadow:0 1px 3px rgba(0,0,0,0.5);">🛠</span>
+    <h1 style="
+      margin:0;
+      font-size:1.9rem;
+      letter-spacing:0.4px;
+      font-weight:800;
+      color:#f8fafc;
+      text-shadow:0 2px 4px rgba(0,0,0,0.7);
+    ">Segurança do Trabalho</h1>
+    <span style="font-size:1.9rem; color:#a5b4fc; text-shadow:0 1px 3px rgba(0,0,0,0.5);">⚙️</span>
 </header>
  <nav aria-label="Navegação principal" id="tabs" role="tablist">
   <button aria-selected="true" class="active" onclick="mostrar('epis', this)" role="tab">📒 Catálogo de EPIs</button>
@@ -659,7 +685,27 @@ p {
       <select id="categoryFilter" onchange="searchItems()" aria-label="Filtrar por categoria">
         <option value="">Todas as Categorias</option>
       </select>
-    </div>
+    <button id="clearSearch" onclick="limparBusca()" 
+style="
+  background: #4b5563;
+  color: #f8fafc;
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  margin-left: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+">
+  <span style="color:#f87171; font-size:0.95rem;">❌</span>
+  Limpar filtro
+</button>
+	</div>
     <div id="catalog" class="grid" aria-live="polite"></div>
     <p class="hint">Dica: clique em “CA Nº” para copiar o número rapidamente.</p>
   </section>
@@ -820,6 +866,7 @@ p {
  <footer>
   <button id="topBtn" title="Voltar ao topo">⬆️</button>
   © 2025 — Sistema Técnico SST • Desenvolvido por <strong>Vytor Vilar</strong><br>
+  <small>Versão 2.4 — Revisado em Outubro/2025</small><br>
   <audio controls>
     <source src="Musica.mp3" type="audio/mpeg">
     Seu navegador não suporta áudio.
@@ -925,13 +972,13 @@ p {
   });
    /* -------- EPIs (lista do arquivo 2 - amostra) -------- */
   const epis = [
-    { categoria: "👢 Calçados", nome: "Botina de Elástico com Bico de PVC - Fujiwara", ca: "48.413", imagem: "https://d3bhvz7al37iy6.cloudfront.net/Custom/Content/Products/10/68/1068213_bota-seguranca-bracol-microfibra-composite-eletricista-38530_z2_638430758882818688.webp" },
-    { categoria: "👢 Calçados", nome: "Bota de Segurança ComBico de PVC ModeloLeve e Muito Conforto", ca: "45.258", imagem: "https://d3bhvz7al37iy6.cloudfront.net/Custom/Content/Products/10/68/1068213_bota-seguranca-bracol-microfibra-composite-eletricista-38530_z2_638430758882818688.webp" },
-    { categoria: "👢 Calçados", nome: "Sapato de Amarrar em Couro com Palmilha - Fujiwara (Branco/Preto)", ca: "41.858", imagem: "https://images.tcdn.com.br/img/img_prod/1033319/sapato_de_amarrar_fujiwara_linha_usafe_em_couro_com_palmilha_ca_41858_4098usas4600us_171_1_370dd8cc6d1594636c42615405c0579d.jpg" },
-    { categoria: "👢 Calçados", nome: "Sapato Antiderrapante Impermeável - Steelflex", ca: "38.590", imagem: "https://btequipamentos.agilecdn.com.br/111067_1_1.jpg?v=220-858371529" },
-    { categoria: "👢 Calçados", nome: "Bota de PVC Meio Cano (Branco/Preto) - Bracol", ca: "37.456", imagem: "https://lojaagrometal.fbitsstatic.net/img/p/bota-pvc-preto-cano-medio-39-com-forro-ca-36-025-innpro-73005/259515.jpg?w=1000&h=1000&v=no-change&qs=ignore" },
-    { categoria: "👢 Calçados", nome: "Bota de Seguranca em couro Nobuck com cadarço Dubai Eletrista bico PVC- Bracol", ca: "48.383", imagem: "https://http2.mlstatic.com/D_NQ_NP_761173-MLB89078178731_072025-O-bota-botina-de-seguranca-coturno-nobuck-marluvas-epi-com-ca.webp" },
-    { categoria: "👢 Calçados", nome: "Bota de Segurança Bicode Composite NR10Eletricista - Bracol", ca: "38.530", imagem: "https://imgs.search.brave.com/esoJvDJc19lu3PTbzs5h7fqKk5SlIa6SfFq74C2gxaw/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9odHRw/Mi5tbHN0YXRpYy5j/b20vRF9RX05QXzJY/XzY0MDA1OS1NTEI4/MDQ0NDk1MTk1MV8x/MTIwMjQtRS1ib3Rh/LWJvdGluYS1zZWd1/cmFuY2EtYnJhY29s/LWVsZXRyaWNpc3Rh/LW5yMTAtYmljby1j/b21wb3NpdGUud2Vi/cA" },
+    { categoria: "🥾 Calçados", nome: "Botina de Elástico com Bico de PVC - Fujiwara", ca: "48.413", imagem: "https://d3bhvz7al37iy6.cloudfront.net/Custom/Content/Products/10/68/1068213_bota-seguranca-bracol-microfibra-composite-eletricista-38530_z2_638430758882818688.webp" },
+    { categoria: "🥾 Calçados", nome: "Bota de Segurança ComBico de PVC ModeloLeve e Muito Conforto", ca: "45.258", imagem: "https://d3bhvz7al37iy6.cloudfront.net/Custom/Content/Products/10/68/1068213_bota-seguranca-bracol-microfibra-composite-eletricista-38530_z2_638430758882818688.webp" },
+    { categoria: "🥾 Calçados", nome: "Sapato de Amarrar em Couro com Palmilha - Fujiwara (Branco/Preto)", ca: "41.858", imagem: "https://images.tcdn.com.br/img/img_prod/1033319/sapato_de_amarrar_fujiwara_linha_usafe_em_couro_com_palmilha_ca_41858_4098usas4600us_171_1_370dd8cc6d1594636c42615405c0579d.jpg" },
+    { categoria: "🥾 Calçados", nome: "Sapato Antiderrapante Impermeável - Steelflex", ca: "38.590", imagem: "https://btequipamentos.agilecdn.com.br/111067_1_1.jpg?v=220-858371529" },
+    { categoria: "🥾 Calçados", nome: "Bota de PVC Meio Cano (Branco/Preto) - Bracol", ca: "37.456", imagem: "https://lojaagrometal.fbitsstatic.net/img/p/bota-pvc-preto-cano-medio-39-com-forro-ca-36-025-innpro-73005/259515.jpg?w=1000&h=1000&v=no-change&qs=ignore" },
+    { categoria: "🥾 Calçados", nome: "Bota de Seguranca em couro Nobuck com cadarço Dubai Eletrista bico PVC- Bracol", ca: "48.383", imagem: "https://http2.mlstatic.com/D_NQ_NP_761173-MLB89078178731_072025-O-bota-botina-de-seguranca-coturno-nobuck-marluvas-epi-com-ca.webp" },
+    { categoria: "🥾 Calçados", nome: "Bota de Segurança Bicode Composite NR10Eletricista - Bracol", ca: "38.530", imagem: "https://imgs.search.brave.com/esoJvDJc19lu3PTbzs5h7fqKk5SlIa6SfFq74C2gxaw/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9odHRw/Mi5tbHN0YXRpYy5j/b20vRF9RX05QXzJY/XzY0MDA1OS1NTEI4/MDQ0NDk1MTk1MV8x/MTIwMjQtRS1ib3Rh/LWJvdGluYS1zZWd1/cmFuY2EtYnJhY29s/LWVsZXRyaWNpc3Rh/LW5yMTAtYmljby1j/b21wb3NpdGUud2Vi/cA" },
 	{ categoria: "🧤 Luvas", nome: "Luva de Algodão Tricotada Mesclada - Volk", ca: "25.773", imagem: "https://i.imgur.com/xN1BFLa.png" },
     { categoria: "🧤 Luvas", nome: "Luva de Malha Neotato PU Preta - Volk", ca: "30.916", imagem: "https://i.imgur.com/c9CLP9E.png" },
     { categoria: "🧤 Luvas", nome: "Luva de Látex Multiuso para Uso Químico/Biológico (Amarela/Azul) - Danny", ca: "39.564", imagem: "https://i.imgur.com/hsiXIQa.png" },
@@ -1018,6 +1065,13 @@ p {
   }
   populateCategoryFilter();
   renderCatalog(epis);
+  
+function limparBusca(){
+  document.getElementById("searchInput").value = "";
+  document.getElementById("categoryFilter").value = "";
+  searchItems();
+  showToast("Filtros limpos!", "ok");
+}   
    /* -------- Filtro Avaliação de Riscos -------- */
   function filtrarRiscos() {
     const filtro = document.getElementById("filtro").value;
@@ -1143,40 +1197,6 @@ chatInput.addEventListener("keydown", (e) => {
  /* ====== “Mini GPT” local com conhecimento técnico de SST ====== */
 function responderPergunta(msg) {
   msg = msg.toLowerCase();
-   if (msg.includes("olá") || msg.includes("oi") || msg.includes("bom dia") || msg.includes("boa tarde")) {
-    return "Olá 👋! Sou o assistente de SST. Posso te ajudar com NR-06, EPI, CA, PGR, PCMSO e muito mais.";
-  }
-   if (msg.includes("epi")) {
-    return "Os EPIs (Equipamentos de Proteção Individual) são obrigatórios conforme a NR-06. Devem ser fornecidos gratuitamente, adequados ao risco e trocados quando danificados.";
-  }
-   if (msg.includes("nr-06")) {
-    return "A NR-06 define as regras sobre fornecimento, uso e controle de EPIs. O empregador deve treinar e registrar a entrega de cada equipamento.";
-  }
-   if (msg.includes("ca")) {
-    return "O CA (Certificado de Aprovação) é emitido pelo MTE e garante que o EPI foi testado e aprovado. Deve constar gravado ou impresso no equipamento.";
-  }
-   if (msg.includes("treinamento")) {
-    return "Os treinamentos de segurança devem ser realizados na admissão, mudança de função e periodicamente (mínimo uma vez ao ano).";
-  }
-   if (msg.includes("segurança") || msg.includes("trabalho")) {
-    return "A Segurança do Trabalho busca prevenir acidentes e doenças ocupacionais, conforme as Normas Regulamentadoras (NRs).";
-  }
-   if (msg.includes("pcms")) {
-    return "O PCMSO (NR-07) é o Programa de Controle Médico de Saúde Ocupacional. Deve ser elaborado por médico do trabalho e realizado periodicamente.";
-  }
-   if (msg.includes("pgr")) {
-    return "O PGR (NR-01) é o Programa de Gerenciamento de Riscos, elaborado por profissional de SST. Ele identifica e controla riscos físicos, químicos e biológicos.";
-  }
-   if (msg.includes("ltcat")) {
-    return "O LTCAT (Laudo Técnico das Condições Ambientais de Trabalho) avalia exposição a agentes nocivos e é base para aposentadoria especial.";
-  }
-   if (msg.includes("insalubridade") || msg.includes("periculosidade")) {
-    return "A insalubridade está definida na NR-15 e a periculosidade na NR-16. Ambas geram adicionais conforme exposição a riscos.";
-  }
-   if (msg.includes("aso")) {
-    return "O ASO (Atestado de Saúde Ocupacional) comprova a aptidão do trabalhador. É obrigatório nas admissões, mudanças de função, retornos e demissões.";
-  }
-   return "Desculpe, não entendi 🤔. Tente perguntar sobre 'EPI', 'NR-06', 'CA', 'treinamento', 'PGR' ou 'PCMSO'.";
 }
  function ativarSecao(id, btnEl){
   document.querySelectorAll("section").forEach(el => {
