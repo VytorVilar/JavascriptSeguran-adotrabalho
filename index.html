@@ -1333,42 +1333,43 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 	 
 async function enviarParaAPI() {
-  const csvFile = document.getElementById("inputCsv").files[0];
+  const csv = document.getElementById("inputCsv").files[0];
   const modelos = document.getElementById("inputModelos").files;
 
-  if (!csvFile || modelos.length === 0) {
-    alert("⚠️ Envie o arquivo CSV e pelo menos um modelo DOCX.");
+  if (!csv || modelos.length === 0) {
+    showToast("Envie um CSV e pelo menos um modelo DOCX.", "warn");
     return;
   }
 
   const formData = new FormData();
-  formData.append("csv", csvFile);
-  for (const m of modelos) {
-    formData.append("modelos", m);
-  }
+  formData.append("csv", csv);
+  for (const m of modelos) formData.append("modelos", m);
 
   try {
-    // ✅ URL CORRETA do Render com a rota /gerar
-    const response = await fetch("https://vytor-certificados-api.onrender.com/gerar", {
+    showToast("⏳ Gerando certificados...", "ok");
+    const resposta = await fetch("https:https://vytor-certificados-api.onrender.com/gerar", {
       method: "POST",
-      body: formData,
+      body: formData
     });
 
-    if (!response.ok) {
-      throw new Error("Falha na conexão com o servidor Render (HTTP " + response.status + ")");
-    }
-
-    const data = await response.json();
-
-    if (data.status === "ok") {
-      alert("✅ " + data.mensagem);
-      console.log("Arquivos:", data.arquivos);
+    if (resposta.ok) {
+      const blob = await resposta.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "certificados.zip";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+      showToast("✅ Certificados gerados e baixados!", "ok");
     } else {
-      alert("⚠️ Erro: " + data.mensagem);
+      const erro = await resposta.json();
+      showToast("Erro: " + erro.mensagem, "err");
     }
-  } catch (err) {
-    console.error(err);
-    alert("❌ Erro ao conectar com o servidor Render.\n" + err.message);
+  } catch (e) {
+    showToast("Erro ao conectar com o servidor.", "err");
+    console.error(e);
   }
 }
 </script>
