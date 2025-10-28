@@ -52,7 +52,7 @@ body {
     flex-wrap: wrap;
     gap:4px;
     padding: 6px;
-    position: sticky;
+    position: F;
     top:72px;
     z-index: 49;
   }
@@ -638,31 +638,20 @@ p {
   animation: glowLine 4s ease-in-out infinite;
 }
 
+header {
+  position: Fixed;
+  top: 0;
+  z-index: 100;
+}
+
+nav {
+  position: Fixed;
+  top: 0; /* será atualizado via JS */
+  z-index: 90;
+}
+
  </style>
-</head>
-<body>
-<header style="
-  background: linear-gradient(135deg, #14532d 0%, #1b7c4b 60%, #0f3d23 100%);
-  color: #e2e8f0;
-  padding: 28px 16px;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-  background-image: url('https://www.transparenttextures.com/patterns/hexellence.png');
-  background-repeat: repeat;
-  background-size: 250px;
-  border-bottom: 2px solid #166534;
-">
-  <div style="display:flex; align-items:center; justify-content:center; gap:14px;">
-    <span style="font-size:1.9rem; color:#22c55e; text-shadow:0 1px 3px rgba(0,0,0,0.5);">🛠</span>
-    <h1 style="
-      margin:0;
-      font-size:1.9rem;
-      letter-spacing:0.4px;
-      font-weight:800;
-      color:#f8fafc;
-      text-shadow:0 2px 4px rgba(0,0,0,0.7);
-    ">Segurança do Trabalho</h1>
-    <span style="font-size:1.9rem; color:#a5b4fc; text-shadow:0 1px 3px rgba(0,0,0,0.5);">⚙️</span>
+
 </header>
  <nav aria-label="Navegação principal" id="tabs" role="tablist">
   <button aria-selected="true" class="active" onclick="mostrar('epis', this)" role="tab">📒 Catálogo de EPIs</button>
@@ -1373,6 +1362,19 @@ async function enviarParaAPI() {
     console.error(e);
   }
 }
+
+// Corrige a sobreposição entre header e nav dinamicamente
+  function ajustarEspacamentoNav() {
+    const header = document.querySelector('header');
+    const nav = document.querySelector('nav');
+    if (!header || !nav) return;
+    const alturaHeader = header.offsetHeight;
+    nav.style.top = alturaHeader + 'px';
+  }
+
+  window.addEventListener('load', ajustarEspacamentoNav);
+  window.addEventListener('resize', ajustarEspacamentoNav);
+
 </script>
 </body>
 </html>
