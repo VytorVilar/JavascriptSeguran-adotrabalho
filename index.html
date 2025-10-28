@@ -1337,7 +1337,7 @@ async function enviarParaAPI() {
   const modelos = document.getElementById("inputModelos").files;
 
   if (!csv || modelos.length === 0) {
-    showToast("Envie um CSV e pelo menos um modelo DOCX.", "warn");
+    showToast("⚠️ Envie um CSV e pelo menos um modelo DOCX.", "warn");
     return;
   }
 
@@ -1346,8 +1346,9 @@ async function enviarParaAPI() {
   for (const m of modelos) formData.append("modelos", m);
 
   try {
-    showToast("⏳ Gerando certificados...", "ok");
-    const resposta = await fetch("https:https://vytor-certificados-api.onrender.com/gerar", {
+    showToast("⏳ Gerando certificados, aguarde...", "ok");
+
+    const resposta = await fetch("https://vytor-certificados-api.onrender.com/gerar", {
       method: "POST",
       body: formData
     });
@@ -1362,13 +1363,13 @@ async function enviarParaAPI() {
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
-      showToast("✅ Certificados gerados e baixados!", "ok");
+      showToast("✅ Certificados gerados e baixados com sucesso!", "ok");
     } else {
       const erro = await resposta.json();
-      showToast("Erro: " + erro.mensagem, "err");
+      showToast("❌ Erro: " + erro.mensagem, "err");
     }
   } catch (e) {
-    showToast("Erro ao conectar com o servidor.", "err");
+    showToast("🚫 Erro ao conectar com o servidor.", "err");
     console.error(e);
   }
 }
