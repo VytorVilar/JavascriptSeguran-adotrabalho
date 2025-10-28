@@ -1331,43 +1331,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fadeEls.forEach(el => observer.observe(el));
 });
-
+	 
 async function enviarParaAPI() {
-  const csvInput = document.querySelector("#inputCsv");
-  const modelosInput = document.querySelector("#inputModelos");
+  const csvFile = document.getElementById("inputCsv").files[0];
+  const modelos = document.getElementById("inputModelos").files;
 
-  if (!csvInput.files.length) {
-    showToast("Selecione um arquivo CSV.", "warn");
-    return;
-  }
-  if (!modelosInput.files.length) {
-    showToast("Selecione ao menos um modelo DOCX.", "warn");
+  if (!csvFile || modelos.length === 0) {
+    alert("Envie o arquivo CSV e pelo menos um modelo DOCX.");
     return;
   }
 
   const formData = new FormData();
-  formData.append("csv", csvInput.files[0]);
-  for (const file of modelosInput.files) {
-    formData.append("modelos", file);
+  formData.append("csv", csvFile);
+  for (const m of modelos) {
+    formData.append("modelos", m);
   }
-  formData.append("tipo", "PDF");
-
-  showToast("⏳ Enviando para o servidor...", "ok");
 
   try {
-    const resp = await fetch("https://vytor-certificados-api.onrender.com", {
+    const response = await fetch("https://vytor-certificados-api.onrender.com", {
       method: "POST",
-      body: formData
+      body: formData,
     });
-    const data = await resp.json();
+
+    const data = await response.json();
+
     if (data.status === "ok") {
-      showToast("✅ " + data.mensagem, "ok");
+      alert("✅ " + data.mensagem);
     } else {
-      showToast("❌ Erro: " + data.mensagem, "err");
+      alert("⚠️ Erro: " + data.mensagem);
     }
-  } catch (e) {
-    showToast("Erro na comunicação com a API.", "err");
-    console.error(e);
+  } catch (err) {
+    console.error(err);
+    alert("❌ Erro ao conectar com o servidor.");
   }
 }
 </script>
