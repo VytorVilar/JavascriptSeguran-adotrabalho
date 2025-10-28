@@ -1337,7 +1337,7 @@ async function enviarParaAPI() {
   const modelos = document.getElementById("inputModelos").files;
 
   if (!csvFile || modelos.length === 0) {
-    alert("Envie o arquivo CSV e pelo menos um modelo DOCX.");
+    alert("⚠️ Envie o arquivo CSV e pelo menos um modelo DOCX.");
     return;
   }
 
@@ -1348,21 +1348,27 @@ async function enviarParaAPI() {
   }
 
   try {
-    const response = await fetch("https://vytor-certificados-api.onrender.com", {
+    // ✅ URL CORRETA do Render com a rota /gerar
+    const response = await fetch("https://vytor-certificados-api.onrender.com/gerar", {
       method: "POST",
       body: formData,
     });
+
+    if (!response.ok) {
+      throw new Error("Falha na conexão com o servidor Render (HTTP " + response.status + ")");
+    }
 
     const data = await response.json();
 
     if (data.status === "ok") {
       alert("✅ " + data.mensagem);
+      console.log("Arquivos:", data.arquivos);
     } else {
       alert("⚠️ Erro: " + data.mensagem);
     }
   } catch (err) {
     console.error(err);
-    alert("❌ Erro ao conectar com o servidor.");
+    alert("❌ Erro ao conectar com o servidor Render.\n" + err.message);
   }
 }
 </script>
