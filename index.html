@@ -748,6 +748,39 @@ nav {
   }
 }
 
+/* ======= CORRIGE SOBREPOSIÇÃO DO HEADER E MENU ======= */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+nav {
+  position: fixed;
+  top: 60px; /* altura do header */
+  left: 0;
+  width: 100%;
+  z-index: 99;
+}
+
+/* Compensa a altura total do header + nav */
+main {
+  padding-top: 130px; /* ajuste se necessário */
+}
+
+/* Ajuste mobile */
+@media (max-width: 768px) {
+  nav {
+    top: 54px; /* header menor em telas pequenas */
+  }
+
+  main {
+    padding-top: 145px; /* garante espaço entre nav e conteúdo */
+  }
+}
+
  </style>
 
 </header>
@@ -1472,6 +1505,14 @@ async function enviarParaAPI() {
 
   window.addEventListener('load', ajustarEspacamentoNav);
   window.addEventListener('resize', ajustarEspacamentoNav);
+
+window.addEventListener("load", () => {
+  const header = document.querySelector("header");
+  const nav = document.querySelector("nav");
+  const main = document.querySelector("main");
+  const totalAltura = header.offsetHeight + nav.offsetHeight + 10;
+  main.style.paddingTop = totalAltura + "px";
+});
 
 </script>
 </body>
