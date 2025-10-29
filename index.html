@@ -650,182 +650,9 @@ nav {
   z-index: 90;
 }
 
-/* ======== AJUSTES MOBILE ======== */
-@media (max-width: 768px) {
+/* ======== CORREÇÃO FINAL DE HEADER / NAV / MAIN ======== */
 
-  /* 🌐 Layout geral */
-  body {
-    font-size: 15px;
-    padding-top: 80px; /* evita que o header/nav cubra o conteúdo */
-  }
-
-  header {
-    font-size: 1rem;
-    padding: 14px 10px;
-  }
-
-  /* 📱 Navegação (botões) */
-  nav {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    padding: 10px;
-  }
-
-  nav button {
-    flex: 1 1 45%;
-    min-width: 150px;
-    font-size: 0.9rem;
-    padding: 10px;
-    border-radius: 12px;
-  }
-
-  /* 🧱 Cards de EPIs */
-  .grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .item {
-    padding: 16px;
-    border-radius: 14px;
-    min-height: auto;
-    margin: 0 8px;
-  }
-
-  .item img {
-    max-width: 120px;
-    height: auto;
-  }
-
-  .item h3 {
-    font-size: 1rem;
-    margin-bottom: 6px;
-  }
-
-  .ca-container {
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 12px;
-  }
-
-  .ca-container .badge {
-    font-size: 0.85rem;
-    padding: 4px 10px;
-  }
-
-  .copy-btn,
-  button.action {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-    border-radius: 8px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* 💬 Chat flutuante */
-  #openHelpChat {
-    width: 46px;
-    height: 46px;
-    bottom: 16px;
-    right: 16px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
-  }
-
-  .chat-box {
-    right: 10px;
-    bottom: 70px;
-    width: 90vw;
-    height: 400px;
-  }
-
-  /* 🔝 Botão "Voltar ao topo" */
-  #topBtn {
-    bottom: 80px;
-    right: 14px;
-    width: 42px;
-    height: 42px;
-  }
-}
-
-/* ======= CORRIGE SOBREPOSIÇÃO DO HEADER E MENU ======= */
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100;
-}
-
-nav {
-  position: fixed;
-  top: 60px; /* altura do header */
-  left: 0;
-  width: 100%;
-  z-index: 99;
-}
-
-/* Compensa a altura total do header + nav */
-main {
-  padding-top: 130px; /* ajuste se necessário */
-}
-
-/* Ajuste mobile */
-@media (max-width: 768px) {
-  nav {
-    top: 54px; /* header menor em telas pequenas */
-  }
-
-  main {
-    padding-top: 145px; /* garante espaço entre nav e conteúdo */
-  }
-}
-
-/* ======== CORRIGE BARRA BRANCA NO TOPO (iOS Safari) ======== */
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  color: #fff;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.25);
-  box-shadow: var(--shadow);
-  padding-top: env(safe-area-inset-top); /* 👈 Garante cobertura total no iOS */
-}
-
-/* Ajusta o espaçamento do conteúdo para compensar o header fixo */
-main {
-  padding-top: calc(100px + env(safe-area-inset-top)); /* ajusta dinamicamente */
-}
-
-/* Também aplica o fundo direto ao body para evitar faixa branca residual */
-body {
-  background-color: var(--bg);
-  background-attachment: fixed;
-  background-size: 400px;
-  margin: 0;
-  padding-top: 0;
-}
-
-/* ======== CORRIGE SOBREPOSIÇÃO DO CABEÇALHO E MENU ======== */
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  padding-top: env(safe-area-inset-top); /* cobre o topo em iPhones */
-}
-
-nav {
-  position: fixed;
-  top: calc(60px + env(safe-area-inset-top)); /* posiciona logo abaixo do header */
-  left: 0;
-  
-/* ===== AJUSTE FINAL FIXO DO HEADER E MENU ===== */
+/* 🌐 Cabeçalho fixo com compatibilidade iOS */
 header {
   position: fixed;
   top: 0;
@@ -833,24 +660,84 @@ header {
   width: 100%;
   z-index: 1000;
   background: linear-gradient(135deg, var(--primary), var(--accent));
-  padding-top: env(safe-area-inset-top);
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  box-shadow: var(--shadow);
+  padding: 18px 16px calc(18px + env(safe-area-inset-top)) 16px; /* cobre o topo em iPhones */
+  text-align: center;
 }
 
+/* 🧭 Menu fixo logo abaixo do header */
 nav {
   position: fixed;
-  top: auto;
+  top: calc(60px + env(safe-area-inset-top)); /* sempre abaixo do header */
   left: 0;
   width: 100%;
   z-index: 999;
   background: var(--nav);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Remove qualquer margem fixa antiga */
+/* 🎛️ Botões do menu */
+nav button {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+nav button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+nav button.active {
+  background: #ffffff;
+  color: var(--primary);
+  font-weight: 600;
+  border-color: #e2e8f0;
+}
+
+/* 📄 Conteúdo principal com espaçamento automático */
 main {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-  transition: padding-top 0.2s ease;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: calc(130px + env(safe-area-inset-top)) 14px 20px 14px; /* compensa header + nav */
+  transition: padding-top 0.3s ease;
+}
+
+/* ======== MODO RESPONSIVO ======== */
+@media (max-width: 768px) {
+  header {
+    font-size: 1rem;
+    padding: 14px 10px calc(14px + env(safe-area-inset-top)) 10px;
+  }
+
+  nav {
+    top: calc(52px + env(safe-area-inset-top));
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+  }
+
+  nav button {
+    flex: 1 1 45%;
+    min-width: 140px;
+    font-size: 0.9rem;
+  }
+
+  main {
+    padding-top: calc(145px + env(safe-area-inset-top));
+  }
 }
     
  </style>
