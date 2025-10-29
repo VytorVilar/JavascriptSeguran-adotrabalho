@@ -824,8 +824,35 @@ nav {
   position: fixed;
   top: calc(60px + env(safe-area-inset-top)); /* posiciona logo abaixo do header */
   left: 0;
-  w
+  
+/* ===== AJUSTE FINAL FIXO DO HEADER E MENU ===== */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  padding-top: env(safe-area-inset-top);
+}
 
+nav {
+  position: fixed;
+  top: auto;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  background: var(--nav);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Remove qualquer margem fixa antiga */
+main {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  transition: padding-top 0.2s ease;
+}
+    
  </style>
 
 </header>
@@ -1557,6 +1584,23 @@ window.addEventListener("load", () => {
   const main = document.querySelector("main");
   const totalAltura = header.offsetHeight + nav.offsetHeight + 10;
   main.style.paddingTop = totalAltura + "px";
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const header = document.querySelector("header");
+  const nav = document.querySelector("nav");
+  const main = document.querySelector("main");
+
+  function ajustarEspacamento() {
+    const alturaTotal = header.offsetHeight + nav.offsetHeight;
+    main.style.paddingTop = alturaTotal + "px";
+  }
+
+  ajustarEspacamento();
+
+  // Recalcula em caso de rotação, resize ou mudança de layout
+  window.addEventListener("resize", ajustarEspacamento);
+  window.addEventListener("orientationchange", ajustarEspacamento);
 });
 
 </script>
