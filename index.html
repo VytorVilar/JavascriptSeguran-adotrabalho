@@ -661,6 +661,7 @@ nav {
   <button aria-selected="false" onclick="mostrar('riscos_empresas', this, true)" role="tab">📋 Riscos por Empresa</button>
   <button aria-selected="false" onclick="mostrar('painel_tecnico', this)" role="tab">🛠 Painel Técnico</button>
   <button aria-selected="false" onclick="mostrar('certificados', this)" role="tab">📄 Gerar Certificados</button>
+  <button aria-selected="false" onclick="mostrar('nrs', this)" role="tab">📖 Normas Regulamentadoras</button>
 </nav>
 <!-- Seção: Gerar Certificados -->
 <section id="certificados" aria-labelledby="tab-certificados">
@@ -804,6 +805,58 @@ style="
     <input id="buscaRiscos" type="text" placeholder="Buscar risco, empresa ou setor..." onkeyup="filtrarRiscosEmpresas()"/>
     <div id="listaRiscosEmpresas"></div>
   </section>
+   
+<section id="nrs" aria-labelledby="tab-nrs">
+  <h2>📖 Normas Regulamentadoras</h2>
+
+  <div class="bloco">
+    <h3>⚙️ <span class="titulo-nr">NR-06 — Equipamentos de Proteção Individual (EPI)</span></h3>
+    <p>Regulamenta o fornecimento, uso e conservação dos EPIs, definindo deveres do empregador e do trabalhador, além do Certificado de Aprovação (CA).</p>
+    <button class="action" data-copy=".titulo-nr">Copiar</button>
+  </div>
+
+  <div class="bloco">
+    <h3>⚕️ <span class="titulo-nr">NR-07 — Treinamentos de Primeiros Socorros </span></h3>
+    <p>Tem por finalidade capacitar os trabalhadores a prestarem atendimento inicial em situações de emergência, até a chegada do socorro especializado.</p>
+    <button class="action" data-copy=".titulo-nr">Copiar</button>
+  </div>
+
+    <div class="bloco">
+    <h3>⚡ <span class="titulo-nr">NR-10 — Segurança em Instalações e Serviços em Eletricidade</span></h3>
+    <p>Treinamento obrigatório voltado à prevenção de acidentes envolvendo eletricidade, garantindo que os trabalhadores estejam capacitados para atuar com segurança em sistemas elétricos e instalações..</p>
+    <button class="action" data-copy=".titulo-nr">Copiar</button>
+  </div>
+  
+  <div class="bloco">
+    <h3>🛠 <span class="titulo-nr">NR-12 — Segurança no Trabalho em Máquinas e Equipamentos</span></h3>
+    <p>Estabelece medidas para prevenção de acidentes com máquinas, exigindo proteções, sistemas de parada de emergência e sinalização adequada.</p>
+    <button class="action" data-copy=".titulo-nr">Copiar</button>
+  </div>
+
+  <div class="bloco">
+    <h3>🏗 <span class="titulo-nr">NR-18 — Condições e Meio Ambiente de Trabalho na Indústria da Construção</span></h3>
+    <p>Regulamenta a segurança e o bem-estar no canteiro de obras, abrangendo instalações, andaimes, transporte e medidas de proteção coletiva.</p>
+    <button class="action" data-copy=".titulo-nr">Copiar</button>
+  </div>
+
+  <div class="bloco">
+    <h3>🔥 <span class="titulo-nr">NR-23 – Proteção Contra Incêndios / Treinamento de Brigada de Incêndio</span></h3>
+    <p>Capacita os participantes para atuar na prevenção e no combate a princípios de incêndio, bem como na evacuação de áreas e primeiros socorros, conforme as diretrizes de segurança contra incêndios.</p>
+    <button class="action" data-copy=".titulo-nr">Copiar</button>
+  </div>
+
+    <div class="bloco">
+    <h3>🏗️♂️ <span class="titulo-nr">NR-33 – Segurança e Saúde nos Trabalhos em Espaços Confinados</span></h3>
+    <p>Treinamento destinado a reconhecer, avaliar e controlar os riscos em espaços confinados, assegurando a integridade física dos trabalhadores e o cumprimento das normas de segurança.</p>
+    <button class="action" data-copy=".titulo-nr">Copiar</button>
+  </div>
+
+  <div class="bloco">
+    <h3>🧗‍♂️ <span class="titulo-nr">NR-35 — Trabalho em Altura</span></h3>
+    <p>Define os requisitos mínimos de segurança para trabalhos acima de 2 metros, exigindo planejamento, análise de risco e uso de EPIs específicos.</p>
+    <button class="action" data-copy=".titulo-nr">Copiar</button>
+  </div>
+</section>
    <!-- Painel Técnico + FAQ com accordion -->
   <section id="painel_tecnico">
   <h2>📌 Painel Técnico - Segurança do Trabalho
@@ -871,7 +924,7 @@ style="
  <footer>
   <button id="topBtn" title="Voltar ao topo">⬆️</button>
   © 2025 — Sistema Técnico SST • Desenvolvido por <strong>Vytor Vilar</strong><br>
-  <small>Versão 2.4 — Revisado em Outubro/2025</small><br>
+  <small>Versão 2.5 — Revisado em Novembro/2025</small><br>
   <audio controls>
     <source src="Musica.mp3" type="audio/mpeg">
     Seu navegador não suporta áudio.
@@ -954,13 +1007,26 @@ style="
       showToast("Copiado!", "ok");
     }
   }
-  document.addEventListener('click', (ev)=>{
-    const btn = ev.target.closest('button[data-copy]');
-    if(btn){
+  document.addEventListener('click', (ev) => {
+  const btn = ev.target.closest('button[data-copy]');
+  if (btn) {
+    const seletor = btn.getAttribute('data-copy');
+    let texto = '';
+
+    if (seletor && seletor.startsWith('.')) {
+      const alvo = btn.parentElement.querySelector(seletor);
+      if (alvo) texto = alvo.textContent.trim();
+    } else {
       const p = btn.previousElementSibling;
-      if(p) copiarTexto(p.innerText);
+      if (p) texto = p.innerText.trim();
     }
-  });
+
+    if (texto) {
+      navigator.clipboard.writeText(texto);
+      showToast("Copiado: " + texto, "ok");
+    }
+  }
+});
    /* ===== Toast ===== */
   function showToast(msg, kind){
     const t = document.getElementById('toast');
