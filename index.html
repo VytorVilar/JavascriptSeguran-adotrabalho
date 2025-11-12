@@ -660,24 +660,8 @@ nav {
   <button aria-selected="false" onclick="mostrar('treinamento', this, true)" role="tab">📚 Plano de Ação 5W2H</button>
   <button aria-selected="false" onclick="mostrar('riscos_empresas', this, true)" role="tab">📋 Riscos por Empresa</button>
   <button aria-selected="false" onclick="mostrar('painel_tecnico', this)" role="tab">🛠 Painel Técnico</button>
-  <button aria-selected="false" onclick="mostrar('certificados', this)" role="tab">📄 Gerar Certificados</button>
   <button aria-selected="false" onclick="mostrar('nrs', this)" role="tab">📖 Normas Regulamentadoras</button>
 </nav>
-<!-- Seção: Gerar Certificados -->
-<section id="certificados" aria-labelledby="tab-certificados">
-  <h2>📄 Gerador de Certificados</h2>
-  <div class="bloco" style="max-width:600px; margin:auto;">
-    <p>Envie um <strong>arquivo CSV</strong> com os dados dos participantes e um ou mais <strong>modelos DOCX</strong> para gerar automaticamente os certificados.</p>
-    <label style="display:block; margin-top:12px;">📁 Selecione o arquivo CSV:</label>
-    <input type="file" id="inputCsv" accept=".csv" style="width:100%; margin-bottom:12px;">
-
-    <label style="display:block;">📄 Selecione os modelos DOCX:</label>
-    <input type="file" id="inputModelos" accept=".docx" multiple style="width:100%; margin-bottom:16px;">
-
-    <button class="action exportar" onclick="enviarParaAPI()">Gerar Certificados</button>
-    <p class="hint">Os certificados serão processados pelo servidor e retornará uma confirmação de sucesso.</p>
-  </div>
-</section>
 
  <main>
   <!-- EPIs -->
@@ -1386,49 +1370,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fadeEls.forEach(el => observer.observe(el));
 });
-	 
-async function enviarParaAPI() {
-  const csv = document.getElementById("inputCsv").files[0];
-  const modelos = document.getElementById("inputModelos").files;
-
-  if (!csv || modelos.length === 0) {
-    showToast("⚠️ Envie um CSV e pelo menos um modelo DOCX.", "warn");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("csv", csv);
-  for (const m of modelos) formData.append("modelos", m);
-
-  try {
-    showToast("⏳ Gerando certificados, aguarde...", "ok");
-
-    const resposta = await fetch("https://vytor-certificados-api.onrender.com/gerar", {
-      method: "POST",
-      body: formData
-    });
-
-    if (resposta.ok) {
-      const blob = await resposta.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "certificados.zip";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-      showToast("✅ Certificados gerados e baixados com sucesso!", "ok");
-    } else {
-      const erro = await resposta.json();
-      showToast("❌ Erro: " + erro.mensagem, "err");
-    }
-  } catch (e) {
-    showToast("🚫 Erro ao conectar com o servidor.", "err");
-    console.error(e);
-  }
-}
-
+	
 // Corrige a sobreposição entre header e nav dinamicamente
   function ajustarEspacamentoNav() {
     const header = document.querySelector('header');
