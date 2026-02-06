@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-skin="cyber" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -20,372 +20,530 @@
   <script defer src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
 
   <style>
-    :root{
-  /* ===== PALETA PREMIUM (LIGHT) ===== */
-  --bg: #f6f7fb;
-  --fg: #0f172a;
-  --muted: #64748b;
+/* ===========================
+   SST • Ultra Modern CSS 2026
+   Drop-in (mantém suas classes)
+   =========================== */
 
-  --card: rgba(255,255,255,0.78);
-  --card-solid:#ffffff;
+:root{
+  /* Tipografia */
+  --font: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 
-  --border: rgba(15, 23, 42, 0.10);
-  --border-strong: rgba(15, 23, 42, 0.14);
+  /* Layout */
+  --container: 1120px;
+  --topbar-h: 72px;
 
-  --primary:#1b7c4b;
-  --primary-700:#166534;
-  --accent:#22c55e;
+  /* Raios */
+  --r-2xs: 10px;
+  --r-xs: 12px;
+  --r-sm: 14px;
+  --r-md: 18px;
+  --r-lg: 22px;
+  --r-xl: 28px;
 
-  --ok:#16a34a;
-  --warn:#eab308;
-  --err:#dc2626;
+  /* Timing */
+  --t-fast: 140ms;
+  --t: 220ms;
+  --t-slow: 520ms;
+  --ease: cubic-bezier(.2,.8,.2,1);
 
-  /* ===== SOMBRAS / GLASS ===== */
-  --shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
-  --shadow-soft: 0 10px 22px rgba(15, 23, 42, 0.10);
-  --shadow-inset: inset 0 1px 0 rgba(255,255,255,0.85);
+  /* Light theme (default) */
+  --bg0: #f7f8fc;
+  --bg1: #ffffff;
+  --fg: #0b1220;
+  --muted: rgba(15, 23, 42, 0.58);
 
-  --radius: 18px;
-  --radius-sm: 14px;
+  /* Brand (verde premium SST) */
+  --p1: #16a34a;   /* primary */
+  --p2: #22c55e;   /* accent */
+  --p3: #0ea5e9;   /* cyan highlight */
+  --p4: #a78bfa;   /* violet highlight */
 
-  --topbar-h: 70px;
+  /* Superfícies */
+  --glass: rgba(255,255,255,0.70);
+  --glass-2: rgba(255,255,255,0.55);
+  --stroke: rgba(15, 23, 42, 0.10);
+  --stroke-2: rgba(15, 23, 42, 0.14);
 
-  /* Fundo “glass” das imagens */
-  --img-bg: rgba(255,255,255,0.55);
-  --img-border: rgba(15, 23, 42, 0.12);
-  --img-grid: rgba(15, 23, 42, 0.04);
+  /* Sombras */
+  --sh-1: 0 10px 26px rgba(2, 6, 23, 0.08);
+  --sh-2: 0 20px 60px rgba(2, 6, 23, 0.14);
+  --sh-in: inset 0 1px 0 rgba(255,255,255,0.75);
+
+  /* Estados */
+  --ok: #16a34a;
+  --warn: #f59e0b;
+  --err: #ef4444;
+
+  /* Glow (foco / neon suave) */
+  --ring: 0 0 0 4px rgba(34,197,94,.16);
+  --ring-2: 0 0 0 5px rgba(14,165,233,.14);
+
+  /* Fundo das imagens (se usar) */
+  --img-bg: rgba(255,255,255,0.45);
+  --img-grid: rgba(15, 23, 42, 0.05);
+
+  /* Scrollbar */
+  --sb: rgba(15, 23, 42, 0.18);
+  --sb2: rgba(15, 23, 42, 0.08);
 }
 
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
+/* Dark theme */
+html[data-theme="dark"]{
+  --bg0: #070a12;
+  --bg1: #0b1020;
+  --fg: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.62);
 
+  --glass: rgba(16, 22, 40, 0.62);
+  --glass-2: rgba(16, 22, 40, 0.48);
+  --stroke: rgba(255,255,255,0.10);
+  --stroke-2: rgba(255,255,255,0.14);
+
+  --sh-1: 0 14px 40px rgba(0,0,0,0.45);
+  --sh-2: 0 28px 90px rgba(0,0,0,0.65);
+  --sh-in: inset 0 1px 0 rgba(255,255,255,0.08);
+
+  --img-bg: rgba(16, 22, 40, 0.42);
+  --img-grid: rgba(255,255,255,0.06);
+
+  --sb: rgba(255,255,255,0.22);
+  --sb2: rgba(255,255,255,0.10);
+}
+
+/* Reset moderno */
+*{ box-sizing: border-box; }
+html, body{ height: 100%; }
 body{
   margin:0;
-  font-family: Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-  color:var(--fg);
+  font-family: var(--font);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
-  /* Background premium com 3 layers */
+  /* AURORA + NOISE (sem imagem externa) */
   background:
-    radial-gradient(1200px 650px at 15% -10%, rgba(34,197,94,.22), transparent 60%),
-    radial-gradient(1000px 650px at 110% 0%, rgba(27,124,75,.18), transparent 55%),
-    linear-gradient(180deg, rgba(255,255,255,0.75), rgba(246,247,251,1)),
-    var(--bg);
+    radial-gradient(900px 500px at 12% -10%, rgba(34,197,94,.22), transparent 60%),
+    radial-gradient(900px 520px at 108% 0%, rgba(14,165,233,.18), transparent 58%),
+    radial-gradient(900px 520px at 80% 115%, rgba(167,139,250,.16), transparent 62%),
+    linear-gradient(180deg, rgba(255,255,255,0.75), rgba(247,248,252,1)),
+    var(--bg0);
+}
+html[data-theme="dark"] body{
+  background:
+    radial-gradient(900px 520px at 10% -10%, rgba(34,197,94,.22), transparent 60%),
+    radial-gradient(900px 540px at 110% 0%, rgba(14,165,233,.18), transparent 58%),
+    radial-gradient(900px 540px at 82% 112%, rgba(167,139,250,.18), transparent 62%),
+    linear-gradient(180deg, rgba(7,10,18,0.82), rgba(7,10,18,1)),
+    var(--bg0);
 }
 
-a{ color:inherit; text-decoration:none; }
-.container{ width:min(1120px, 100%); margin:0 auto; padding: 0 14px; }
+/* Noise overlay */
+body::before{
+  content:"";
+  position: fixed;
+  inset:0;
+  pointer-events:none;
+  opacity: 0.08;
+  mix-blend-mode: overlay;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.04) 0 1px, transparent 1px 4px);
+}
+html[data-theme="dark"] body::before{
+  opacity: 0.10;
+  mix-blend-mode: soft-light;
+}
 
-/* ===== TOPBAR (mais premium) ===== */
+a{ color: inherit; text-decoration: none; }
+
+.container{
+  width: min(var(--container), 100%);
+  margin: 0 auto;
+  padding: 0 14px;
+}
+
+*{ scrollbar-width: thin; scrollbar-color: var(--sb) transparent; }
+*::-webkit-scrollbar{ height: 10px; width: 10px; }
+*::-webkit-scrollbar-thumb{
+  background: var(--sb);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-track{ background: transparent; }
+
+/* ===========================
+   TOPBAR
+   =========================== */
 .topbar{
   position: sticky;
-  top:0;
+  top: 0;
   z-index: 50;
   height: var(--topbar-h);
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
 
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: linear-gradient(180deg, var(--glass), var(--glass-2));
+  border-bottom: 1px solid var(--stroke);
+  box-shadow: 0 8px 30px rgba(2,6,23,0.08);
 
-  background: rgba(246,247,251,0.78);
-  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
 }
-
 .topbar-inner{
+  width:100%;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
-  width:100%;
+  gap: 12px;
 }
 
+/* Brand */
 .brand{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap: 12px;
   min-width: 220px;
 }
-
 .logo{
-  width:44px; height:44px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  box-shadow: var(--shadow-soft);
+  width: 46px;
+  height: 46px;
+  border-radius: 18px;
   display:grid;
   place-items:center;
-  color:#fff;
-  font-weight:900;
-  letter-spacing:.6px;
   user-select:none;
-}
+  color: #fff;
+  font-weight: 950;
+  letter-spacing: .6px;
 
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,.35), transparent 40%),
+    linear-gradient(135deg, var(--p1), var(--p2));
+  box-shadow: var(--sh-1);
+  position: relative;
+  overflow: hidden;
+}
+.logo::after{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background: conic-gradient(from 180deg, transparent 0 30%, rgba(255,255,255,.32), transparent 55% 100%);
+  animation: shine 5.2s linear infinite;
+  opacity: .55;
+}
+@keyframes shine{
+  to{ transform: rotate(360deg); }
+}
 .brand h1{
+  margin:0;
   font-size: 14px;
   line-height: 1.1;
-  margin:0;
+  letter-spacing: .2px;
 }
-
 .brand small{
   display:block;
+  margin-top: 2px;
   color: var(--muted);
-  font-weight:700;
-  margin-top:2px;
+  font-weight: 750;
 }
 
+/* Top actions */
 .top-actions{
   display:flex;
   align-items:center;
-  gap:8px;
-  flex-wrap:wrap;
   justify-content:flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-/* ===== NAV TABS (mais clean) ===== */
+/* ===========================
+   Tabs
+   =========================== */
 .tabs{
   display:flex;
-  gap:8px;
+  gap: 10px;
   overflow:auto;
-  padding: 12px 0;
-  scrollbar-width: thin;
+  padding: 12px 0 14px;
 }
-
 .tab{
-  border:1px solid var(--border);
-  background: rgba(255,255,255,0.72);
+  border: 1px solid var(--stroke);
+  background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.58));
   color: var(--fg);
-  padding: 10px 13px;
+  padding: 10px 14px;
   border-radius: 999px;
-  cursor:pointer;
-  transition: transform .18s, box-shadow .18s, background .18s;
+  cursor: pointer;
   white-space: nowrap;
-  user-select:none;
-  box-shadow: 0 6px 14px rgba(15,23,42,0.06);
-}
+  user-select: none;
 
+  box-shadow: 0 8px 20px rgba(2,6,23,0.06);
+  transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease), filter var(--t) var(--ease), border-color var(--t) var(--ease);
+}
+html[data-theme="dark"] .tab{
+  background: linear-gradient(180deg, rgba(16,22,40,.70), rgba(16,22,40,.52));
+}
 .tab:hover{
   transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(15,23,42,0.10);
+  box-shadow: 0 14px 36px rgba(2,6,23,0.10);
+  border-color: rgba(34,197,94,.28);
 }
-
 .tab[aria-selected="true"]{
-  background: linear-gradient(135deg, var(--primary), var(--accent));
   border-color: transparent;
-  color:#fff;
-  font-weight: 800;
-  box-shadow: var(--shadow);
+  color: #fff;
+  font-weight: 900;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,.28), transparent 42%),
+    linear-gradient(135deg, var(--p1), var(--p2));
+  box-shadow: var(--sh-2);
 }
 
-/* ===== COMMON UI ===== */
+/* ===========================
+   Buttons / Pills
+   =========================== */
 .btn{
   border:none;
   cursor:pointer;
   padding: 10px 12px;
-  border-radius: 14px;
-  transition: transform .18s, box-shadow .18s, filter .18s;
+  border-radius: var(--r-sm);
   display:inline-flex;
   align-items:center;
-  gap:8px;
-  font-weight:800;
-}
+  gap: 8px;
+  font-weight: 900;
 
+  transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease), filter var(--t) var(--ease), border-color var(--t) var(--ease);
+}
 .btn:active{ transform: translateY(1px); }
 
 .btn-primary{
-  background: linear-gradient(135deg, var(--primary), var(--accent));
   color:#fff;
-  box-shadow: var(--shadow-soft);
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,.28), transparent 42%),
+    linear-gradient(135deg, var(--p1), var(--p2));
+  box-shadow: var(--sh-1);
 }
-
 .btn-primary:hover{
-  filter: brightness(1.03);
-  box-shadow: var(--shadow);
   transform: translateY(-1px);
+  box-shadow: var(--sh-2);
+  filter: saturate(1.05) brightness(1.03);
 }
 
 .btn-ghost{
-  background: rgba(255,255,255,0.72);
-  border: 1px solid var(--border);
   color: var(--fg);
-  box-shadow: 0 8px 18px rgba(15,23,42,0.07);
+  background: linear-gradient(180deg, var(--glass), var(--glass-2));
+  border: 1px solid var(--stroke);
+  box-shadow: 0 10px 26px rgba(2,6,23,0.07);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
 }
-
 .btn-ghost:hover{
   transform: translateY(-1px);
-  box-shadow: 0 12px 26px rgba(15,23,42,0.10);
+  box-shadow: 0 18px 44px rgba(2,6,23,0.12);
+  border-color: rgba(14,165,233,.22);
 }
 
 .pill{
   display:inline-flex;
   align-items:center;
-  gap:8px;
+  gap: 8px;
   padding: 8px 10px;
   border-radius: 999px;
-  border:1px solid var(--border);
-  background: rgba(255,255,255,0.70);
+  border: 1px solid var(--stroke);
+  background: linear-gradient(180deg, var(--glass), var(--glass-2));
   color: var(--muted);
-  font-weight:800;
+  font-weight: 900;
   font-size: 12px;
-  box-shadow: 0 8px 18px rgba(15,23,42,0.06);
+  box-shadow: 0 10px 26px rgba(2,6,23,0.06);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
 }
 
-/* ===== CARDS PREMIUM (glass) ===== */
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-weight: 950;
+  font-size: 12px;
+
+  background: rgba(34,197,94,0.12);
+  border: 1px solid rgba(34,197,94,0.20);
+  color: color-mix(in oklab, var(--p1) 40%, var(--fg) 60%);
+}
+html[data-theme="dark"] .badge{
+  background: rgba(34,197,94,0.14);
+  border-color: rgba(34,197,94,0.22);
+  color: rgba(255,255,255,0.90);
+}
+
+/* ===========================
+   Cards
+   =========================== */
 .card{
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 14px;
-
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
   position: relative;
-}
+  padding: 14px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--stroke);
 
+  background:
+    radial-gradient(circle at 20% 10%, rgba(34,197,94,.10), transparent 35%),
+    radial-gradient(circle at 90% 80%, rgba(14,165,233,.08), transparent 40%),
+    linear-gradient(180deg, var(--glass), var(--glass-2));
+  box-shadow: var(--sh-1);
+
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+}
 .card::before{
   content:"";
   position:absolute;
   inset:0;
   border-radius: inherit;
   pointer-events:none;
-  box-shadow: var(--shadow-inset);
+  box-shadow: var(--sh-in);
+  opacity: .9;
+}
+.card:hover{
+  box-shadow: var(--sh-2);
+  border-color: rgba(34,197,94,.18);
 }
 
+/* ===========================
+   Grid / Row / Text
+   =========================== */
 .grid{
   display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 14px;
 }
-
 .row{
   display:flex;
-  gap:10px;
-  flex-wrap:wrap;
   align-items:center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
-
 .muted{ color: var(--muted); }
 
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(22,163,74,0.12);
-  color: rgba(22,163,74,0.95);
-  font-weight: 900;
-  font-size: 12px;
-}
-
-/* ===== INPUTS MAIS PREMIUM ===== */
-input, select, textarea{
-  width:100%;
-  padding: 12px 12px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.72);
-  color: var(--fg);
-  outline:none;
-  box-shadow: 0 8px 18px rgba(15,23,42,0.05);
-}
-
-input:focus, select:focus, textarea:focus{
-  border-color: rgba(34,197,94,0.45);
-  box-shadow: 0 0 0 4px rgba(34,197,94,0.16), 0 10px 22px rgba(15,23,42,0.08);
-}
-
-/* ===== MAIN ===== */
+/* Section */
 main{ padding: 14px 0 110px; }
 section{ display:none; }
 section.active{ display:block; }
 
 .section-head{
   display:flex;
-  align-items:flex-start;
   justify-content:space-between;
-  gap:12px;
+  align-items:flex-start;
+  gap: 12px;
   margin: 14px 0;
 }
-
 .section-head h2{
   margin:0;
   font-size: 18px;
   letter-spacing: .2px;
 }
 
-/* =======================================================
-   ✅ FUNDO DAS IMAGENS PADRONIZADO (GLASS / CLEAN)
-   ======================================================= */
-.epi{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  transition: transform .18s, box-shadow .18s;
+/* ===========================
+   Inputs
+   =========================== */
+input, select, textarea{
+  width:100%;
+  padding: 12px 12px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--stroke);
+  background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.55));
+  color: var(--fg);
+  outline: none;
+  box-shadow: 0 10px 26px rgba(2,6,23,0.05);
+  transition: box-shadow var(--t) var(--ease), border-color var(--t) var(--ease), transform var(--t) var(--ease), background var(--t) var(--ease);
+}
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea{
+  background: linear-gradient(180deg, rgba(16,22,40,.70), rgba(16,22,40,.52));
+}
+input:focus, select:focus, textarea:focus{
+  border-color: rgba(34,197,94,0.40);
+  box-shadow: var(--ring), 0 18px 46px rgba(2,6,23,0.10);
+  transform: translateY(-1px);
+}
+::placeholder{ color: color-mix(in oklab, var(--muted) 85%, transparent); }
+
+:focus-visible{
+  outline: none;
+  box-shadow: var(--ring-2), 0 18px 46px rgba(2,6,23,0.12);
+  border-color: rgba(14,165,233,.38);
 }
 
-.epi:hover{
-  transform: translateY(-2px);
-}
-
-.epi-img{
-  height: 175px;
-  border-radius: 16px;
-  border: 1px solid var(--img-border);
-  box-shadow: 0 10px 24px rgba(15,23,42,0.08);
-  overflow:hidden;
-
-  /* glass + padrão leve */
+/* ===========================
+   EPIs Cards
+   =========================== */
+.card.epi{
+  padding: 16px;
+  border-radius: var(--r-md);
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.38)),
-    radial-gradient(circle at 30% 20%, rgba(34,197,94,0.10), transparent 45%),
-    radial-gradient(circle at 70% 80%, rgba(27,124,75,0.10), transparent 46%),
-    repeating-linear-gradient(
-      45deg,
-      transparent 0px,
-      transparent 10px,
-      var(--img-grid) 10px,
-      var(--img-grid) 12px
-    ),
-    var(--img-bg);
-
-  display:grid;
-  place-items:center;
-
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+    radial-gradient(circle at 10% 0%, rgba(34,197,94,.12), transparent 40%),
+    radial-gradient(circle at 95% 100%, rgba(167,139,250,.10), transparent 45%),
+    linear-gradient(180deg, var(--glass), var(--glass-2));
+  border: 1px solid var(--stroke);
+  box-shadow: var(--sh-1);
+  transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease), border-color var(--t) var(--ease), filter var(--t) var(--ease);
 }
-
-.epi-img img{
-  max-width: 92%;
-  max-height: 92%;
-  object-fit: contain;
-  transition: transform .22s ease, filter .22s ease;
-  filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
+.card.epi:hover{
+  transform: translateY(-2px);
+  border-color: rgba(34,197,94,.28);
+  box-shadow: var(--sh-2);
+  filter: saturate(1.03);
 }
-
-.epi:hover .epi-img img{
-  transform: scale(1.05);
-  filter: drop-shadow(0 14px 26px rgba(15,23,42,0.22));
+.epi-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  margin-bottom: 10px;
 }
-
+.epi-cat{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  background: linear-gradient(180deg, var(--glass), var(--glass-2));
+  color: color-mix(in oklab, var(--fg) 70%, var(--muted) 30%);
+  font-weight: 850;
+  font-size: 12px;
+  white-space: nowrap;
+}
 .epi h3{
-  margin:0;
-  font-size: 13px;
+  margin: 0;
+  font-size: 14px;
   line-height: 1.25;
-  min-height: 34px;
+  letter-spacing: .12px;
+  min-height: 36px;
+}
+.epi-sub{
+  margin-top: 8px;
+  display:flex;
+  flex-wrap:wrap;
+  gap: 8px;
+  align-items:center;
+  justify-content:space-between;
 }
 
-/* ===== ACCORDION ===== */
+/* ===========================
+   Accordion
+   =========================== */
 .accordion{ display:flex; flex-direction:column; gap:10px; }
-.acc-item{
-  border:1px solid var(--border);
-  border-radius: var(--radius-sm);
-  overflow:hidden;
-  background: rgba(255,255,255,0.70);
-  box-shadow: 0 10px 22px rgba(15,23,42,0.06);
-}
 
+.acc-item{
+  border: 1px solid var(--stroke);
+  border-radius: var(--r-md);
+  overflow:hidden;
+  background: linear-gradient(180deg, var(--glass), var(--glass-2));
+  box-shadow: 0 12px 32px rgba(2,6,23,0.08);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+}
 .acc-btn{
   width:100%;
   text-align:left;
@@ -394,31 +552,30 @@ section.active{ display:block; }
   border:none;
   cursor:pointer;
   color: var(--fg);
-  font-weight: 900;
+  font-weight: 950;
   display:flex;
   justify-content:space-between;
-  gap:10px;
+  gap: 10px;
   align-items:center;
 }
-
 .acc-body{
   display:none;
   padding: 0 12px 12px;
   color: var(--muted);
-  font-weight: 700;
-  line-height: 1.45;
+  font-weight: 750;
+  line-height: 1.55;
 }
-
 .acc-item.active .acc-body{ display:block; }
 
-/* ===== CHAT ===== */
+/* ===========================
+   Chat + Floating buttons
+   =========================== */
 .chat-fab{
   position: fixed;
   right: 18px;
   bottom: 18px;
   z-index: 120;
 }
-
 .chat-box{
   position: fixed;
   right: 18px;
@@ -429,15 +586,16 @@ section.active{ display:block; }
   height: 460px;
   display:none;
   flex-direction:column;
-  background: rgba(255,255,255,0.80);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  box-shadow: var(--shadow);
-  overflow:hidden;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
 
+  border-radius: var(--r-lg);
+  border: 1px solid var(--stroke);
+  background: linear-gradient(180deg, var(--glass), var(--glass-2));
+  box-shadow: var(--sh-2);
+  overflow:hidden;
+
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+}
 .chat-box.active{ display:flex; }
 
 .chat-top{
@@ -445,44 +603,47 @@ section.active{ display:block; }
   display:flex;
   justify-content:space-between;
   align-items:center;
-  border-bottom:1px solid var(--border);
+  border-bottom: 1px solid var(--stroke);
   font-weight: 950;
 }
-
 .chat-msgs{
   padding: 12px;
   overflow:auto;
   display:flex;
   flex-direction:column;
-  gap:10px;
+  gap: 10px;
 }
-
 .bubble{
   max-width: 85%;
   padding: 10px 12px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background: rgba(246,247,251,0.85);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--stroke);
+  background: linear-gradient(180deg, rgba(255,255,255,.66), rgba(255,255,255,.52));
   color: var(--fg);
-  font-weight: 700;
+  font-weight: 750;
   line-height: 1.35;
+  box-shadow: 0 10px 24px rgba(2,6,23,0.06);
 }
-
+html[data-theme="dark"] .bubble{
+  background: linear-gradient(180deg, rgba(16,22,40,.70), rgba(16,22,40,.50));
+}
 .me{ align-self:flex-end; }
 .me .bubble{
-  background: linear-gradient(135deg, var(--primary), var(--accent));
   border-color: transparent;
   color:#fff;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,.26), transparent 42%),
+    linear-gradient(135deg, var(--p1), var(--p2));
+  box-shadow: var(--sh-1);
 }
-
 .chat-input{
-  border-top:1px solid var(--border);
+  border-top: 1px solid var(--stroke);
   padding: 10px;
   display:flex;
-  gap:8px;
+  gap: 8px;
 }
 
-/* ===== FLOATING PANEL ===== */
+/* Floating panel */
 .fab-panel{
   position: fixed;
   left: 18px;
@@ -490,103 +651,110 @@ section.active{ display:block; }
   z-index: 120;
   display:flex;
   flex-direction:column;
-  gap:10px;
+  gap: 10px;
   align-items:flex-start;
 }
-
 .fab-main{
-  width: 54px;
-  height: 54px;
+  width: 56px;
+  height: 56px;
   border-radius: 999px;
-  display:grid;
-  place-items:center;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  color:#fff;
   border:none;
-  box-shadow: var(--shadow-soft);
   cursor:pointer;
-  transition: transform .18s, box-shadow .18s;
-}
+  color:#fff;
 
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,.26), transparent 42%),
+    linear-gradient(135deg, var(--p1), var(--p2));
+  box-shadow: var(--sh-2);
+  transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease), filter var(--t) var(--ease);
+}
 .fab-main:hover{
   transform: translateY(-1px);
-  box-shadow: var(--shadow);
+  filter: saturate(1.05) brightness(1.03);
 }
-
 .fab-actions{
   display:none;
   flex-direction:column;
-  gap:8px;
+  gap: 8px;
 }
-
 .fab-panel.open .fab-actions{ display:flex; }
 
 .fab-action{
   border-radius: 999px;
   padding: 10px 12px;
-  border:1px solid var(--border);
-  background: rgba(255,255,255,0.78);
+  border: 1px solid var(--stroke);
+  background: linear-gradient(180deg, var(--glass), var(--glass-2));
   color: var(--fg);
   cursor:pointer;
-  box-shadow: 0 10px 22px rgba(15,23,42,0.08);
-  font-weight: 900;
+  box-shadow: 0 12px 32px rgba(2,6,23,0.10);
+  font-weight: 950;
   display:flex;
   align-items:center;
-  gap:8px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  gap: 8px;
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease), border-color var(--t) var(--ease);
+}
+.fab-action:hover{
+  transform: translateY(-1px);
+  box-shadow: var(--sh-2);
+  border-color: rgba(34,197,94,.22);
 }
 
-/* ===== TOAST ===== */
+/* Toast */
 .toast{
   position: fixed;
   right: 18px;
   bottom: 92px;
   z-index: 200;
   padding: 12px 14px;
-  border-radius: 14px;
-  border:1px solid var(--border);
-  background: #111827;
+  border-radius: var(--r-sm);
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(2,6,23,0.92);
   color:#fff;
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--sh-2);
   opacity:0;
   transform: translateY(10px);
-  transition: .25s;
+  transition: var(--t) var(--ease);
   pointer-events:none;
-  font-weight: 900;
+  font-weight: 950;
 }
-
 .toast.show{ opacity:1; transform: translateY(0); }
-.toast.ok{ background: var(--ok); }
-.toast.err{ background: var(--err); }
-.toast.warn{ background: var(--warn); color:#111827; }
+.toast.ok{ background: color-mix(in oklab, rgba(2,6,23,0.92) 30%, var(--ok) 70%); }
+.toast.err{ background: color-mix(in oklab, rgba(2,6,23,0.92) 30%, var(--err) 70%); }
+.toast.warn{ background: color-mix(in oklab, rgba(2,6,23,0.92) 30%, var(--warn) 70%); color:#111827; }
 
-/* ===== PASSWORD MODAL ===== */
+/* Password modal */
 .backdrop{
   position: fixed;
-  inset:0;
-  background: rgba(15,23,42,.55);
+  inset: 0;
+  background: rgba(2,6,23,0.62);
   display:none;
   align-items:center;
   justify-content:center;
   z-index: 999;
   padding: 14px;
+  backdrop-filter: blur(6px);
 }
-
 .backdrop.active{ display:flex; }
 
 .modal{
   width: 420px;
   max-width: 100%;
-  background: rgba(255,255,255,0.86);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  box-shadow: var(--shadow);
-  padding: 18px;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
+  border-radius: var(--r-xl);
+  border: 1px solid var(--stroke);
 
+  background:
+    radial-gradient(circle at 20% 10%, rgba(34,197,94,.12), transparent 42%),
+    radial-gradient(circle at 90% 80%, rgba(14,165,233,.10), transparent 44%),
+    linear-gradient(180deg, var(--glass), var(--glass-2));
+
+  box-shadow: var(--sh-2);
+  padding: 18px;
+
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+}
 .modal h3{ margin: 0 0 6px; }
 .modal .hint{ color: var(--muted); margin: 0 0 12px; font-weight: 750; }
 
@@ -595,134 +763,360 @@ section.active{ display:block; }
 
 .err{
   margin: 10px 0 0;
-  color: rgba(220,38,38,0.95);
+  color: rgba(239,68,68,0.96);
   font-weight: 950;
   display:none;
 }
 .err.show{ display:block; }
 
+/* Footer */
 footer{
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--stroke);
   padding: 16px 0;
   color: var(--muted);
 }
 
-/* ===== MOBILE ===== */
 @media (max-width: 680px){
   .brand{ min-width: auto; }
-  .topbar-inner{ gap:10px; }
+  .topbar-inner{ gap: 10px; }
   .tabs{ padding-top: 8px; }
 }
 
-/* =========================
-   EPIs (SEM FOTO) - Premium
-========================= */
-
-.grid{
-  display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 14px;
+@media (prefers-reduced-motion: reduce){
+  *{
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
-.card.epi{
-  padding: 16px;
-  border-radius: 18px;
+/* ===========================
+   CYBER NEON SKIN
+   =========================== */
+html[data-skin="cyber"]{
+  --bg0: #05060b;
+  --bg1: #070a14;
+  --fg: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.62);
+
+  --p1: #00ff88;
+  --p2: #00d1ff;
+  --p3: #a855f7;
+  --p4: #ff2bd6;
+
+  --glass: rgba(10, 14, 30, 0.62);
+  --glass-2: rgba(10, 14, 30, 0.46);
+
+  --stroke: rgba(255,255,255,0.10);
+  --stroke-2: rgba(255,255,255,0.14);
+
+  --sh-1: 0 14px 44px rgba(0,0,0,0.55);
+  --sh-2: 0 30px 110px rgba(0,0,0,0.72);
+
+  --ring: 0 0 0 4px rgba(0,209,255,.18);
+  --ring-2: 0 0 0 5px rgba(0,255,136,.16);
+
+  --neon-a: rgba(0,255,136,.70);
+  --neon-b: rgba(0,209,255,.62);
+  --neon-c: rgba(168,85,247,.55);
+  --neon-d: rgba(255,43,214,.55);
+}
+
+html[data-skin="cyber"] body{
   background:
-    linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.86));
-  border: 1px solid rgba(226,232,240,.95);
-  box-shadow: 0 10px 26px rgba(15,23,42,.06);
-  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    radial-gradient(900px 520px at 10% -10%, rgba(0,255,136,.22), transparent 60%),
+    radial-gradient(900px 540px at 110% 0%, rgba(0,209,255,.18), transparent 58%),
+    radial-gradient(900px 540px at 82% 112%, rgba(255,43,214,.16), transparent 62%),
+    linear-gradient(180deg, rgba(5,6,11,0.86), rgba(5,6,11,1)),
+    var(--bg0);
+}
+html[data-skin="cyber"] body::after{
+  content:"";
+  position: fixed;
+  inset:-20%;
+  pointer-events:none;
+  opacity: .35;
+  filter: blur(20px);
+  background:
+    radial-gradient(circle at 20% 25%, var(--neon-a), transparent 45%),
+    radial-gradient(circle at 70% 20%, var(--neon-b), transparent 48%),
+    radial-gradient(circle at 80% 75%, var(--neon-d), transparent 52%),
+    radial-gradient(circle at 30% 80%, var(--neon-c), transparent 54%);
+  animation: cyberAurora 10s linear infinite;
+  mix-blend-mode: screen;
+}
+@keyframes cyberAurora{
+  0%{ transform: translate3d(0,0,0) rotate(0deg) }
+  50%{ transform: translate3d(2%, -2%, 0) rotate(8deg) }
+  100%{ transform: translate3d(0,0,0) rotate(16deg) }
 }
 
-.card.epi:hover{
-  transform: translateY(-2px);
-  border-color: rgba(34,197,94,.35);
-  box-shadow: 0 16px 38px rgba(15,23,42,.10);
+html[data-skin="cyber"] .topbar{
+  border-bottom: 1px solid rgba(0,209,255,.18);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.55);
+}
+html[data-skin="cyber"] .logo{
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,.18), transparent 42%),
+    linear-gradient(135deg, var(--p2), var(--p1));
+}
+html[data-skin="cyber"] .logo::after{ opacity: .75; }
+
+html[data-skin="cyber"] .tab{
+  border-color: rgba(255,255,255,.10);
+  background: linear-gradient(180deg, rgba(10,14,30,.72), rgba(10,14,30,.52));
+  box-shadow: 0 12px 34px rgba(0,0,0,0.40);
+}
+html[data-skin="cyber"] .tab:hover{
+  border-color: rgba(0,209,255,.30);
+  box-shadow:
+    0 18px 60px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(0,255,136,.18),
+    0 0 28px rgba(0,209,255,.18);
+}
+html[data-skin="cyber"] .tab[aria-selected="true"]{
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,.16), transparent 42%),
+    linear-gradient(135deg, var(--p2), var(--p1));
+  box-shadow:
+    0 22px 80px rgba(0,0,0,0.65),
+    0 0 0 1px rgba(0,255,136,.22),
+    0 0 34px rgba(0,255,136,.22),
+    0 0 34px rgba(0,209,255,.16);
 }
 
-.epi-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom: 10px;
+html[data-skin="cyber"] .btn-primary{
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,.14), transparent 44%),
+    linear-gradient(120deg, var(--p2), var(--p1), var(--p4));
+  background-size: 180% 180%;
+  animation: neonFlow 3.8s var(--ease) infinite;
+  box-shadow:
+    0 18px 70px rgba(0,0,0,0.60),
+    0 0 0 1px rgba(0,255,136,.22),
+    0 0 34px rgba(0,255,136,.20);
+}
+@keyframes neonFlow{
+  0%{ background-position: 0% 50% }
+  50%{ background-position: 100% 50% }
+  100%{ background-position: 0% 50% }
 }
 
-.epi-icon{
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
-  display:grid;
-  place-items:center;
-  background: linear-gradient(135deg, rgba(27,124,75,.14), rgba(34,197,94,.16));
-  border: 1px solid rgba(34,197,94,.22);
+html[data-skin="cyber"] .card{
+  border-color: rgba(255,255,255,.10);
+  background:
+    radial-gradient(circle at 15% 10%, rgba(0,255,136,.10), transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(0,209,255,.10), transparent 40%),
+    linear-gradient(180deg, rgba(10,14,30,.68), rgba(10,14,30,.46));
+  box-shadow: 0 18px 70px rgba(0,0,0,0.55);
+  overflow: hidden;
+}
+html[data-skin="cyber"] .card::after{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius: inherit;
+  pointer-events:none;
+  background:
+    conic-gradient(from 180deg,
+      transparent 0 20%,
+      rgba(0,209,255,.28),
+      rgba(0,255,136,.28),
+      rgba(255,43,214,.22),
+      transparent 80% 100%);
+  filter: blur(10px);
+  opacity: .35;
+  animation: neonSpin 7s linear infinite;
+  mix-blend-mode: screen;
+}
+@keyframes neonSpin{ to{ transform: rotate(360deg) } }
+
+html[data-skin="cyber"] input,
+html[data-skin="cyber"] select,
+html[data-skin="cyber"] textarea{
+  background: linear-gradient(180deg, rgba(10,14,30,.72), rgba(10,14,30,.52));
+  border-color: rgba(255,255,255,.10);
+}
+html[data-skin="cyber"] input:focus,
+html[data-skin="cyber"] select:focus,
+html[data-skin="cyber"] textarea:focus{
+  border-color: rgba(0,255,136,.35);
+  box-shadow:
+    0 0 0 4px rgba(0,209,255,.18),
+    0 0 34px rgba(0,255,136,.14),
+    0 18px 60px rgba(0,0,0,.60);
 }
 
-.epi-icon svg{
-  width: 22px;
-  height: 22px;
-  stroke: rgba(15,23,42,.85);
+/* ===========================
+   NEO DROPDOWN (EPIs + Riscos)
+   =========================== */
+.neo-select{ position: relative; width:100%; max-width:420px; z-index:200; }
+
+.neo-trigger{
+  width:100%; height:52px; padding:0 16px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-radius:14px;
+  border:1px solid rgba(0,209,255,.35);
+  background:
+    linear-gradient(135deg, rgba(0,255,136,.18), rgba(0,209,255,.18)),
+    rgba(10,14,30,.75);
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 0 0 1px rgba(0,255,136,.25),
+    0 0 26px rgba(0,209,255,.45),
+    0 24px 90px rgba(0,0,0,.85);
 }
 
-.epi-cat{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(226,232,240,.95);
-  background: rgba(255,255,255,.75);
-  color: #334155;
-  font-weight: 750;
-  font-size: 12px;
-  white-space: nowrap;
-}
+.neo-arrow{ transition: transform .25s ease; }
 
-.epi h3{
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.25;
-  letter-spacing: .1px;
-  min-height: 36px;
-}
-
-.epi-sub{
-  margin-top: 6px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.badge{
-  display:inline-flex;
-  align-items:center;
+.neo-panel{
+  position:absolute;
+  top:calc(100% + 10px);
+  left:0;
+  width:100%;
+  z-index:9999;
+  display:none;
+  flex-direction:column;
   gap:6px;
-  padding: 7px 10px;
+  padding:8px;
+
+  background: linear-gradient(180deg, rgba(12,18,40,.97), rgba(6,10,20,.97));
+  border-radius:18px;
+  border:1px solid rgba(0,209,255,.25);
+
+  box-shadow:
+    0 0 0 1px rgba(0,255,136,.30),
+    0 0 50px rgba(0,209,255,.35),
+    0 40px 140px rgba(0,0,0,.95);
+
+  max-height: 320px;
+  overflow: auto;
+}
+
+.neo-panel::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius:20px;
+  background: conic-gradient(
+    from 180deg,
+    transparent 0 20%,
+    rgba(0,209,255,.35),
+    rgba(0,255,136,.35),
+    rgba(255,43,214,.28),
+    transparent 80% 100%
+  );
+  filter: blur(14px);
+  opacity:.5;
+  animation: neoSpin 6s linear infinite;
+  pointer-events:none;
+}
+@keyframes neoSpin{ to{ transform:rotate(360deg)} }
+
+.neo-option{
+  all:unset;
+  cursor:pointer;
+  padding:12px 14px;
+  border-radius:12px;
+  font-weight:900;
+  color:rgba(255,255,255,.95);
+  transition:.2s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.neo-option:hover{
+  background: linear-gradient(90deg, rgba(0,255,136,.35), rgba(0,209,255,.45));
+  box-shadow:
+    inset 0 0 0 1px rgba(0,255,136,.45),
+    0 0 30px rgba(0,209,255,.45);
+}
+
+.neo-select[data-open="true"] .neo-panel{
+  display:flex;
+  animation: neoDrop .25s ease-out;
+}
+.neo-select[data-open="true"] .neo-arrow{ transform:rotate(180deg); }
+
+@keyframes neoDrop{
+  from{ opacity:0; transform:translateY(-8px) scale(.98) }
+  to{ opacity:1; transform:translateY(0) scale(1) }
+}
+
+/* ✅ evita o menu ficar “atrás” */
+#epis .card, #riscos .section-head, #riscos .row { overflow: visible !important; }
+#epis #catalog{ position: relative; z-index: 1; }
+#epis #catalog .card{ position: relative; z-index: 1; }
+
+/* ✅ esconde selects nativos mantendo JS */
+.native-hidden{
+  position:absolute !important;
+  left:-99999px !important;
+  top:-99999px !important;
+  width:1px !important;
+  height:1px !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* Scrollbar do dropdown */
+.neo-panel::-webkit-scrollbar{ width: 10px; }
+.neo-panel::-webkit-scrollbar-thumb{
+  background: rgba(0,209,255,.35);
   border-radius: 999px;
-  background: rgba(34,197,94,.10);
-  border: 1px solid rgba(34,197,94,.18);
-  color: #14532d;
-  font-weight: 900;
-  font-size: 12px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
 }
 
-.btn-ghost{
-  background: rgba(255,255,255,.72);
-  border: 1px solid rgba(226,232,240,.95);
+/* =========================
+   FIX: Busca/filtro de EPIs ficando atrás
+   ========================= */
+
+/* garante que a seção EPIs crie um contexto correto */
+#epis{
+  position: relative;
+  z-index: 1;
 }
 
-.btn-ghost:hover{
-  transform: translateY(-1px);
-  border-color: rgba(34,197,94,.35);
+/* o card da busca (onde tem input + dropdown) precisa ficar acima */
+#epis .section-head,
+#epis .section-head + .card{
+  position: relative;
+  z-index: 50;
+  overflow: visible; /* importante para o dropdown */
 }
+
+/* dropdown em cima de tudo */
+#epis #categoryNeo{
+  position: relative;
+  z-index: 9999;
+}
+#epis #categoryNeo .neo-panel{
+  position: absolute;
+  z-index: 10000;
+}
+
+/* os cards do catálogo ficam abaixo */
+#epis #catalog{
+  position: relative;
+  z-index: 1;
+}
+#epis #catalog .card,
+#epis #catalog .epi{
+  position: relative;
+  z-index: 1;
+}
+
 
   </style>
 </head>
 
 <body>
-  <!-- ====== APP (não bloqueia mais geral) ====== -->
   <div id="app">
     <header class="topbar">
       <div class="container topbar-inner">
@@ -730,7 +1124,7 @@ footer{
           <div class="logo" aria-hidden="true">SST</div>
           <div>
             <h1>Painel Técnico • Segurança do Trabalho</h1>
-            <small>Versão 3.0 • Ultra Master</small>
+            <small>Versão 3.0 •</small>
           </div>
         </div>
 
@@ -754,6 +1148,7 @@ footer{
     </div>
 
     <main class="container" id="main">
+
       <!-- ===== EPIs ===== -->
       <section id="epis" class="active" aria-label="Catálogo de EPIs">
         <div class="section-head">
@@ -769,16 +1164,20 @@ footer{
         <div class="card">
           <div class="row">
             <input id="searchInput" type="text" placeholder="Buscar por nome, CA ou categoria..." aria-label="Buscar EPIs" />
-            <select id="categoryFilter" aria-label="Filtrar por categoria">
-              <option value="">Todas as categorias</option>
-            </select>
-          </div>
-          <div class="muted" style="margin-top:6px; font-weight:900;">
-            Dica: clique em “Copiar” para copiar rapidamente.
-          </div>
-        </div>
 
-        <div style="height:12px"></div>
+            <!-- ✅ Dropdown Cyber: categorias dos EPIs -->
+            <div class="neo-select" id="categoryNeo" data-open="false">
+              <button class="neo-trigger" type="button" aria-expanded="false" aria-label="Filtrar por categoria">
+                <span class="neo-label">🌐 Todas as categorias</span>
+                <span class="neo-arrow">▾</span>
+              </button>
+              <div class="neo-panel" role="listbox" aria-label="Lista de categorias">
+                <!-- preenchido via JS -->
+              </div>
+            </div>
+          </div>
+
+               <div style="height:12px"></div>
         <div id="catalog" class="grid" aria-live="polite"></div>
       </section>
 
@@ -790,12 +1189,28 @@ footer{
             <div class="muted">Modelos prontos para copiar</div>
           </div>
           <div class="row">
-            <select id="riskFilter" aria-label="Filtro de riscos" title="Filtrar por tipo de risco">
+            <!-- ✅ select REAL (escondido) para manter seu listener funcionando -->
+            <select id="riskFilter" class="native-hidden" aria-label="Filtro de riscos">
               <option value="todos">Todos</option>
               <option value="fisico">Físico 📘</option>
               <option value="biologico">Biológico 🧬</option>
               <option value="quimico">Químico 🧪</option>
             </select>
+
+            <!-- ✅ dropdown visual -->
+            <div class="neo-select" id="riskNeo" data-open="false" style="max-width:240px">
+              <button class="neo-trigger" type="button" aria-expanded="false" aria-label="Filtro de riscos" title="Filtrar por tipo de risco">
+                <span class="neo-label">Todos</span>
+                <span class="neo-arrow">▾</span>
+              </button>
+
+              <div class="neo-panel" role="listbox" aria-label="Lista de riscos">
+                <button class="neo-option" type="button" data-value="todos">Todos</button>
+                <button class="neo-option" type="button" data-value="fisico">Físico 📘</button>
+                <button class="neo-option" type="button" data-value="biologico">Biológico 🧬</button>
+                <button class="neo-option" type="button" data-value="quimico">Químico 🧪</button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -920,7 +1335,7 @@ footer{
       </footer>
     </main>
 
-    <!-- ===== FLOATING PANEL (expansível) ===== -->
+    <!-- ===== FLOATING PANEL ===== -->
     <div class="fab-panel" id="fabPanel" aria-label="Painel flutuante">
       <button class="fab-main" id="fabMain" title="Abrir painel">☰</button>
       <div class="fab-actions">
@@ -948,7 +1363,7 @@ footer{
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
   </div>
 
-  <!-- ===== SENHA (AGORA: só bloqueia as abas protegidas) ===== -->
+  <!-- ===== SENHA ===== -->
   <div class="backdrop" id="passBackdrop" role="dialog" aria-modal="true" aria-label="Acesso restrito">
     <div class="modal">
       <h3>🔒 Acesso restrito</h3>
@@ -972,350 +1387,343 @@ footer{
   </div>
 
   <script>
-    /* =====================
-       CONFIG / UTIL
-    ====================== */
-    const SENHA_CORRETA = "SG393";
+/* =====================
+   CONFIG / UTIL
+===================== */
+const SENHA_CORRETA = "SG393";
 
-    const SOUND = {
-      click: "click.mp3",
-      ok: "success.mp3"
-    };
+const SOUND = {
+  click: "click.mp3",
+  ok: "success.mp3"
+};
 
-    function playSound(type){
-      const src = type === "ok" ? SOUND.ok : SOUND.click;
-      try{
-        const a = new Audio(src);
-        a.volume = 0.35;
-        a.play().catch(()=>{});
-      }catch(_){}
+function playSound(type){
+  const src = type === "ok" ? SOUND.ok : SOUND.click;
+  try{
+    const a = new Audio(src);
+    a.volume = 0.35;
+    a.play().catch(()=>{});
+  }catch(_){}
+}
+
+function toast(msg, kind="ok"){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "toast show " + (kind || "");
+  playSound(kind === "ok" ? "ok" : "click");
+  setTimeout(()=> t.classList.remove("show"), 1700);
+}
+
+async function copyText(text){
+  try{
+    await navigator.clipboard.writeText(text);
+    toast("Copiado!", "ok");
+  }catch(e){
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+    toast("Copiado!", "ok");
+  }
+}
+
+/* ✅ COPIAR UNIVERSAL */
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-copy]");
+  if(!btn) return;
+  const raw = btn.getAttribute("data-copy") || "";
+  try{
+    const text = decodeURIComponent(raw);
+    copyText(text);
+  }catch(_){
+    copyText(raw);
+  }
+});
+
+function setTheme(next){
+  document.documentElement.setAttribute("data-theme", next);
+  localStorage.setItem("theme", next);
+}
+
+function initTheme(){
+  const saved = localStorage.getItem("theme");
+  if(saved === "dark" || saved === "light"){
+    setTheme(saved);
+    return;
+  }
+  const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  setTheme(prefersDark ? "dark" : "light");
+}
+
+/* =====================
+   PASSWORD (somente em abas específicas)
+===================== */
+const app = document.getElementById("app");
+const passBackdrop = document.getElementById("passBackdrop");
+const passInput = document.getElementById("passInput");
+const passErr = document.getElementById("passErr");
+const passToggle = document.getElementById("passToggle");
+const passConfirm = document.getElementById("passConfirm");
+
+// 🔒 Abas que exigem senha
+const TABS_COM_SENHA = ["riscos", "treinamento", "riscos_empresas"];
+let tabPendente = null;
+
+function showPass(){
+  passBackdrop.classList.add("active");
+  passInput.value = "";
+  passErr.classList.remove("show");
+  setTimeout(()=> passInput.focus(), 50);
+}
+function hidePass(){
+  passBackdrop.classList.remove("active");
+}
+function unlock(){
+  sessionStorage.setItem("acessoLiberado", "true");
+  hidePass();
+  toast("Acesso liberado.", "ok");
+
+  if(tabPendente){
+    showSection(tabPendente);
+    tabPendente = null;
+  }
+}
+function confirmPass(){
+  if(passInput.value === SENHA_CORRETA){
+    unlock();
+  }else{
+    passErr.classList.add("show");
+    passInput.value = "";
+    passInput.focus();
+    toast("Senha incorreta.", "err");
+  }
+}
+
+passToggle.addEventListener("click", ()=>{
+  const isPass = passInput.type === "password";
+  passInput.type = isPass ? "text" : "password";
+  passToggle.textContent = isPass ? "🙈" : "👁";
+  playSound("click");
+});
+
+passConfirm.addEventListener("click", confirmPass);
+passInput.addEventListener("keydown", (e)=>{
+  if(e.key === "Enter") confirmPass();
+});
+
+function boot(){
+  initTheme();
+  app.hidden = false;
+}
+
+/* =====================
+   NAV / SECTIONS
+===================== */
+function showSection(id){
+  document.querySelectorAll("main section").forEach(s=> s.classList.remove("active"));
+  const sec = document.getElementById(id);
+  if(sec) sec.classList.add("active");
+
+  document.querySelectorAll(".tab").forEach(b=> b.setAttribute("aria-selected", "false"));
+  const btn = document.querySelector(`.tab[data-tab="${id}"]`);
+  if(btn) btn.setAttribute("aria-selected", "true");
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const destino = btn.dataset.tab;
+
+    if (TABS_COM_SENHA.includes(destino) && sessionStorage.getItem("acessoLiberado") !== "true"){
+      tabPendente = destino;
+      showPass();
+      return;
     }
 
-    function toast(msg, kind="ok"){
-      const t = document.getElementById("toast");
-      t.textContent = msg;
-      t.className = "toast show " + (kind || "");
-      playSound(kind === "ok" ? "ok" : "click");
-      setTimeout(()=> t.classList.remove("show"), 1700);
-    }
+    showSection(destino);
+    playSound("click");
+  });
+});
 
-    async function copyText(text){
-      try{
-        await navigator.clipboard.writeText(text);
-        toast("Copiado!", "ok");
-      }catch(e){
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        ta.remove();
-        toast("Copiado!", "ok");
-      }
-    }
+document.addEventListener("keydown", (e)=>{
+  if(!e.altKey) return;
+  const map = {
+    "1":"epis","2":"riscos","3":"empresas","4":"treinamento",
+    "5":"riscos_empresas","6":"nrs","7":"painel_tecnico"
+  };
 
-    /* ✅ COPIAR UNIVERSAL */
-    document.addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-copy]");
-      if(!btn) return;
-      const raw = btn.getAttribute("data-copy") || "";
-      try{
-        const text = decodeURIComponent(raw);
-        copyText(text);
-      }catch(_){
-        copyText(raw);
-      }
-    });
+  const destino = map[e.key];
+  if(!destino) return;
 
-    function setTheme(next){
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem("theme", next);
-    }
+  if (TABS_COM_SENHA.includes(destino) && sessionStorage.getItem("acessoLiberado") !== "true"){
+    tabPendente = destino;
+    showPass();
+    return;
+  }
 
-    function initTheme(){
-      const saved = localStorage.getItem("theme");
-      if(saved === "dark" || saved === "light"){
-        setTheme(saved);
-        return;
-      }
-      const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setTheme(prefersDark ? "dark" : "light");
-    }
+  showSection(destino);
+  toast("Seção: " + destino, "ok");
+});
 
-    /* =====================
-       PASSWORD (somente em abas específicas)
-    ====================== */
-    const app = document.getElementById("app");
-    const passBackdrop = document.getElementById("passBackdrop");
-    const passInput = document.getElementById("passInput");
-    const passErr = document.getElementById("passErr");
-    const passToggle = document.getElementById("passToggle");
-    const passConfirm = document.getElementById("passConfirm");
+/* =====================
+   FLOATING PANEL
+===================== */
+const fabPanel = document.getElementById("fabPanel");
+document.getElementById("fabMain").addEventListener("click", ()=>{
+  fabPanel.classList.toggle("open");
+  playSound("click");
+});
+document.getElementById("fabTop").addEventListener("click", ()=>{
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  playSound("click");
+});
+document.getElementById("fabPdf").addEventListener("click", exportSectionPDF);
+document.getElementById("pdfBtn").addEventListener("click", exportSectionPDF);
 
-    // 🔒 Abas que exigem senha
-    const TABS_COM_SENHA = ["riscos", "treinamento", "riscos_empresas"];
-    let tabPendente = null;
+/* =====================
+   DATA (EPIs / Riscos)
+===================== */
+const epis = [
+  { categoria: "🥾 Calçados", nome: "Botina de Elástico com Bico de PVC - Fujiwara", ca: "48.413", imagem: "" },
+  { categoria: "🥾 Calçados", nome: "Bota de Segurança ComBico de PVC ModeloLeve e Muito Conforto", ca: "45.258", imagem: "" },
+  { categoria: "🥾 Calçados", nome: "Sapato de Amarrar em Couro com Palmilha - Fujiwara (Branco/Preto)", ca: "41.858", imagem: "" },
+  { categoria: "🥾 Calçados", nome: "Sapato Antiderrapante Impermeável - Steelflex", ca: "38.590", imagem: "" },
+  { categoria: "🥾 Calçados", nome: "Bota de PVC Meio Cano (Branco/Preto) - Bracol", ca: "37.456", imagem: "" },
+  { categoria: "🥾 Calçados", nome: "Bota de Seguranca em couro Nobuck com cadarço Dubai Eletrista bico PVC- Bracol", ca: "48.383", imagem: "" },
+  { categoria: "🥾 Calçados", nome: "Bota de Segurança Bicode Composite NR10Eletricista - Bracol", ca: "38.530", imagem: "" },
+  { categoria: "🧤 Luvas", nome: "Luva de Algodão Tricotada Mesclada - Volk", ca: "25.773", imagem: "" },
+  { categoria: "🧤 Luvas", nome: "Luva de Malha Neotato PU Preta - Volk", ca: "30.916", imagem: "" },
+  { categoria: "🧤 Luvas", nome: "Luva de Látex Multiuso para Uso Químico/Biológico (Amarela/Azul) - Danny", ca: "39.564", imagem: "" },
+  { categoria: "🧤 Luvas", nome: "Luva Pegasus PRO Coleta de Lixo e Serviços Gerais Bicolor - Volk", ca: "28.709", imagem: "" },
+  { categoria: "🧤 Luvas", nome: "Luva de Látex Neoprene - Volk", ca: "37.900", imagem: "" },
+  { categoria: "🧤 Luvas", nome: "Luva Nitrílica Verde para Uso Químico/Biológico 35cm - Delta Plus", ca: "42.938", imagem: "" },
+  { categoria: "🧤 Luvas", nome: "Luva PVC Forrada Cano Longo Palma Áspera - Danny", ca: "37.559", imagem: "" },
+  { categoria: "🧤 Luvas", nome: "Luva Malha de Aço - Danny", ca: "6.257", imagem: "" },
+  { categoria: "🧤 Luvas", nome: "Luva de Vaqueta Petroleira Crua - Protcap", ca: "15.061", imagem: "" },
+  { categoria: "🧤 Luvas", nome: "Luva Coral Resistência a Cortes e Furos até 350º - Danny", ca: "15.366", imagem: "" },
+  { categoria: "🧤 Luvas", nome: "Luva de Segurança Confort Térmica Látex com Forro para Limpeza - Danny", ca: "15.532", imagem: "" },
+  { categoria: "🧤 Luvas", nome: "Luva de Látex Cano Longo Longatex - Danny", ca: "9.567", imagem: "" },
+  { categoria: "🧤 Luvas", nome: "Luva Resistente ao Corte Nível 5 Cut Smart - Volk", ca: "47.068", imagem: "" },
+  { categoria: "🧤 Luvas", nome: "Luva Hand Nítrilo Lona - Handex", ca: "44.524", imagem: "" },
+  { categoria: "🧤 Luvas", nome: "Luva Hand Oil Cut - Handex", ca: "39.416", imagem: "" },
+  { categoria: "🧤 Luvas", nome: "Luva De Raspa", ca: "10.074", imagem: "" },
+  { categoria: "🦾 Mangotes", nome: "Mangote Anti-Corte e Térmico 45cm - Delta Plus", ca: "41.361", imagem: "" },
+  { categoria: "🦾 Mangotes", nome: "Mangote de Raspa Soldador com Elásticos 40cm - Zanel", ca: "16.073", imagem: "" },
+  { categoria: "🦺 Aventais", nome: "Avental de Raspa 120x60cm sem Emendas - Zanel", ca: "13.989", imagem: "" },
+  { categoria: "🦺 Aventais", nome: "Avental de PVC Branco - Maicol", ca: "37.729", imagem: "" },
+  { categoria: "🦺 Aventais", nome: "Avental De Proteção De PVC Cores Balask - Branco", ca: "6.429", imagem: "" },
+  { categoria: "🦺 Aventais", nome: "Avental De Proteção De PVC Cores Balask - Preto", ca: "6.429", imagem: "" },
+  { categoria: "🦺 Aventais", nome: "Avental de Vinil Transparente Tira Soldada", ca: "38.316", imagem: "" },
+  { categoria: "😷 Máscaras", nome: "Máscara PFF1 com ProSafety - Delta Plus", ca: "38.501", imagem: "" },
+  { categoria: "😷 Máscaras", nome: "Máscara N95 PF2 - Nutriex Safety", ca: "46.868", imagem: "" },
+  { categoria: "😷 Máscaras", nome: "Máscara PFF2 - Delta Plus", ca: "38.503", imagem: "" },
+  { categoria: "📌 Epis", nome: "Creme Protetor Luva Quimica 3em1 - Nutriex", ca: "43.802", imagem: "" },
+  { categoria: "📌 Epis", nome: "Cinturao de Segurança Steelflex com 1 ponto CQCT1111 + Talabarte Duplo em Y Com Fita Tubular", ca: "45.069", imagem:"" },
+  { categoria: "📌 Epis", nome: "Macacão de Seguranca Branco - SteelFlex", ca: "39.707", imagem: "" },
+  { categoria: "📌 Epis", nome: "Luva Vinil Sem Pó Descartavel c/100 - Descarpack", ca: "44.050", imagem: "" },
+  { categoria: "📌 Epis", nome: "Mascara De Solda", ca: "14.199", imagem:"" },
+  { categoria: "🧥 Vestuário Térmico", nome: "Japona Térmica Frigorífica Azul Marinho - Maicol", ca: "10.975", imagem: "" },
+  { categoria: "🧥 Vestuário Térmico", nome: "Calça De Nylon Térmica Impermeável Para Câmara Fria - Maicol", ca: "10.976", imagem: "" },
+  { categoria: "🧥 Vestuário Térmico", nome: "Capuz Balaclava Térmico para Câmara Fria Suedine - Maicol", ca: "10.979", imagem: "" },
+  { categoria: "🧥 Vestuário Térmico", nome: "Meião Térmico - Maicol", ca: "10.977", imagem: "" },
+  { categoria: "🧥 Vestuário Térmico", nome: "Luva Térmica Frigorífica em Nylon Baixa Temperatura -35º - Maicol", ca: "10.978", imagem: "" },
+  { categoria: "🧥 Vestuário Térmico", nome: "Bota Térmica", ca: "42.632", imagem: "" },
+  { categoria: "👷‍ Vestuário", nome: "Camisa Com Refletivo Para Eletricista Cinza - Maicol", ca: "44.108", imagem: "" },
+  { categoria: "👷‍ Vestuário", nome: "Calça Classe 2 Cinza Com Refletivo - Maicol", ca: "44.109", imagem: "" },
+  { categoria: "👷‍ Vestuário", nome: "Blusão PVC Forrado Com Capuz", ca: "29.790", imagem: "" },
+  { categoria: "👷‍ Vestuário", nome: "Calça De Chuva Em PVC Forrada Amarela", ca: "37.536", imagem: "" },
+  { categoria: "🦺 Colete", nome: "Colete Tipo X Laranja Steelflex", ca: "38.175", imagem: "" },
+  { categoria: "🦺 Colete", nome: "Colete SteelFlex Refletivo Laranja Fluorescente", ca: "42.716", imagem: "" },
+  { categoria: "🛡 Proteção Facial", nome: "Protetor Facial Jabre Carneira Hipoalergênica com Regulagem por Catraca Tamanho 8 - Delta Plus", ca: "47.620", imagem: "" },
+  { categoria: "🛡 Proteção Facial", nome: "Protetor Facial com Carneira Hipoalergênica com regulagem e fácil ajuste - Delta Plus", ca: "10.975", imagem: "" },
+  { categoria: "🛡 Proteção Facial", nome: "Protetor Facial Telado Dystray - Ideal Para Roçadeira", ca: "36.802", imagem: "" },
+  { categoria: "👓 Óculos", nome: "Óculos de Segurança Ampla Visão - Galeras Clear", ca: "35.268", imagem: "" },
+  { categoria: "👓 Óculos", nome: "Óculos Proteção Sobrepor Antirrisco Hekla Incolor - Delta Plus", ca: "38.253", imagem: "" },
+  { categoria: "👓 Óculos", nome: "Óculos de Segurança tipo RJ Vvision 100 incolor - Volk", ca: "42.716", imagem: "" },
+  { categoria: "🎧 Proteção Auditiva", nome: "Abafador de Ruído Combat 10DB - Maicol", ca: "10.977", imagem: "" },
+  { categoria: "🎧 Proteção Auditiva", nome: "Abafador de Ruído SoftSlim 18DB - Camper", ca: "33.135", imagem: "" },
+  { categoria: "🎧 Proteção Auditiva", nome: "Abafador de Ruído ConfortPlus 26DB - Camper", ca: "48.054", imagem: "" },
+  { categoria: "🎧 Proteção Auditiva", nome: "Abafador de Ruído Combat 10DB - Delta Plus", ca: "19.405", imagem: "" },
+  { categoria: "🎧 Proteção Auditiva", nome: "Abafador Concha Interlagos 23DB - Delta Plus", ca: "35.003", imagem: "" }
+];
 
-    function showPass(){
-      passBackdrop.classList.add("active");
-      passInput.value = "";
-      passErr.classList.remove("show");
-      setTimeout(()=> passInput.focus(), 50);
-    }
-    function hidePass(){
-      passBackdrop.classList.remove("active");
-    }
-    function unlock(){
-      sessionStorage.setItem("acessoLiberado", "true");
-      hidePass();
-      toast("Acesso liberado.", "ok");
+const riscosModelos = [
+  { tipo:"fisico", titulo:"📘 FÍSICO - Parte 1", texto:"De acordo com a inspeção realizada no ambiente de trabalho e atividades executadas pelo trabalhador, e de acordo com a NR 15 da portaria 3.214/78 do M.T.E, o mesmo está exposto a agentes ambientais nocivos à saúde ao risco Físico." },
+  { tipo:"fisico", titulo:"📘 FÍSICO - Parte 2", texto:"As atividades de trabalho realizadas neste LTCAT não são consideradas de Condições Especiais de Trabalho e, portanto, não são prejudiciais à saúde ou integridade física dos trabalhadores segundo os requisitos do Decreto Federal 3048/1999 e seu Anexo IV." },
+  { tipo:"biologico", titulo:"🧬 BIOLÓGICO - Parte 1", texto:"De acordo com a inspeção realizada no ambiente de trabalho e atividades executadas pelo trabalhador, e de acordo com a NR 15 da portaria 3.214/78 do M.T.E, o mesmo está exposto a agentes ambientais nocivos à saúde ao risco Biológico." },
+  { tipo:"biologico", titulo:"🧬 BIOLÓGICO - Parte 2", texto:"As atividades de trabalho realizadas neste LTCAT não são consideradas de Condições Especiais de Trabalho e, portanto, não são prejudiciais à saúde ou integridade física dos trabalhadores segundo os requisitos do Decreto Federal 3048 / 1999 e seu Anexo IV." },
+  { tipo:"biologico", titulo:"🧬 BIOLÓGICO - Parte 3", texto:"As atividades de trabalho realizadas neste LTCAT são consideradas de Condições Especiais de Trabalho e, portanto, são prejudiciais à saúde ou integridade física dos trabalhadores segundo os requisitos do Decreto Federal 3048 / 1999 e seu Anexo IV." },
+  { tipo:"quimico", titulo:"🧪 QUÍMICO - Parte 1", texto:"De acordo com a inspeção realizada no ambiente de trabalho e atividades executadas pelo trabalhador, e de acordo com a NR 15 da portaria 3.214/78 do M.T.E, o mesmo está exposto a agentes ambientais nocivos à saúde ao risco Químico." },
+  { tipo:"quimico", titulo:"🧪 QUÍMICO - Parte 2", texto:"As atividades de trabalho realizadas neste LTCAT não são consideradas de Condições Especiais de Trabalho e, portanto, não são prejudiciais à saúde ou integridade física dos trabalhadores segundo os requisitos do Decreto Federal 3048 / 1999 e seu Anexo IV." },
+  { tipo:"quimico", titulo:"🧪 QUÍMICO - Parte 3", texto:"As atividades de trabalho realizadas neste LTCAT são consideradas de Condições Especiais de Trabalho e, portanto, são prejudiciais à saúde ou integridade física dos trabalhadores segundo os requisitos do Decreto Federal 3048 / 1999 e seu Anexo IV." },
+];
 
-      if(tabPendente){
-        showSection(tabPendente);
-        tabPendente = null;
-      }
-    }
+const riscosEmpresas = [
+  { emoji:"🔊", risco:"RUÍDO", empresa:"FAP INDÚSTRIA E COMÉRCIO DE ACRÍLICOS LTDA", setor:"Dobra" },
+  { emoji:"🌫", risco:"POEIRA", empresa:"FAP INDÚSTRIA E COMÉRCIO DE ACRÍLICOS LTDA", setor:"Polimento" },
+  { emoji:"🛠", risco:"FERRAMENTAS MANUAIS/MÁQUINAS E EQUIPAMENTOS", empresa:"FAP INDÚSTRIA E COMÉRCIO DE ACRÍLICOS LTDA", setor:"Produção" },
+  { emoji:"🧼", risco:"PRODUTOS DOMISSANITÁRIOS DE LIMPEZA", empresa:"FAP INDÚSTRIA E COMÉRCIO DE ACRÍLICOS LTDA", setor:"Limpeza" },
+  { emoji:"👷‍♂️", risco:"TRABALHO EM ALTURA", empresa:"JF CONSTRUCAO E PAVIMENTAÇÃO LTDA", setor:"Obra" },
+  { emoji:"🧺", risco:"TINTAS/DILUENTES", empresa:"PREST-MAC COMERCIAL E INDUSTRIAL LTDA", setor:"Pintura" },
+  { emoji:"⚡", risco:"TRABALHO COM ELETRICIDADE", empresa:"WGL SOLUÇÕES EM TECNOLOGIAS E SERVIÇOS LTDA", setor:"Manutenção/Elétrica (Preventiva/Corretiva)" },
+  { emoji:"🧴", risco:"LUBRIFICANTES", empresa:"PREST-MAC COMERCIAL E INDUSTRIAL LTDA", setor:"Produção" },
+  { emoji:"✨", risco:"PRODUTOS QUÍMICOS DE ESTÉTICA", empresa:"ELENICE GERALDO DOS SANTOS CABELEIREIROS LTDA", setor:"Salão" },
+  { emoji:"🍔", risco:"MANIPULAÇÃO DE ALIMENTOS", empresa:"PÃES E DOCES CHALÉ DOCILE LTDA", setor:"Cozinha" },
+  { emoji:"🚗", risco:"CONDUÇÃO DE VEÍCULOS AUTOMOTORES", empresa:"POLICOMP COMERCIO DE COMPONENTES", setor:"Estoque/Transporte" },
+  { emoji:"🔩", risco:"FUMOS METÁLICOS DE ESTANHO", empresa:"POLICOMP COMERCIO DE COMPONENTES", setor:"Técnico" },
+  { emoji:"💥", risco:"RADIAÇÃO NÃO IONIZANTE", empresa:"SPADA MIDIA E EVENTOS LTDA", setor:"Obra/Serralheria" },
+  { emoji:"😸🐶", risco:"PRODUTOS QUÍMICOS DE BELEZA PARA CÃES E GATOS", empresa:"CAROL PET SHOP COMERCIO DE RACOES ACESSORIOS BANHO E TOSA LTDA", setor:"Banho e Tosa" },
+  { emoji:"📦", risco:"TRABALHOS DE SEPARAÇÃO DE EMBALAGENS", empresa:"MONTE VIRGINNE COMÉRCIO DE SUCATAS DE PLÁSTICOS LTDA ME", setor:"Produção/Separação" },
+  { emoji:"❄", risco:"FRIO", empresa:"LANCHONETE E ESFIHARIA NOVA ALIANCA LTDA", setor:"Cozinha" },
+  { emoji:"🧴", risco:"ÓLEO SINTÉTICO", empresa:"DELTA ROTULADORAS EIRELI", setor:"Fábrica" },
+  { emoji:"🗜", risco:"ESTANHO", empresa:"RAUL SANTOS FERREIRA", setor:"Produção" },
+  { emoji:"🩹", risco:"ACIDENTES", empresa:"RIO BONITO COMERCIO E SERVICOS PARA PISCINAS LTDA", setor:"Assistencia" },
+  { emoji:"⚕️", risco:"VIRUS E BACTÉRIAS", empresa:"RIO BONITO COMERCIO E SERVICOS PARA PISCINAS LTDA", setor:"Externo" },
+  { emoji:"💦", risco:"CLORO", empresa:"RIO BONITO COMERCIO E SERVICOS PARA PISCINAS LTDA", setor:"Externo" },
+];
 
-    function confirmPass(){
-      if(passInput.value === SENHA_CORRETA){
-        unlock();
-      }else{
-        passErr.classList.add("show");
-        passInput.value = "";
-        passInput.focus();
-        toast("Senha incorreta.", "err");
-      }
-    }
+const w2h = [
+  { k:"What (O Quê)", v:"Treinamento de NR-06" },
+  { k:"Who (Quem)", v:"Coordenador da empresa" },
+  { k:"When (Quando)", v:"Permanente" },
+  { k:"Where (Onde)", v:"Ambiente laboral" },
+  { k:"Why (Porquê)", v:"Conscientizar os colaboradores sobre o uso de EPI." },
+  { k:"How (Como)", v:"Palestra NR-06, treinamento de EPI." },
+  { k:"How much (Custo)", v:"***" }
+];
 
-    passToggle.addEventListener("click", ()=>{
-      const isPass = passInput.type === "password";
-      passInput.type = isPass ? "text" : "password";
-      passToggle.textContent = isPass ? "🙈" : "👁";
-      playSound("click");
-    });
+const nrs = [
+  { t:"NR-06 — Equipamentos de Proteção Individual (EPI)", d:"Regulamenta fornecimento, uso e conservação dos EPIs, incluindo CA." },
+  { t:"NR-07 — PCMSO / Saúde Ocupacional", d:"Diretrizes para controle médico de saúde ocupacional e exames." },
+  { t:"NR-10 — Eletricidade", d:"Requisitos mínimos para segurança em instalações e serviços elétricos." },
+  { t:"NR-12 — Máquinas e Equipamentos", d:"Medidas de prevenção de acidentes com máquinas e proteções." },
+  { t:"NR-18 — Construção", d:"Condições de segurança e bem-estar no canteiro de obras." },
+  { t:"NR-23 — Incêndio / Brigada", d:"Prevenção e combate a princípios de incêndio e evacuação." },
+  { t:"NR-33 — Espaço Confinado", d:"Reconhecer, avaliar e controlar riscos em espaço confinado." },
+  { t:"NR-35 — Trabalho em Altura", d:"Requisitos para trabalhos acima de 2 metros, com planejamento e AR." }
+];
 
-    passConfirm.addEventListener("click", confirmPass);
-    passInput.addEventListener("keydown", (e)=>{
-      if(e.key === "Enter") confirmPass();
-    });
+const faq = [
+  { q:"Quando é necessário renovar os EPIs?", a:"Sempre que o CA vencer, houver desgaste ou prazo do fabricante expirar." },
+  { q:"Qual a validade do ASO?", a:"Admissional: antes da função; Periódico: anual/bienal; Retorno: após afastamento ≥ 30 dias; Mudança de função: se alterar riscos; Demissional: até a rescisão." },
+  { q:"Quem deve elaborar o PCMSO?", a:"Somente Médico do Trabalho registrado no CRM." },
+  { q:"O que é o PGR e quem deve elaborá-lo?", a:"Programa de Gerenciamento de Riscos elaborado por Engenheiro ou Técnico de Segurança do Trabalho." },
+  { q:"Qual a periodicidade do treinamento NR-06 (EPI)?", a:"Na admissão, mudança de função, introdução de novos riscos e periodicamente (mínimo 1 vez ao ano)." },
+  { q:"O que deve constar na ficha de EPI?", a:"Nome, CA, data de entrega, prazo de troca, assinaturas e instruções de uso." }
+];
 
-    function boot(){
-      initTheme();
-      app.hidden = false; // ✅ abre sempre sem senha geral
-    }
+/* =====================
+   RENDER: EPIs
+===================== */
+const catalog = document.getElementById("catalog");
+const searchInput = document.getElementById("searchInput");
+const epiCount = document.getElementById("epiCount");
 
-    /* =====================
-       NAV / SECTIONS
-    ====================== */
-    function showSection(id){
-      document.querySelectorAll("main section").forEach(s=> s.classList.remove("active"));
-      const sec = document.getElementById(id);
-      if(sec) sec.classList.add("active");
-
-      document.querySelectorAll(".tab").forEach(b=> b.setAttribute("aria-selected", "false"));
-      const btn = document.querySelector(`.tab[data-tab="${id}"]`);
-      if(btn) btn.setAttribute("aria-selected", "true");
-
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    document.querySelectorAll(".tab").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        const destino = btn.dataset.tab;
-
-        // 🔒 Se a aba exigir senha e ainda não liberou:
-        if (TABS_COM_SENHA.includes(destino) && sessionStorage.getItem("acessoLiberado") !== "true"){
-          tabPendente = destino;
-          showPass();
-          return;
-        }
-
-        showSection(destino);
-        playSound("click");
-      });
-    });
-
-    // atalhos Alt+1..Alt+7 (com senha nas protegidas)
-    document.addEventListener("keydown", (e)=>{
-      if(!e.altKey) return;
-      const map = {
-        "1":"epis","2":"riscos","3":"empresas","4":"treinamento",
-        "5":"riscos_empresas","6":"nrs","7":"painel_tecnico"
-      };
-
-      const destino = map[e.key];
-      if(!destino) return;
-
-      if (TABS_COM_SENHA.includes(destino) && sessionStorage.getItem("acessoLiberado") !== "true"){
-        tabPendente = destino;
-        showPass();
-        return;
-      }
-
-      showSection(destino);
-      toast("Seção: " + destino, "ok");
-    });
-
-    /* =====================
-       FLOATING PANEL
-    ====================== */
-    const fabPanel = document.getElementById("fabPanel");
-    document.getElementById("fabMain").addEventListener("click", ()=>{
-      fabPanel.classList.toggle("open");
-      playSound("click");
-    });
-    document.getElementById("fabTop").addEventListener("click", ()=>{
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      playSound("click");
-    });
-    document.getElementById("fabPdf").addEventListener("click", exportSectionPDF);
-
-    document.getElementById("pdfBtn").addEventListener("click", exportSectionPDF);
-
-    /* =====================
-       DATA (EPIs / Riscos)
-    ====================== */
-    const epis = [
-      { categoria: "🥾 Calçados", nome: "Botina de Elástico com Bico de PVC - Fujiwara", ca: "48.413", imagem: "" },
-      { categoria: "🥾 Calçados", nome: "Bota de Segurança ComBico de PVC ModeloLeve e Muito Conforto", ca: "45.258", imagem: "" },
-      { categoria: "🥾 Calçados", nome: "Sapato de Amarrar em Couro com Palmilha - Fujiwara (Branco/Preto)", ca: "41.858", imagem: "" },
-      { categoria: "🥾 Calçados", nome: "Sapato Antiderrapante Impermeável - Steelflex", ca: "38.590", imagem: "" },
-      { categoria: "🥾 Calçados", nome: "Bota de PVC Meio Cano (Branco/Preto) - Bracol", ca: "37.456", imagem: "" },
-      { categoria: "🥾 Calçados", nome: "Bota de Seguranca em couro Nobuck com cadarço Dubai Eletrista bico PVC- Bracol", ca: "48.383", imagem: "" },
-      { categoria: "🥾 Calçados", nome: "Bota de Segurança Bicode Composite NR10Eletricista - Bracol", ca: "38.530", imagem: "" },
-      { categoria: "🧤 Luvas", nome: "Luva de Algodão Tricotada Mesclada - Volk", ca: "25.773", imagem: "" },
-      { categoria: "🧤 Luvas", nome: "Luva de Malha Neotato PU Preta - Volk", ca: "30.916", imagem: "" },
-      { categoria: "🧤 Luvas", nome: "Luva de Látex Multiuso para Uso Químico/Biológico (Amarela/Azul) - Danny", ca: "39.564", imagem: "" },
-      { categoria: "🧤 Luvas", nome: "Luva Pegasus PRO Coleta de Lixo e Serviços Gerais Bicolor - Volk", ca: "28.709", imagem: "" },
-      { categoria: "🧤 Luvas", nome: "Luva de Látex Neoprene - Volk", ca: "37.900", imagem: "" },
-      { categoria: "🧤 Luvas", nome: "Luva Nitrílica Verde para Uso Químico/Biológico 35cm - Delta Plus", ca: "42.938", imagem: "" },
-      { categoria: "🧤 Luvas", nome: "Luva PVC Forrada Cano Longo Palma Áspera - Danny", ca: "37.559", imagem: "" },
-      { categoria: "🧤 Luvas", nome: "Luva Malha de Aço - Danny", ca: "6.257", imagem: "" },
-      { categoria: "🧤 Luvas", nome: "Luva de Vaqueta Petroleira Crua - Protcap", ca: "15.061", imagem: "" },
-      { categoria: "🧤 Luvas", nome: "Luva Coral Resistência a Cortes e Furos até 350º - Danny", ca: "15.366", imagem: "" },
-      { categoria: "🧤 Luvas", nome: "Luva de Segurança Confort Térmica Látex com Forro para Limpeza - Danny", ca: "15.532", imagem: "" },
-      { categoria: "🧤 Luvas", nome: "Luva de Látex Cano Longo Longatex - Danny", ca: "9.567", imagem: "" },
-      { categoria: "🧤 Luvas", nome: "Luva Resistente ao Corte Nível 5 Cut Smart - Volk", ca: "47.068", imagem: "" },
-      { categoria: "🧤 Luvas", nome: "Luva Hand Nítrilo Lona - Handex", ca: "44.524", imagem: "" },
-      { categoria: "🧤 Luvas", nome: "Luva Hand Oil Cut - Handex", ca: "39.416", imagem: "" },
-      { categoria: "🧤 Luvas", nome: "Luva De Raspa", ca: "10.074", imagem: "" },
-      { categoria: "🦾 Mangotes", nome: "Mangote Anti-Corte e Térmico 45cm - Delta Plus", ca: "41.361", imagem: "" },
-      { categoria: "🦾 Mangotes", nome: "Mangote de Raspa Soldador com Elásticos 40cm - Zanel", ca: "16.073", imagem: "" },
-      { categoria: "🦺 Aventais", nome: "Avental de Raspa 120x60cm sem Emendas - Zanel", ca: "13.989", imagem: "" },
-      { categoria: "🦺 Aventais", nome: "Avental de PVC Branco - Maicol", ca: "37.729", imagem: "" },
-      { categoria: "🦺 Aventais", nome: "Avental De Proteção De PVC Cores Balask - Branco", ca: "6.429", imagem: "" },
-      { categoria: "🦺 Aventais", nome: "Avental De Proteção De PVC Cores Balask - Preto", ca: "6.429", imagem: "" },
-      { categoria: "🦺 Aventais", nome: "Avental de Vinil Transparente Tira Soldada", ca: "38.316", imagem: "" },
-      { categoria: "😷 Máscaras", nome: "Máscara PFF1 com ProSafety - Delta Plus", ca: "38.501", imagem: "" },
-      { categoria: "😷 Máscaras", nome: "Máscara N95 PF2 - Nutriex Safety", ca: "46.868", imagem: "" },
-      { categoria: "😷 Máscaras", nome: "Máscara PFF2 - Delta Plus", ca: "38.503", imagem: "" },
-      { categoria: "📌 Epis", nome: "Creme Protetor Luva Quimica 3em1 - Nutriex", ca: "43.802", imagem: "" },
-      { categoria: "📌 Epis", nome: "Cinturao de Segurança Steelflex com 1 ponto CQCT1111 + Talabarte Duplo em Y Com Fita Tubular", ca: "45.069", imagem:"" },
-      { categoria: "📌 Epis", nome: "Macacão de Seguranca Branco - SteelFlex", ca: "39.707", imagem: "" },
-      { categoria: "📌 Epis", nome: "Luva Vinil Sem Pó Descartavel c/100 - Descarpack", ca: "44.050", imagem: "" },
-      { categoria: "📌 Epis", nome: "Mascara De Solda", ca: "14.199", imagem:"" },
-      { categoria: "🧥 Vestuário Térmico", nome: "Japona Térmica Frigorífica Azul Marinho - Maicol", ca: "10.975", imagem: "" },
-      { categoria: "🧥 Vestuário Térmico", nome: "Calça De Nylon Térmica Impermeável Para Câmara Fria - Maicol", ca: "10.976", imagem: "" },
-      { categoria: "🧥 Vestuário Térmico", nome: "Capuz Balaclava Térmico para Câmara Fria Suedine - Maicol", ca: "10.979", imagem: "" },
-      { categoria: "🧥 Vestuário Térmico", nome: "Meião Térmico - Maicol", ca: "10.977", imagem: "" },
-      { categoria: "🧥 Vestuário Térmico", nome: "Luva Térmica Frigorífica em Nylon Baixa Temperatura -35º - Maicol", ca: "10.978", imagem: "" },
-      { categoria: "🧥 Vestuário Térmico", nome: "Bota Térmica", ca: "42.632", imagem: "" },
-      { categoria: "👷‍ Vestuário", nome: "Camisa Com Refletivo Para Eletricista Cinza - Maicol", ca: "44.108", imagem: "" },
-      { categoria: "👷‍ Vestuário", nome: "Calça Classe 2 Cinza Com Refletivo - Maicol", ca: "44.109", imagem: "" },
-      { categoria: "👷‍ Vestuário", nome: "Blusão PVC Forrado Com Capuz", ca: "29.790", imagem: "" },
-      { categoria: "👷‍ Vestuário", nome: "Calça De Chuva Em PVC Forrada Amarela", ca: "37.536", imagem: "" },
-      { categoria: "🦺 Colete", nome: "Colete Tipo X Laranja Steelflex", ca: "38.175", imagem: "" },
-      { categoria: "🦺 Colete", nome: "Colete SteelFlex Refletivo Laranja Fluorescente", ca: "42.716", imagem: "" },
-      { categoria: "🛡 Proteção Facial", nome: "Protetor Facial Jabre Carneira Hipoalergênica com Regulagem por Catraca Tamanho 8 - Delta Plus", ca: "47.620", imagem: "" },
-      { categoria: "🛡 Proteção Facial", nome: "Protetor Facial com Carneira Hipoalergênica com regulagem e fácil ajuste - Delta Plus", ca: "10.975", imagem: "" },
-      { categoria: "🛡 Proteção Facial", nome: "Protetor Facial Telado Dystray - Ideal Para Roçadeira", ca: "36.802", imagem: "" },
-      { categoria: "👓 Óculos", nome: "Óculos de Segurança Ampla Visão - Galeras Clear", ca: "35.268", imagem: "" },
-      { categoria: "👓 Óculos", nome: "Óculos Proteção Sobrepor Antirrisco Hekla Incolor - Delta Plus", ca: "38.253", imagem: "" },
-      { categoria: "👓 Óculos", nome: "Óculos de Segurança tipo RJ Vvision 100 incolor - Volk", ca: "42.716", imagem: "" },
-      { categoria: "🎧 Proteção Auditiva", nome: "Abafador de Ruído Combat 10DB - Maicol", ca: "10.977", imagem: "" },
-      { categoria: "🎧 Proteção Auditiva", nome: "Abafador de Ruído SoftSlim 18DB - Camper", ca: "33.135", imagem: "" },
-      { categoria: "🎧 Proteção Auditiva", nome: "Abafador de Ruído ConfortPlus 26DB - Camper", ca: "48.054", imagem: "" },
-      { categoria: "🎧 Proteção Auditiva", nome: "Abafador de Ruído Combat 10DB - Delta Plus", ca: "19.405", imagem: "" },
-      { categoria: "🎧 Proteção Auditiva", nome: "Abafador Concha Interlagos 23DB - Delta Plus", ca: "35.003", imagem: "" }
-    ];
-
-    const riscosModelos = [
-      { tipo:"fisico", titulo:"📘 FÍSICO - Parte 1", texto:"De acordo com a inspeção realizada no ambiente de trabalho e atividades executadas pelo trabalhador, e de acordo com a NR 15 da portaria 3.214/78 do M.T.E, o mesmo está exposto a agentes ambientais nocivos à saúde ao risco Físico." },
-      { tipo:"fisico", titulo:"📘 FÍSICO - Parte 2", texto:"As atividades de trabalho realizadas neste LTCAT não são consideradas de Condições Especiais de Trabalho e, portanto, não são prejudiciais à saúde ou integridade física dos trabalhadores segundo os requisitos do Decreto Federal 3048/1999 e seu Anexo IV." },
-      { tipo:"biologico", titulo:"🧬 BIOLÓGICO - Parte 1", texto:"De acordo com a inspeção realizada no ambiente de trabalho e atividades executadas pelo trabalhador, e de acordo com a NR 15 da portaria 3.214/78 do M.T.E, o mesmo está exposto a agentes ambientais nocivos à saúde ao risco Biológico." },
-      { tipo:"biologico", titulo:"🧬 BIOLÓGICO - Parte 2", texto:"As atividades de trabalho realizadas neste LTCAT não são consideradas de Condições Especiais de Trabalho e, portanto, não são prejudiciais à saúde ou integridade física dos trabalhadores segundo os requisitos do Decreto Federal 3048 / 1999 e seu Anexo IV." },
-      { tipo:"biologico", titulo:"🧬 BIOLÓGICO - Parte 3", texto:"As atividades de trabalho realizadas neste LTCAT são consideradas de Condições Especiais de Trabalho e, portanto, são prejudiciais à saúde ou integridade física dos trabalhadores segundo os requisitos do Decreto Federal 3048 / 1999 e seu Anexo IV." },
-      { tipo:"quimico", titulo:"🧪 QUÍMICO - Parte 1", texto:"De acordo com a inspeção realizada no ambiente de trabalho e atividades executadas pelo trabalhador, e de acordo com a NR 15 da portaria 3.214/78 do M.T.E, o mesmo está exposto a agentes ambientais nocivos à saúde ao risco Químico." },
-      { tipo:"quimico", titulo:"🧪 QUÍMICO - Parte 2", texto:"As atividades de trabalho realizadas neste LTCAT não são consideradas de Condições Especiais de Trabalho e, portanto, não são prejudiciais à saúde ou integridade física dos trabalhadores segundo os requisitos do Decreto Federal 3048 / 1999 e seu Anexo IV." },
-      { tipo:"quimico", titulo:"🧪 QUÍMICO - Parte 3", texto:"As atividades de trabalho realizadas neste LTCAT são consideradas de Condições Especiais de Trabalho e, portanto, são prejudiciais à saúde ou integridade física dos trabalhadores segundo os requisitos do Decreto Federal 3048 / 1999 e seu Anexo IV." },
-    ];
-
-    const riscosEmpresas = [
-      { emoji:"🔊", risco:"RUÍDO", empresa:"FAP INDÚSTRIA E COMÉRCIO DE ACRÍLICOS LTDA", setor:"Dobra" },
-      { emoji:"🌫", risco:"POEIRA", empresa:"FAP INDÚSTRIA E COMÉRCIO DE ACRÍLICOS LTDA", setor:"Polimento" },
-      { emoji:"🛠", risco:"FERRAMENTAS MANUAIS/MÁQUINAS E EQUIPAMENTOS", empresa:"FAP INDÚSTRIA E COMÉRCIO DE ACRÍLICOS LTDA", setor:"Produção" },
-      { emoji:"🧼", risco:"PRODUTOS DOMISSANITÁRIOS DE LIMPEZA", empresa:"FAP INDÚSTRIA E COMÉRCIO DE ACRÍLICOS LTDA", setor:"Limpeza" },
-      { emoji:"👷‍♂️", risco:"TRABALHO EM ALTURA", empresa:"JF CONSTRUCAO E PAVIMENTAÇÃO LTDA", setor:"Obra" },
-      { emoji:"🧺", risco:"TINTAS/DILUENTES", empresa:"PREST-MAC COMERCIAL E INDUSTRIAL LTDA", setor:"Pintura" },
-      { emoji:"⚡", risco:"TRABALHO COM ELETRICIDADE", empresa:"WGL SOLUÇÕES EM TECNOLOGIAS E SERVIÇOS LTDA", setor:"Manutenção/Elétrica (Preventiva/Corretiva)" },
-      { emoji:"🧴", risco:"LUBRIFICANTES", empresa:"PREST-MAC COMERCIAL E INDUSTRIAL LTDA", setor:"Produção" },
-      { emoji:"✨", risco:"PRODUTOS QUÍMICOS DE ESTÉTICA", empresa:"ELENICE GERALDO DOS SANTOS CABELEIREIROS LTDA", setor:"Salão" },
-      { emoji:"🍔", risco:"MANIPULAÇÃO DE ALIMENTOS", empresa:"PÃES E DOCES CHALÉ DOCILE LTDA", setor:"Cozinha" },
-      { emoji:"🚗", risco:"CONDUÇÃO DE VEÍCULOS AUTOMOTORES", empresa:"POLICOMP COMERCIO DE COMPONENTES", setor:"Estoque/Transporte" },
-      { emoji:"🔩", risco:"FUMOS METÁLICOS DE ESTANHO", empresa:"POLICOMP COMERCIO DE COMPONENTES", setor:"Técnico" },
-      { emoji:"💥", risco:"RADIAÇÃO NÃO IONIZANTE", empresa:"SPADA MIDIA E EVENTOS LTDA", setor:"Obra/Serralheria" },
-      { emoji:"😸🐶", risco:"PRODUTOS QUÍMICOS DE BELEZA PARA CÃES E GATOS", empresa:"CAROL PET SHOP COMERCIO DE RACOES ACESSORIOS BANHO E TOSA LTDA", setor:"Banho e Tosa" },
-      { emoji:"📦", risco:"TRABALHOS DE SEPARAÇÃO DE EMBALAGENS", empresa:"MONTE VIRGINNE COMÉRCIO DE SUCATAS DE PLÁSTICOS LTDA ME", setor:"Produção/Separação" },
-      { emoji:"❄", risco:"FRIO", empresa:"LANCHONETE E ESFIHARIA NOVA ALIANCA LTDA", setor:"Cozinha" },
-      { emoji:"🧴", risco:"ÓLEO SINTÉTICO", empresa:"DELTA ROTULADORAS EIRELI", setor:"Fábrica" },
-      { emoji:"🗜", risco:"ESTANHO", empresa:"RAUL SANTOS FERREIRA", setor:"Produção" },
-      { emoji:"🩹", risco:"ACIDENTES", empresa:"RIO BONITO COMERCIO E SERVICOS PARA PISCINAS LTDA", setor:"Assistencia" },
-      { emoji:"⚕️", risco:"VIRUS E BACTÉRIAS", empresa:"RIO BONITO COMERCIO E SERVICOS PARA PISCINAS LTDA", setor:"Externo" },
-      { emoji:"💦", risco:"CLORO", empresa:"RIO BONITO COMERCIO E SERVICOS PARA PISCINAS LTDA", setor:"Externo" },
-    ];
-
-    const w2h = [
-      { k:"What (O Quê)", v:"Treinamento de NR-06" },
-      { k:"Who (Quem)", v:"Coordenador da empresa" },
-      { k:"When (Quando)", v:"Permanente" },
-      { k:"Where (Onde)", v:"Ambiente laboral" },
-      { k:"Why (Porquê)", v:"Conscientizar os colaboradores sobre o uso de EPI." },
-      { k:"How (Como)", v:"Palestra NR-06, treinamento de EPI." },
-      { k:"How much (Custo)", v:"***" }
-    ];
-
-    const nrs = [
-      { t:"NR-06 — Equipamentos de Proteção Individual (EPI)", d:"Regulamenta fornecimento, uso e conservação dos EPIs, incluindo CA." },
-      { t:"NR-07 — PCMSO / Saúde Ocupacional", d:"Diretrizes para controle médico de saúde ocupacional e exames." },
-      { t:"NR-10 — Eletricidade", d:"Requisitos mínimos para segurança em instalações e serviços elétricos." },
-      { t:"NR-12 — Máquinas e Equipamentos", d:"Medidas de prevenção de acidentes com máquinas e proteções." },
-      { t:"NR-18 — Construção", d:"Condições de segurança e bem-estar no canteiro de obras." },
-      { t:"NR-23 — Incêndio / Brigada", d:"Prevenção e combate a princípios de incêndio e evacuação." },
-      { t:"NR-33 — Espaço Confinado", d:"Reconhecer, avaliar e controlar riscos em espaço confinado." },
-      { t:"NR-35 — Trabalho em Altura", d:"Requisitos para trabalhos acima de 2 metros, com planejamento e AR." }
-    ];
-
-    const faq = [
-      { q:"Quando é necessário renovar os EPIs?", a:"Sempre que o CA vencer, houver desgaste ou prazo do fabricante expirar." },
-      { q:"Qual a validade do ASO?", a:"Admissional: antes da função; Periódico: anual/bienal; Retorno: após afastamento ≥ 30 dias; Mudança de função: se alterar riscos; Demissional: até a rescisão." },
-      { q:"Quem deve elaborar o PCMSO?", a:"Somente Médico do Trabalho registrado no CRM." },
-      { q:"O que é o PGR e quem deve elaborá-lo?", a:"Programa de Gerenciamento de Riscos elaborado por Engenheiro ou Técnico de Segurança do Trabalho." },
-      { q:"Qual a periodicidade do treinamento NR-06 (EPI)?", a:"Na admissão, mudança de função, introdução de novos riscos e periodicamente (mínimo 1 vez ao ano)." },
-      { q:"O que deve constar na ficha de EPI?", a:"Nome, CA, data de entrega, prazo de troca, assinaturas e instruções de uso." }
-    ];
-
-    /* =====================
-       RENDER: EPIs
-    ====================== */
-    const catalog = document.getElementById("catalog");
-    const categoryFilter = document.getElementById("categoryFilter");
-    const searchInput = document.getElementById("searchInput");
-    const epiCount = document.getElementById("epiCount");
-
-    function iconForCategory(cat = ""){
+function iconForCategory(cat = ""){
   const c = cat.toLowerCase();
-
-  // SVGs inline (premium, sem dependência externa)
   const icons = {
     calcados: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor" aria-hidden="true">
       <path d="M4 13c3 0 4-3 6-3s3 2 4 3c1 1 3 2 6 2v4H4v-6z"/>
@@ -1391,7 +1799,7 @@ function renderEpis(list){
         <div class="epi-cat" title="Categoria do EPI">${e.categoria}</div>
       </div>
 
-      <h3 title="${e.nome.replace(/"/g, '&quot;')}">${e.nome}</h3>
+      <h3 title="${String(e.nome).replace(/"/g, '&quot;')}">${e.nome}</h3>
 
       <div class="epi-sub">
         <span class="badge" title="Certificado de Aprovação">CA Nº: ${e.ca}</span>
@@ -1407,300 +1815,400 @@ function renderEpis(list){
   epiCount.textContent = `${list.length} item(ns) exibido(s)`;
 }
 
-    function populateCategories(){
-      const cats = [...new Set(epis.map(x=>x.categoria))].sort((a,b)=>a.localeCompare(b));
-      cats.forEach(c=>{
-        const op = document.createElement("option");
-        op.value = c;
-        op.textContent = c;
-        categoryFilter.appendChild(op);
-      });
+/* =====================
+   EPIs • DROPDOWN CYBER
+===================== */
+let __selectedCategory = "";
+
+function populateNeoCategories(){
+  const neo = document.getElementById("categoryNeo");
+  if(!neo) return;
+
+  const panel = neo.querySelector(".neo-panel");
+  const label = neo.querySelector(".neo-label");
+  const trigger = neo.querySelector(".neo-trigger");
+  if(!panel || !label || !trigger) return;
+
+  const cats = [...new Set(epis.map(x => x.categoria).filter(Boolean))]
+    .sort((a,b)=>a.localeCompare(b));
+
+  panel.innerHTML = "";
+
+  const all = document.createElement("button");
+  all.type = "button";
+  all.className = "neo-option";
+  all.dataset.value = "";
+  all.textContent = "🌐 Todas as categorias";
+  panel.appendChild(all);
+
+  cats.forEach(c=>{
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "neo-option";
+    b.dataset.value = c;
+    b.textContent = c;
+    panel.appendChild(b);
+  });
+
+  function setOpen(open){
+    neo.dataset.open = String(open);
+    trigger.setAttribute("aria-expanded", String(open));
+  }
+
+  trigger.addEventListener("click", ()=>{
+    setOpen(!(neo.dataset.open === "true"));
+  });
+
+  panel.addEventListener("click", (e)=>{
+    const opt = e.target.closest(".neo-option");
+    if(!opt) return;
+
+    __selectedCategory = opt.dataset.value || "";
+    label.textContent = opt.textContent;
+    setOpen(false);
+    filterEpisNeo();
+  });
+
+  document.addEventListener("click", (e)=>{
+    if(!neo.contains(e.target)) setOpen(false);
+  });
+
+  // default
+  __selectedCategory = "";
+  label.textContent = "🌐 Todas as categorias";
+}
+
+function filterEpisNeo(){
+  const q = (searchInput?.value || "").toLowerCase().trim();
+  const cat = __selectedCategory;
+
+  const filtered = epis.filter(e=>{
+    const okQ =
+      String(e.nome).toLowerCase().includes(q) ||
+      String(e.ca).toLowerCase().includes(q) ||
+      String(e.categoria).toLowerCase().includes(q);
+
+    const okC = !cat || e.categoria === cat;
+    return okQ && okC;
+  });
+
+  renderEpis(filtered);
+}
+
+document.getElementById("clearEpiBtn").addEventListener("click", ()=>{
+  searchInput.value = "";
+  __selectedCategory = "";
+  const lbl = document.querySelector("#categoryNeo .neo-label");
+  if(lbl) lbl.textContent = "🌐 Todas as categorias";
+  filterEpisNeo();
+  toast("Filtros limpos!", "ok");
+});
+
+searchInput.addEventListener("input", filterEpisNeo);
+
+/* =====================
+   RENDER: Riscos
+===================== */
+const riskCards = document.getElementById("riskCards");
+function renderRiskCards(list){
+  riskCards.innerHTML = list.map(r=>`
+    <div class="card" data-risk="${r.tipo}">
+      <div style="font-weight:950; margin-bottom:8px;">${r.titulo}</div>
+      <div class="muted" style="font-weight:850; line-height:1.4;">${r.texto}</div>
+      <div style="height:10px"></div>
+      <button class="btn btn-primary" title="Copiar texto" data-copy="${encodeURIComponent(r.texto)}">Copiar</button>
+    </div>
+  `).join("");
+}
+
+document.getElementById("riskFilter").addEventListener("change", (e)=>{
+  const v = e.target.value;
+  const list = v === "todos" ? riscosModelos : riscosModelos.filter(x=>x.tipo===v);
+  renderRiskCards(list);
+  playSound("click");
+});
+
+/* =====================
+   RENDER: 5W2H
+===================== */
+const w2hGrid = document.getElementById("w2hGrid");
+function renderW2H(){
+  w2hGrid.innerHTML = w2h.map(x=>`
+    <div class="card">
+      <div style="font-weight:950;">${x.k}</div>
+      <div class="muted" style="margin-top:6px; font-weight:850;">${x.v}</div>
+      <div style="height:10px"></div>
+      <button class="btn btn-primary" title="Copiar" data-copy="${encodeURIComponent(x.v)}">Copiar</button>
+    </div>
+  `).join("");
+}
+
+/* =====================
+   RENDER: Riscos por Empresa
+===================== */
+const listaRiscosEmpresas = document.getElementById("listaRiscosEmpresas");
+function renderRiscosEmpresas(list){
+  listaRiscosEmpresas.innerHTML = list.map(i=>`
+    <div class="card">
+      <div style="font-weight:950;">${i.emoji} ${i.risco}</div>
+      <div class="muted" style="margin-top:6px; font-weight:850;">${i.empresa} • Setor: ${i.setor}</div>
+      <div style="height:10px"></div>
+      <button class="btn btn-ghost" title="Copiar empresa" data-copy="${encodeURIComponent(i.empresa)}">📋 Copiar empresa</button>
+    </div>
+  `).join("");
+}
+document.getElementById("buscaRiscos").addEventListener("input", (e)=>{
+  const t = e.target.value.toLowerCase();
+  const f = riscosEmpresas.filter(i => (i.risco+" "+i.empresa+" "+i.setor).toLowerCase().includes(t));
+  renderRiscosEmpresas(f);
+});
+
+/* =====================
+   RENDER: NRs
+===================== */
+const nrGrid = document.getElementById("nrGrid");
+function renderNRs(){
+  nrGrid.innerHTML = nrs.map(n=>`
+    <div class="card">
+      <div style="font-weight:950;">
+        <span class="nr-title">${n.t}</span>
+      </div>
+      <div class="muted" style="margin-top:6px; font-weight:850; line-height:1.4;">${n.d}</div>
+      <div style="height:10px"></div>
+      <button class="btn btn-primary" title="Copiar título" data-copy="${encodeURIComponent(n.t)}">Copiar</button>
+    </div>
+  `).join("");
+}
+
+/* =====================
+   FAQ
+===================== */
+const faqEl = document.getElementById("faq");
+function renderFAQ(){
+  faqEl.innerHTML = faq.map((x, idx)=>`
+    <div class="acc-item">
+      <button class="acc-btn" title="Abrir/fechar" aria-expanded="false" data-acc="${idx}">
+        ${x.q}
+        <span>▾</span>
+      </button>
+      <div class="acc-body">${x.a}</div>
+    </div>
+  `).join("");
+}
+document.addEventListener("click", (e)=>{
+  const b = e.target.closest(".acc-btn");
+  if(!b) return;
+  const item = b.closest(".acc-item");
+  item.classList.toggle("active");
+  const expanded = item.classList.contains("active");
+  b.setAttribute("aria-expanded", expanded ? "true" : "false");
+  playSound("click");
+});
+
+/* =====================
+   Frases Empresa
+===================== */
+const resultado = document.getElementById("resultado");
+function gerarFrases(){
+  const nomes = document.getElementById("nomes").value
+    .split("\n").map(s=>s.trim()).filter(Boolean);
+  const empresa = document.getElementById("empresa").value.trim();
+  const data = document.getElementById("data").value.trim();
+
+  const out = nomes.map(nome => `${nome}, ${empresa}, , , ${data}`).join("\n");
+  resultado.textContent = out || "—";
+  toast("Frases geradas.", "ok");
+}
+
+document.getElementById("genPhrasesBtn").addEventListener("click", gerarFrases);
+document.getElementById("copyPhrasesBtn").addEventListener("click", ()=>{
+  copyText(resultado.textContent || "");
+});
+
+document.getElementById("exportTxtBtn").addEventListener("click", ()=>{
+  const content = resultado.textContent || "";
+  const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "frases_empresa.txt";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  toast("TXT exportado.", "ok");
+});
+
+/* =====================
+   PDF (seção atual)
+===================== */
+function getActiveSection(){
+  return document.querySelector("main section.active");
+}
+
+async function exportSectionPDF(){
+  const sec = getActiveSection();
+  if(!sec){
+    toast("Nenhuma seção ativa.", "err");
+    return;
+  }
+
+  const title = sec.querySelector("h2") ? sec.querySelector("h2").textContent.trim() : "SST";
+  const text = sec.innerText.trim();
+
+  const { jsPDF } = window.jspdf || {};
+  if(!jsPDF){
+    toast("jsPDF não carregou.", "err");
+    return;
+  }
+
+  const doc = new jsPDF({ unit:"pt", format:"a4" });
+  const margin = 36;
+  const maxW = 595 - margin*2;
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(14);
+  doc.text(title, margin, 48);
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+
+  const lines = doc.splitTextToSize(text, maxW);
+  let y = 70;
+
+  for(const line of lines){
+    if(y > 800){
+      doc.addPage();
+      y = 48;
     }
+    doc.text(line, margin, y);
+    y += 14;
+  }
 
-    function filterEpis(){
-      const q = searchInput.value.toLowerCase().trim();
-      const cat = categoryFilter.value;
-      const filtered = epis.filter(e=>{
-        const okQ =
-          e.nome.toLowerCase().includes(q) ||
-          e.ca.toLowerCase().includes(q) ||
-          e.categoria.toLowerCase().includes(q);
-        const okC = !cat || e.categoria === cat;
-        return okQ && okC;
-      });
-      renderEpis(filtered);
-    }
+  doc.save((title || "sst").replace(/\s+/g,"_").toLowerCase() + ".pdf");
+  toast("PDF salvo.", "ok");
+}
 
-    document.getElementById("clearEpiBtn").addEventListener("click", ()=>{
-      searchInput.value = "";
-      categoryFilter.value = "";
-      filterEpis();
-      toast("Filtros limpos!", "ok");
-    });
+/* =====================
+   CHAT (local simples)
+===================== */
+const chatFab = document.getElementById("chatFab");
+const chatBox = document.getElementById("chatBox");
+const chatClose = document.getElementById("chatClose");
+const chatMsgs = document.getElementById("chatMsgs");
+const chatInput = document.getElementById("chatInput");
+const chatSend = document.getElementById("chatSend");
 
-    searchInput.addEventListener("input", filterEpis);
-    categoryFilter.addEventListener("change", filterEpis);
+function chatAdd(text, who="bot"){
+  const wrap = document.createElement("div");
+  wrap.className = who === "me" ? "me" : "bot";
+  wrap.innerHTML = `<div class="bubble">${text}</div>`;
+  chatMsgs.appendChild(wrap);
+  chatMsgs.scrollTop = chatMsgs.scrollHeight;
+}
 
-    /* =====================
-       RENDER: Riscos
-    ====================== */
-    const riskCards = document.getElementById("riskCards");
-    function renderRiskCards(list){
-      riskCards.innerHTML = list.map(r=>`
-        <div class="card" data-risk="${r.tipo}">
-          <div style="font-weight:950; margin-bottom:8px;">${r.titulo}</div>
-          <div class="muted" style="font-weight:850; line-height:1.4;">${r.texto}</div>
-          <div style="height:10px"></div>
-          <button class="btn btn-primary" title="Copiar texto" data-copy="${encodeURIComponent(r.texto)}">Copiar</button>
-        </div>
-      `).join("");
-    }
-    document.getElementById("riskFilter").addEventListener("change", (e)=>{
-      const v = e.target.value;
-      const list = v === "todos" ? riscosModelos : riscosModelos.filter(x=>x.tipo===v);
-      renderRiskCards(list);
-      playSound("click");
-    });
+function answerLocal(q){
+  const m = q.toLowerCase();
+  if(m.includes("nr-06") || m.includes("epi")){
+    return "NR-06 trata do EPI: fornecimento, treinamento, uso correto e CA. Quer que eu gere um texto padrão para laudo/OS?";
+  }
+  if(m.includes("aso")){
+    return "ASO: admissional antes da função; periódico conforme risco; retorno após afastamento ≥ 30 dias; mudança de função quando altera risco; demissional até rescisão.";
+  }
+  if(m.includes("pgr")){
+    return "PGR é o Programa de Gerenciamento de Riscos. Em geral é elaborado por Engenheiro ou Técnico de Segurança do Trabalho.";
+  }
+  if(m.includes("ca")){
+    return "CA (Certificado de Aprovação) é o registro do EPI aprovado. Se vencer, substitui e registra nova entrega.";
+  }
+  return "Me diga o tema (EPI, CA, ASO, NR, PGR, PCMSO) que eu te respondo com um texto pronto.";
+}
 
-    /* =====================
-       RENDER: 5W2H
-    ====================== */
-    const w2hGrid = document.getElementById("w2hGrid");
-    function renderW2H(){
-      w2hGrid.innerHTML = w2h.map(x=>`
-        <div class="card">
-          <div style="font-weight:950;">${x.k}</div>
-          <div class="muted" style="margin-top:6px; font-weight:850;">${x.v}</div>
-          <div style="height:10px"></div>
-          <button class="btn btn-primary" title="Copiar" data-copy="${encodeURIComponent(x.v)}">Copiar</button>
-        </div>
-      `).join("");
-    }
+function sendChat(){
+  const q = chatInput.value.trim();
+  if(!q) return;
+  chatAdd(q, "me");
+  chatInput.value = "";
+  setTimeout(()=> chatAdd(answerLocal(q), "bot"), 220);
+}
 
-    /* =====================
-       RENDER: Riscos por Empresa
-    ====================== */
-    const listaRiscosEmpresas = document.getElementById("listaRiscosEmpresas");
-    function renderRiscosEmpresas(list){
-      listaRiscosEmpresas.innerHTML = list.map(i=>`
-        <div class="card">
-          <div style="font-weight:950;">${i.emoji} ${i.risco}</div>
-          <div class="muted" style="margin-top:6px; font-weight:850;">${i.empresa} • Setor: ${i.setor}</div>
-          <div style="height:10px"></div>
-          <button class="btn btn-ghost" title="Copiar empresa" data-copy="${encodeURIComponent(i.empresa)}">📋 Copiar empresa</button>
-        </div>
-      `).join("");
-    }
-    document.getElementById("buscaRiscos").addEventListener("input", (e)=>{
-      const t = e.target.value.toLowerCase();
-      const f = riscosEmpresas.filter(i => (i.risco+" "+i.empresa+" "+i.setor).toLowerCase().includes(t));
-      renderRiscosEmpresas(f);
-    });
+chatFab.addEventListener("click", ()=>{
+  chatBox.classList.toggle("active");
+  chatBox.setAttribute("aria-hidden", chatBox.classList.contains("active") ? "false" : "true");
+  playSound("click");
+  if(chatBox.classList.contains("active")) setTimeout(()=> chatInput.focus(), 50);
+});
+chatClose.addEventListener("click", ()=>{
+  chatBox.classList.remove("active");
+  chatBox.setAttribute("aria-hidden", "true");
+  playSound("click");
+});
+chatSend.addEventListener("click", sendChat);
+chatInput.addEventListener("keydown", (e)=>{
+  if(e.key === "Enter"){
+    e.preventDefault();
+    sendChat();
+  }
+});
 
-    /* =====================
-       RENDER: NRs
-    ====================== */
-    const nrGrid = document.getElementById("nrGrid");
-    function renderNRs(){
-      nrGrid.innerHTML = nrs.map(n=>`
-        <div class="card">
-          <div style="font-weight:950;">
-            <span class="nr-title">${n.t}</span>
-          </div>
-          <div class="muted" style="margin-top:6px; font-weight:850; line-height:1.4;">${n.d}</div>
-          <div style="height:10px"></div>
-          <button class="btn btn-primary" title="Copiar título" data-copy="${encodeURIComponent(n.t)}">Copiar</button>
-        </div>
-      `).join("");
-    }
+/* =====================
+   DROPDOWN: Neo -> Select (Riscos)
+===================== */
+function bindNeoToNativeSelect(neoId, selectId){
+  const neo = document.getElementById(neoId);
+  const sel = document.getElementById(selectId);
+  if(!neo || !sel) return;
 
-    /* =====================
-       FAQ
-    ====================== */
-    const faqEl = document.getElementById("faq");
-    function renderFAQ(){
-      faqEl.innerHTML = faq.map((x, idx)=>`
-        <div class="acc-item">
-          <button class="acc-btn" title="Abrir/fechar" aria-expanded="false" data-acc="${idx}">
-            ${x.q}
-            <span>▾</span>
-          </button>
-          <div class="acc-body">${x.a}</div>
-        </div>
-      `).join("");
-    }
-    document.addEventListener("click", (e)=>{
-      const b = e.target.closest(".acc-btn");
-      if(!b) return;
-      const item = b.closest(".acc-item");
-      item.classList.toggle("active");
-      const expanded = item.classList.contains("active");
-      b.setAttribute("aria-expanded", expanded ? "true" : "false");
-      playSound("click");
-    });
+  const trigger = neo.querySelector(".neo-trigger");
+  const label = neo.querySelector(".neo-label");
+  const panel = neo.querySelector(".neo-panel");
 
-    /* =====================
-       Frases Empresa
-    ====================== */
-    const resultado = document.getElementById("resultado");
-    function gerarFrases(){
-      const nomes = document.getElementById("nomes").value
-        .split("\n").map(s=>s.trim()).filter(Boolean);
-      const empresa = document.getElementById("empresa").value.trim();
-      const data = document.getElementById("data").value.trim();
+  function setOpen(open){
+    neo.dataset.open = String(open);
+    trigger?.setAttribute("aria-expanded", String(open));
+  }
 
-      const out = nomes.map(nome => `${nome}, ${empresa}, , , ${data}`).join("\n");
-      resultado.textContent = out || "—";
-      toast("Frases geradas.", "ok");
-    }
+  trigger?.addEventListener("click", ()=>{
+    setOpen(!(neo.dataset.open === "true"));
+  });
 
-    document.getElementById("genPhrasesBtn").addEventListener("click", gerarFrases);
-    document.getElementById("copyPhrasesBtn").addEventListener("click", ()=>{
-      copyText(resultado.textContent || "");
-    });
+  panel?.addEventListener("click", (e)=>{
+    const opt = e.target.closest(".neo-option");
+    if(!opt) return;
 
-    document.getElementById("exportTxtBtn").addEventListener("click", ()=>{
-      const content = resultado.textContent || "";
-      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "frases_empresa.txt";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-      toast("TXT exportado.", "ok");
-    });
+    const v = opt.dataset.value || "todos";
+    sel.value = v;
+    if(label) label.textContent = opt.textContent;
 
-    /* =====================
-       PDF (seção atual)
-    ====================== */
-    function getActiveSection(){
-      return document.querySelector("main section.active");
-    }
+    sel.dispatchEvent(new Event("change", { bubbles:true }));
+    setOpen(false);
+  });
 
-    async function exportSectionPDF(){
-      const sec = getActiveSection();
-      if(!sec){
-        toast("Nenhuma seção ativa.", "err");
-        return;
-      }
+  document.addEventListener("click", (e)=>{
+    if(!neo.contains(e.target)) setOpen(false);
+  });
+}
 
-      const title = sec.querySelector("h2") ? sec.querySelector("h2").textContent.trim() : "SST";
-      const text = sec.innerText.trim();
+/* =====================
+   INIT
+===================== */
+window.addEventListener("DOMContentLoaded", ()=>{
+  boot();
 
-      const { jsPDF } = window.jspdf || {};
-      if(!jsPDF){
-        toast("jsPDF não carregou.", "err");
-        return;
-      }
+  populateNeoCategories();
+  renderEpis(epis);
+  filterEpisNeo();              // ✅ garante estado inicial correto
 
-      const doc = new jsPDF({ unit:"pt", format:"a4" });
-      const margin = 36;
-      const maxW = 595 - margin*2;
+  renderRiskCards(riscosModelos);
+  bindNeoToNativeSelect("riskNeo", "riskFilter"); // ✅ filtro riscos funcionando
 
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(14);
-      doc.text(title, margin, 48);
+  renderW2H();
+  renderRiscosEmpresas(riscosEmpresas);
+  renderNRs();
+  renderFAQ();
 
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-
-      const lines = doc.splitTextToSize(text, maxW);
-      let y = 70;
-
-      for(const line of lines){
-        if(y > 800){
-          doc.addPage();
-          y = 48;
-        }
-        doc.text(line, margin, y);
-        y += 14;
-      }
-
-      doc.save((title || "sst").replace(/\s+/g,"_").toLowerCase() + ".pdf");
-      toast("PDF salvo.", "ok");
-    }
-
-    /* =====================
-       CHAT (local simples)
-    ====================== */
-    const chatFab = document.getElementById("chatFab");
-    const chatBox = document.getElementById("chatBox");
-    const chatClose = document.getElementById("chatClose");
-    const chatMsgs = document.getElementById("chatMsgs");
-    const chatInput = document.getElementById("chatInput");
-    const chatSend = document.getElementById("chatSend");
-
-    function chatAdd(text, who="bot"){
-      const wrap = document.createElement("div");
-      wrap.className = who === "me" ? "me" : "bot";
-      wrap.innerHTML = `<div class="bubble">${text}</div>`;
-      chatMsgs.appendChild(wrap);
-      chatMsgs.scrollTop = chatMsgs.scrollHeight;
-    }
-
-    function answerLocal(q){
-      const m = q.toLowerCase();
-      if(m.includes("nr-06") || m.includes("epi")){
-        return "NR-06 trata do EPI: fornecimento, treinamento, uso correto e CA. Quer que eu gere um texto padrão para laudo/OS?";
-      }
-      if(m.includes("aso")){
-        return "ASO: admissional antes da função; periódico conforme risco; retorno após afastamento ≥ 30 dias; mudança de função quando altera risco; demissional até rescisão.";
-      }
-      if(m.includes("pgr")){
-        return "PGR é o Programa de Gerenciamento de Riscos. Em geral é elaborado por Engenheiro ou Técnico de Segurança do Trabalho.";
-      }
-      if(m.includes("ca")){
-        return "CA (Certificado de Aprovação) é o registro do EPI aprovado. Se vencer, substitui e registra nova entrega.";
-      }
-      return "Me diga o tema (EPI, CA, ASO, NR, PGR, PCMSO) que eu te respondo com um texto pronto.";
-    }
-
-    function sendChat(){
-      const q = chatInput.value.trim();
-      if(!q) return;
-      chatAdd(q, "me");
-      chatInput.value = "";
-      setTimeout(()=> chatAdd(answerLocal(q), "bot"), 220);
-    }
-
-    chatFab.addEventListener("click", ()=>{
-      chatBox.classList.toggle("active");
-      chatBox.setAttribute("aria-hidden", chatBox.classList.contains("active") ? "false" : "true");
-      playSound("click");
-      if(chatBox.classList.contains("active")) setTimeout(()=> chatInput.focus(), 50);
-    });
-    chatClose.addEventListener("click", ()=>{
-      chatBox.classList.remove("active");
-      chatBox.setAttribute("aria-hidden", "true");
-      playSound("click");
-    });
-    chatSend.addEventListener("click", sendChat);
-    chatInput.addEventListener("keydown", (e)=>{
-      if(e.key === "Enter"){
-        e.preventDefault();
-        sendChat();
-      }
-    });
-
-    /* =====================
-       INIT
-    ====================== */
-    window.addEventListener("DOMContentLoaded", ()=>{
-      boot();
-
-      populateCategories();
-      renderEpis(epis);
-      renderRiskCards(riscosModelos);
-      renderW2H();
-      renderRiscosEmpresas(riscosEmpresas);
-      renderNRs();
-      renderFAQ();
-
-      document.getElementById("statusPill").textContent = "✅ Online";
-    });
+  document.getElementById("statusPill").textContent = "✅ Online";
+});
   </script>
 </body>
 </html>
