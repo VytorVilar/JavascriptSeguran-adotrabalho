@@ -580,6 +580,99 @@
       backdrop-filter:none;
       -webkit-backdrop-filter:none;
     }
+	
+	/* ===============================
+   TAB ATIVA COM GRADIENTE
+   =============================== */
+
+.tab[aria-selected="true"]{
+  background: linear-gradient(
+    135deg,
+    #3b82f6,  /* azul */
+    #8b5cf6,  /* roxo */
+    #a855f7   /* roxo mais vivo */
+  );
+  border-color: transparent;
+  color: #ffffff;
+  font-weight: 800;
+  box-shadow: 0 6px 16px rgba(59,130,246,.35);
+}
+
+/* opcional: ícones dentro da tab */
+.tab[aria-selected="true"] i,
+.tab[aria-selected="true"] svg{
+  color: #ffffff;
+  fill: #ffffff;
+}
+
+/* ===============================
+   BORDA GRADIENTE (AZUL → ROXO)
+   =============================== */
+
+.epi{
+  position: relative;
+  border-radius: 12px;
+  background: #ffffff;
+  z-index: 0;
+}
+
+/* camada da borda */
+.epi::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px; /* espessura da borda */
+  border-radius: inherit;
+
+  background: linear-gradient(
+    135deg,
+    #3b82f6,  /* azul */
+    #8b5cf6,  /* roxo */
+    #a855f7   /* roxo mais vivo */
+  );
+
+  /* cria o "furo" no meio */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* hover mais vivo */
+.epi:hover::before{
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed,
+    #9333ea
+  );
+}
+
+.card,
+.filter-box,
+.panel{
+  position: relative;
+}
+
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  padding:2px;
+  border-radius:inherit;
+  background: linear-gradient(135deg,#3b82f6,#8b5cf6,#a855f7);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  pointer-events:none;
+}
+	
   </style>
 </head>
 
