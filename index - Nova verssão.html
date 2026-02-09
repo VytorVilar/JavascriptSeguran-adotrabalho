@@ -21,7 +21,7 @@
 
   <style>
     /* ======================================================
-       THEME TOKENS
+       THEME TOKENS (SOMENTE CLARO)
        ====================================================== */
     :root{
       --bg: #f6f7fb;
@@ -48,19 +48,6 @@
       --topbar-h: 70px;
 
       --focus: 0 0 0 4px rgba(34,197,94,.18);
-    }
-
-    /* Dark Theme (ativa quando data-theme="dark") */
-    :root[data-theme="dark"]{
-      --bg: #0b1220;
-      --fg: #e5e7eb;
-      --muted: rgba(229,231,235,.72);
-
-      --card: rgba(255,255,255,.06);
-      --border: rgba(255,255,255,.10);
-
-      --shadow-soft: 0 10px 26px rgba(0,0,0,.35);
-      --shadow-hover: 0 16px 36px rgba(0,0,0,.45);
     }
 
     *{ box-sizing:border-box; }
@@ -91,10 +78,7 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
-    :root[data-theme="dark"] .topbar{
-      background: rgba(255,255,255,.05);
-    }
-
+    
     .topbar-inner{
       display:flex;
       align-items:center;
@@ -144,9 +128,6 @@
       font-weight:900;
       font-size:12px;
     }
-    :root[data-theme="dark"] .pill{
-      background: rgba(255,255,255,.06);
-    }
 
     .badge{
       display:inline-flex;
@@ -170,11 +151,7 @@
       color: var(--fg);
       outline:none;
     }
-    :root[data-theme="dark"] input,
-    :root[data-theme="dark"] select,
-    :root[data-theme="dark"] textarea{
-      background: rgba(255,255,255,.06);
-    }
+ 
     input:focus, select:focus, textarea:focus{
       border-color: rgba(34,197,94,.45);
       box-shadow: var(--focus);
@@ -209,9 +186,6 @@
       color: var(--fg);
       box-shadow: 0 6px 14px rgba(10,20,30,.06);
     }
-    :root[data-theme="dark"] .btn-ghost{
-      background: rgba(255,255,255,.06);
-    }
     .btn-ghost:hover{ transform: translateY(-1px); box-shadow: 0 10px 22px rgba(10,20,30,.10); }
 
     /* ======================================================
@@ -234,11 +208,7 @@
       font-weight:800;
       cursor:pointer;
     }
-    :root[data-theme="dark"] .tab{
-      background: rgba(255,255,255,.06);
-      border-color: rgba(255,255,255,.12);
-      color: var(--fg);
-    }
+    
     .tab[aria-selected="true"]{
       background: var(--yellow);
       border-color: var(--yellow);
@@ -275,9 +245,6 @@
       box-shadow: var(--shadow-soft);
       padding: 14px;
     }
-    :root[data-theme="dark"] .card{
-      background: rgba(255,255,255,.06);
-    }
 
     /* Grid geral */
     .grid{
@@ -308,9 +275,7 @@
 
       transition: .18s ease;
     }
-    :root[data-theme="dark"] .epi{
-      background: rgba(255,255,255,.06);
-    }
+    
     .epi:hover{
       transform: translateY(-2px);
       box-shadow: var(--shadow-hover);
@@ -327,11 +292,7 @@
       justify-content:center;
       overflow:hidden;
     }
-    :root[data-theme="dark"] .epi-img{
-      background: rgba(255,255,255,.04);
-      border-color: rgba(255,255,255,.10);
-    }
-
+  
     .epi-img img{
       width:100%;
       height:100%;
@@ -377,10 +338,7 @@
       background: rgba(255,255,255,0.70);
       box-shadow: 0 6px 14px rgba(10,20,30,.06);
     }
-    :root[data-theme="dark"] .acc-item{
-      background: rgba(255,255,255,.06);
-    }
-
+   
     .acc-btn{
       width:100%;
       text-align:left;
@@ -432,9 +390,7 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
-    :root[data-theme="dark"] .chat-box{
-      background: rgba(15,23,42,.65);
-    }
+    
     .chat-box.active{ display:flex; }
 
     .chat-top{
@@ -462,9 +418,7 @@
       font-weight: 800;
       line-height: 1.35;
     }
-    :root[data-theme="dark"] .bubble{
-      background: rgba(255,255,255,.06);
-    }
+    
     .me{ align-self:flex-end; }
     .me .bubble{
       background: linear-gradient(135deg, var(--primary), var(--accent));
@@ -535,9 +489,6 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
-    :root[data-theme="dark"] .fab-action{
-      background: rgba(255,255,255,.06);
-    }
 
     /* ======================================================
        TOAST
@@ -590,9 +541,7 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
-    :root[data-theme="dark"] .modal{
-      background: rgba(15,23,42,.78);
-    }
+
     .modal h3{ margin: 0 0 6px; }
     .modal .hint{ color: var(--muted); margin: 0 0 12px; font-weight: 800; }
 
@@ -937,24 +886,6 @@
     });
 
     /* =====================
-       THEME (light/dark)
-    ====================== */
-    function setTheme(next){
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem("theme", next);
-    }
-
-    function initTheme(){
-      const saved = localStorage.getItem("theme");
-      if(saved === "dark" || saved === "light"){
-        setTheme(saved);
-        return;
-      }
-      const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setTheme(prefersDark ? "dark" : "light");
-    }
-
-    /* =====================
        MODE (flat/glass)
     ====================== */
     function setMode(next){
@@ -1099,7 +1030,9 @@
     });
 
     function boot(){
-      initTheme(); // agora o dark mode existe no CSS ✅
+      // ✅ SEM TEMA ESCURO: força claro sempre
+      document.documentElement.removeAttribute("data-theme");
+      localStorage.removeItem("theme");
 
       const session = getSession();
       if(!session){
