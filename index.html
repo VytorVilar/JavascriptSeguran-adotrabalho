@@ -16,8 +16,6 @@
 
   <!-- libs -->
   <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
 
   <style>
     /* ======================================================
@@ -362,77 +360,7 @@
     }
     .acc-item.active .acc-body{ display:block; }
 
-    /* ======================================================
-       CHAT
-       ====================================================== */
-    .chat-fab{
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 120;
-    }
-
-    .chat-box{
-      position: fixed;
-      right: 18px;
-      bottom: 78px;
-      z-index: 121;
-      width: 340px;
-      max-width: calc(100vw - 36px);
-      height: 460px;
-      display:none;
-      flex-direction:column;
-      background: rgba(255,255,255,0.88);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: var(--shadow-hover);
-      overflow:hidden;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-    
-    .chat-box.active{ display:flex; }
-
-    .chat-top{
-      padding: 10px 12px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      border-bottom:1px solid var(--border);
-      font-weight: 950;
-    }
-    .chat-msgs{
-      padding: 12px;
-      overflow:auto;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .bubble{
-      max-width: 85%;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(246,247,251,0.85);
-      color: var(--fg);
-      font-weight: 800;
-      line-height: 1.35;
-    }
-    
-    .me{ align-self:flex-end; }
-    .me .bubble{
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      border-color: transparent;
-      color:#fff;
-    }
-    .chat-input{
-      border-top:1px solid var(--border);
-      padding: 10px;
-      display:flex;
-      gap:8px;
-    }
-
-    /* ======================================================
+       /* ======================================================
        FLOATING PANEL
        ====================================================== */
     .fab-panel{
@@ -567,20 +495,6 @@
       font-size:13px;
     }
 
-    /* ======================================================
-       FLAT / GLASS MODE (mantém seu botão)
-       ====================================================== */
-    :root[data-mode="flat"] .topbar{
-      backdrop-filter:none;
-      -webkit-backdrop-filter:none;
-    }
-    :root[data-mode="flat"] .card,
-    :root[data-mode="flat"] .chat-box,
-    :root[data-mode="flat"] .modal{
-      backdrop-filter:none;
-      -webkit-backdrop-filter:none;
-    }
-	
 	/* ===============================
    TAB ATIVA COM GRADIENTE
    =============================== */
@@ -673,6 +587,47 @@
   pointer-events:none;
 }
 	
+.brand-interlagos{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.brand-mark{
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  overflow:hidden;
+  box-shadow: 0 10px 22px rgba(10,20,30,.10);
+}
+
+.brand-text{ line-height: 1; }
+
+.brand-title{
+  display:flex;
+  align-items:baseline;
+  gap:6px;
+  font-weight: 950;
+  letter-spacing: .2px;
+}
+
+.brand-epi{
+  font-size: 18px;
+  color: #a855f7; /* amarelo */
+}
+
+.brand-name{
+  font-size: 18px;
+  color: #0b3a47; /* azul/verde escuro */
+}
+
+.brand-sub{
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  color: rgba(15,23,42,.55);
+}
+	
   </style>
 </head>
 
@@ -680,21 +635,31 @@
   <!-- ====== APP (fica oculto até liberar senha) ====== -->
   <div id="app" hidden>
     <header class="topbar">
-      <div class="container topbar-inner">
-        <div class="brand">
-          <div class="logo" aria-hidden="true">SST</div>
-          <div>
-            <h1>Painel Técnico • Segurança do Trabalho</h1>
-            <small>Versão 3.0 • Ultra Master</small>
-          </div>
-        </div>
+      <div class="brand brand-interlagos">
+  <!-- LOGO SVG (editável) -->
+  <div class="brand-mark" aria-hidden="true">
+    <svg width="44" height="44" viewBox="0 0 64 64" role="img">
+      <!-- círculo -->
+      <circle cx="32" cy="32" r="30" fill="#0b3a47"/>
+      <!-- capacete -->
+      <path d="M18 30c1-10 8-16 14-16s13 6 14 16H18z" fill="#f6c400"/>
+      <path d="M16 30h32v6c0 8-7 14-16 14S16 44 16 36v-6z" fill="#ffd54d"/>
+      <rect x="14" y="30" width="36" height="4" rx="2" fill="#0b3a47" opacity=".25"/>
+      <rect x="20" y="18" width="3" height="12" rx="1.5" fill="#f6c400"/>
+      <rect x="30.5" y="16" width="3" height="14" rx="1.5" fill="#f6c400"/>
+      <rect x="41" y="18" width="3" height="12" rx="1.5" fill="#f6c400"/>
+    </svg>
+  </div>
 
-        <div class="top-actions">
-          <span class="pill" id="statusPill" title="Status do sistema">✅ Online</span>
-          <button class="btn btn-ghost" id="pdfBtn" title="Salvar PDF da seção atual">🧾 PDF</button>
-          <button class="btn btn-ghost" id="modeBtn" title="Alternar visual (Glass/Flat)">🧱 Flat</button>
-        </div>
-      </div>
+  <!-- TEXTO -->
+  <div class="brand-text">
+    <div class="brand-title">
+      <span class="brand-epi">PAINEL TÉCNICO DE</span>
+      <span class="brand-name">SEGURANÇA DO TRABALHO</span>
+    </div>
+    <div class="brand-sub">Equipamentos de segurança</div>
+  </div>
+</div>
     </header>
 
     <div class="container">
@@ -879,26 +844,10 @@
       <button class="fab-main" id="fabMain" title="Abrir painel">☰</button>
       <div class="fab-actions">
         <button class="fab-action" id="fabTop" title="Voltar ao topo">⬆️ Topo</button>
-        <button class="fab-action" id="fabPdf" title="Salvar PDF da seção atual">🧾 PDF</button>
       </div>
     </div>
 
-    <!-- ===== CHAT ===== -->
-    <button class="btn btn-primary chat-fab" id="chatFab" title="Abrir chat de ajuda">💬 Ajuda</button>
-
-    <div class="chat-box" id="chatBox" role="dialog" aria-label="Chat de Ajuda" aria-hidden="true">
-      <div class="chat-top">
-        <span>Chat de Ajuda • SST</span>
-        <button class="btn btn-ghost" id="chatClose" title="Fechar chat">✖</button>
-      </div>
-      <div class="chat-msgs" id="chatMsgs" aria-live="polite"></div>
-      <div class="chat-input">
-        <input id="chatInput" type="text" placeholder="Pergunte sobre EPI, NR-06, CA..." />
-        <button class="btn btn-primary" id="chatSend" title="Enviar mensagem">Enviar</button>
-      </div>
-    </div>
-
-    <!-- ===== TOAST ===== -->
+     <!-- ===== TOAST ===== -->
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
   </div>
 
@@ -975,33 +924,6 @@
         copyText(text);
       }catch(_){
         copyText(raw);
-      }
-    });
-
-    /* =====================
-       MODE (flat/glass)
-    ====================== */
-    function setMode(next){
-      document.documentElement.setAttribute("data-mode", next);
-      localStorage.setItem("mode", next);
-      const b = document.getElementById("modeBtn");
-      if(b) b.textContent = (next === "flat") ? "🌙 Glass" : "🧱 Flat";
-    }
-
-    function initMode(){
-      const saved = localStorage.getItem("mode");
-      setMode(saved === "flat" ? "flat" : "glass");
-    }
-
-    document.addEventListener("DOMContentLoaded", ()=>{
-      initMode();
-      const b = document.getElementById("modeBtn");
-      if(b){
-        b.addEventListener("click", ()=>{
-          const cur = document.documentElement.getAttribute("data-mode") || "glass";
-          setMode(cur === "flat" ? "glass" : "flat");
-          playSound("click");
-        });
       }
     });
 
@@ -1183,8 +1105,6 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
       playSound("click");
     });
-    document.getElementById("fabPdf").addEventListener("click", exportSectionPDF);
-    document.getElementById("pdfBtn").addEventListener("click", exportSectionPDF);
 
     /* =====================
        DATA
@@ -1550,119 +1470,7 @@
       URL.revokeObjectURL(url);
       toast("TXT exportado.", "ok");
     });
-
-    /* =====================
-       PDF (seção atual)
-    ====================== */
-    function getActiveSection(){
-      return document.querySelector("main section.active");
-    }
-
-    async function exportSectionPDF(){
-      const sec = getActiveSection();
-      if(!sec){
-        toast("Nenhuma seção ativa.", "err");
-        return;
-      }
-
-      const title = sec.querySelector("h2") ? sec.querySelector("h2").textContent.trim() : "SST";
-      const text = sec.innerText.trim();
-
-      const { jsPDF } = window.jspdf || {};
-      if(!jsPDF){
-        toast("jsPDF não carregou.", "err");
-        return;
-      }
-
-      const doc = new jsPDF({ unit:"pt", format:"a4" });
-      const margin = 36;
-      const maxW = 595 - margin*2;
-
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(14);
-      doc.text(title, margin, 48);
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-
-      const lines = doc.splitTextToSize(text, maxW);
-      let y = 70;
-
-      for(const line of lines){
-        if(y > 800){
-          doc.addPage();
-          y = 48;
-        }
-        doc.text(line, margin, y);
-        y += 14;
-      }
-
-      doc.save((title || "sst").replace(/\s+/g,"_").toLowerCase() + ".pdf");
-      toast("PDF salvo.", "ok");
-    }
-
-    /* =====================
-       CHAT (local simples)
-    ====================== */
-    const chatFab = document.getElementById("chatFab");
-    const chatBox = document.getElementById("chatBox");
-    const chatClose = document.getElementById("chatClose");
-    const chatMsgs = document.getElementById("chatMsgs");
-    const chatInput = document.getElementById("chatInput");
-    const chatSend = document.getElementById("chatSend");
-
-    function chatAdd(text, who="bot"){
-      const wrap = document.createElement("div");
-      wrap.className = who === "me" ? "me" : "bot";
-      wrap.innerHTML = `<div class="bubble">${text}</div>`;
-      chatMsgs.appendChild(wrap);
-      chatMsgs.scrollTop = chatMsgs.scrollHeight;
-    }
-
-    function answerLocal(q){
-      const m = q.toLowerCase();
-      if(m.includes("nr-06") || m.includes("epi")){
-        return "NR-06 trata do EPI: fornecimento, treinamento, uso correto e CA. Quer que eu gere um texto padrão para laudo/OS?";
-      }
-      if(m.includes("aso")){
-        return "ASO: admissional antes da função; periódico conforme risco; retorno após afastamento ≥ 30 dias; mudança de função quando altera risco; demissional até rescisão.";
-      }
-      if(m.includes("pgr")){
-        return "PGR é o Programa de Gerenciamento de Riscos. Em geral é elaborado por Engenheiro ou Técnico de Segurança do Trabalho.";
-      }
-      if(m.includes("ca")){
-        return "CA (Certificado de Aprovação) é o registro do EPI aprovado. Se vencer, substitui e registra nova entrega.";
-      }
-      return "Me diga o tema (EPI, CA, ASO, NR, PGR, PCMSO) que eu te respondo com um texto pronto.";
-    }
-
-    function sendChat(){
-      const q = chatInput.value.trim();
-      if(!q) return;
-      chatAdd(q, "me");
-      chatInput.value = "";
-      setTimeout(()=> chatAdd(answerLocal(q), "bot"), 220);
-    }
-
-    chatFab.addEventListener("click", ()=>{
-      chatBox.classList.toggle("active");
-      chatBox.setAttribute("aria-hidden", chatBox.classList.contains("active") ? "false" : "true");
-      playSound("click");
-      if(chatBox.classList.contains("active")) setTimeout(()=> chatInput.focus(), 50);
-    });
-    chatClose.addEventListener("click", ()=>{
-      chatBox.classList.remove("active");
-      chatBox.setAttribute("aria-hidden", "true");
-      playSound("click");
-    });
-    chatSend.addEventListener("click", sendChat);
-    chatInput.addEventListener("keydown", (e)=>{
-      if(e.key === "Enter"){
-        e.preventDefault();
-        sendChat();
-      }
-    });
-
+   
     /* =====================
        INIT
     ====================== */
