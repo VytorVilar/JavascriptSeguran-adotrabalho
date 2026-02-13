@@ -76,7 +76,7 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
-    
+
     .topbar-inner{
       display:flex;
       align-items:center;
@@ -86,19 +86,6 @@
     }
 
     .brand{ display:flex; align-items:center; gap:10px; }
-    .logo{
-      width:44px; height:44px;
-      border-radius:8px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color:#fff;
-      display:flex; align-items:center; justify-content:center;
-      font-weight:900;
-      letter-spacing:.4px;
-      box-shadow: var(--shadow-soft);
-      user-select:none;
-    }
-    .brand h1{ font-size:14px; margin:0; line-height:1.1; }
-    .brand small{ display:block; font-size:12px; color:var(--muted); font-weight:800; }
 
     .top-actions{
       display:flex;
@@ -149,7 +136,7 @@
       color: var(--fg);
       outline:none;
     }
- 
+
     input:focus, select:focus, textarea:focus{
       border-color: rgba(34,197,94,.45);
       box-shadow: var(--focus);
@@ -187,7 +174,7 @@
     .btn-ghost:hover{ transform: translateY(-1px); box-shadow: 0 10px 22px rgba(10,20,30,.10); }
 
     /* ======================================================
-       NAV TABS (categorias)
+       NAV TABS
        ====================================================== */
     .tabs{
       display:flex;
@@ -205,12 +192,27 @@
       font-size:13px;
       font-weight:800;
       cursor:pointer;
+      transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
     }
-    
+
+    /* tab ativa com gradiente */
     .tab[aria-selected="true"]{
-      background: var(--yellow);
-      border-color: var(--yellow);
-      color:#0b3a47;
+      background: linear-gradient(135deg,#3b82f6,#8b5cf6,#a855f7);
+      border-color: transparent;
+      color: #ffffff;
+      font-weight: 900;
+      box-shadow: 0 6px 16px rgba(59,130,246,.20);
+    }
+
+    /* modo visitante bloqueado visualmente */
+    .tab[aria-disabled="true"]{
+      opacity:.55;
+      cursor:not-allowed;
+      filter: grayscale(30%);
+      position:relative;
+    }
+    .tab[aria-disabled="true"]::after{
+      content:" 🔒";
     }
 
     /* ======================================================
@@ -218,7 +220,12 @@
        ====================================================== */
     main{ padding: 14px 0 110px; }
     section{ display:none; }
-    section.active{ display:block; }
+    section.active{ display:block; animation: fadein .22s ease; }
+
+    @keyframes fadein{
+      from{ opacity:0; transform: translateY(6px); }
+      to{ opacity:1; transform:none; }
+    }
 
     .section-head{
       display:flex;
@@ -234,7 +241,7 @@
     }
 
     /* ======================================================
-       CARDS GENÉRICOS (para riscos / nr / etc)
+       CARDS
        ====================================================== */
     .card{
       background: var(--card);
@@ -242,9 +249,24 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow-soft);
       padding: 14px;
+      position: relative;
     }
 
-    /* Grid geral */
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      padding:2px;
+      border-radius:inherit;
+      background: linear-gradient(135deg,#3b82f6,#8b5cf6,#a855f7);
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      pointer-events:none;
+    }
+
     .grid{
       display:grid;
       grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -256,7 +278,7 @@
     }
 
     /* ======================================================
-       CATÁLOGO EPIs (INTERLAGOS LOOK)
+       EPIs
        ====================================================== */
     .epi{
       background:#fff;
@@ -272,11 +294,32 @@
       gap:12px;
 
       transition: .18s ease;
+      position: relative;
+      z-index: 0;
     }
-    
+
+    .epi::before{
+      content: "";
+      position: absolute;
+      inset: 0;
+      padding: 2px;
+      border-radius: inherit;
+      background: linear-gradient(135deg,#3b82f6,#8b5cf6,#a855f7);
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: -1;
+    }
+
     .epi:hover{
       transform: translateY(-2px);
       box-shadow: var(--shadow-hover);
+    }
+    .epi:hover::before{
+      background: linear-gradient(135deg,#2563eb,#7c3aed,#9333ea);
     }
 
     .epi-img{
@@ -290,7 +333,7 @@
       justify-content:center;
       overflow:hidden;
     }
-  
+
     .epi-img img{
       width:100%;
       height:100%;
@@ -311,7 +354,6 @@
       overflow:hidden;
     }
 
-    /* Ajuste específico: linha do CA + botão copiar */
     .epi .row{
       justify-content:space-between;
       align-items:center;
@@ -336,7 +378,7 @@
       background: rgba(255,255,255,0.70);
       box-shadow: 0 6px 14px rgba(10,20,30,.06);
     }
-   
+
     .acc-btn{
       width:100%;
       text-align:left;
@@ -360,7 +402,7 @@
     }
     .acc-item.active .acc-body{ display:block; }
 
-       /* ======================================================
+    /* ======================================================
        FLOATING PANEL
        ====================================================== */
     .fab-panel{
@@ -399,7 +441,6 @@
       flex-direction:column;
       gap:8px;
     }
-
     .fab-panel.open .fab-actions{ display:flex; }
 
     .fab-action{
@@ -444,7 +485,7 @@
     .toast.warn{ background: var(--warn); color:#111827; }
 
     /* ======================================================
-       PASSWORD MODAL
+       AUTH MODAL (SÓ PARA ABAS RESTRITAS)
        ====================================================== */
     .backdrop{
       position: fixed;
@@ -468,6 +509,22 @@
       padding: 18px;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    .modal::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      padding:2px;
+      border-radius:inherit;
+      background: linear-gradient(135deg,#3b82f6,#8b5cf6,#a855f7);
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      pointer-events:none;
     }
 
     .modal h3{ margin: 0 0 6px; }
@@ -495,181 +552,106 @@
       font-size:13px;
     }
 
-	/* ===============================
-   TAB ATIVA COM GRADIENTE
-   =============================== */
+    /* ======================================================
+       BRAND
+       ====================================================== */
+    .brand-interlagos{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
 
-.tab[aria-selected="true"]{
-  background: linear-gradient(
-    135deg,
-    #3b82f6,  /* azul */
-    #8b5cf6,  /* roxo */
-    #a855f7   /* roxo mais vivo */
-  );
-  border-color: transparent;
-  color: #ffffff;
-  font-weight: 800;
-  box-shadow: 0 6px 16px rgba(59,130,246,.35);
-}
+    .brand-mark{
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      overflow:hidden;
+      box-shadow: 0 10px 22px rgba(10,20,30,.10);
+      user-select:none;
+    }
 
-/* opcional: ícones dentro da tab */
-.tab[aria-selected="true"] i,
-.tab[aria-selected="true"] svg{
-  color: #ffffff;
-  fill: #ffffff;
-}
+    .brand-text{ line-height: 1; }
 
-/* ===============================
-   BORDA GRADIENTE (AZUL → ROXO)
-   =============================== */
+    .brand-title{
+      display:flex;
+      align-items:baseline;
+      gap:6px;
+      font-weight: 950;
+      letter-spacing: .2px;
+      flex-wrap:wrap;
+    }
 
-.epi{
-  position: relative;
-  border-radius: 12px;
-  background: #ffffff;
-  z-index: 0;
-}
+    .brand-epi{
+      font-size: 18px;
+      color: #a855f7;
+    }
 
-/* camada da borda */
-.epi::before{
-  content: "";
-  position: absolute;
-  inset: 0;
-  padding: 2px; /* espessura da borda */
-  border-radius: inherit;
+    .brand-name{
+      font-size: 18px;
+      color: #0b3a47;
+    }
 
-  background: linear-gradient(
-    135deg,
-    #3b82f6,  /* azul */
-    #8b5cf6,  /* roxo */
-    #a855f7   /* roxo mais vivo */
-  );
-
-  /* cria o "furo" no meio */
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* hover mais vivo */
-.epi:hover::before{
-  background: linear-gradient(
-    135deg,
-    #2563eb,
-    #7c3aed,
-    #9333ea
-  );
-}
-
-.card,
-.filter-box,
-.panel{
-  position: relative;
-}
-
-.card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  padding:2px;
-  border-radius:inherit;
-  background: linear-gradient(135deg,#3b82f6,#8b5cf6,#a855f7);
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite:xor;
-  mask-composite:exclude;
-  pointer-events:none;
-}
-	
-.brand-interlagos{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.brand-mark{
-  width:44px;
-  height:44px;
-  border-radius:999px;
-  overflow:hidden;
-  box-shadow: 0 10px 22px rgba(10,20,30,.10);
-}
-
-.brand-text{ line-height: 1; }
-
-.brand-title{
-  display:flex;
-  align-items:baseline;
-  gap:6px;
-  font-weight: 950;
-  letter-spacing: .2px;
-}
-
-.brand-epi{
-  font-size: 18px;
-  color: #a855f7; /* amarelo */
-}
-
-.brand-name{
-  font-size: 18px;
-  color: #0b3a47; /* azul/verde escuro */
-}
-
-.brand-sub{
-  margin-top: 4px;
-  font-size: 11px;
-  font-weight: 800;
-  color: rgba(15,23,42,.55);
-}
-	
+    .brand-sub{
+      margin-top: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      color: rgba(15,23,42,.55);
+    }
   </style>
 </head>
 
 <body>
-  <!-- ====== APP (fica oculto até liberar senha) ====== -->
-  <div id="app" hidden>
+  <!-- ====== APP (SEM BLOQUEIO NO LOAD) ====== -->
+  <div id="app">
     <header class="topbar">
-      <div class="brand brand-interlagos">
-  <!-- LOGO SVG (editável) -->
-  <div class="brand-mark" aria-hidden="true">
-    <svg width="44" height="44" viewBox="0 0 64 64" role="img">
-      <!-- círculo -->
-      <circle cx="32" cy="32" r="30" fill="#0b3a47"/>
-      <!-- capacete -->
-      <path d="M18 30c1-10 8-16 14-16s13 6 14 16H18z" fill="#f6c400"/>
-      <path d="M16 30h32v6c0 8-7 14-16 14S16 44 16 36v-6z" fill="#ffd54d"/>
-      <rect x="14" y="30" width="36" height="4" rx="2" fill="#0b3a47" opacity=".25"/>
-      <rect x="20" y="18" width="3" height="12" rx="1.5" fill="#f6c400"/>
-      <rect x="30.5" y="16" width="3" height="14" rx="1.5" fill="#f6c400"/>
-      <rect x="41" y="18" width="3" height="12" rx="1.5" fill="#f6c400"/>
-    </svg>
-  </div>
+      <div class="container topbar-inner">
+        <div class="brand brand-interlagos">
+          <div class="brand-mark" aria-hidden="true">
+            <svg width="44" height="44" viewBox="0 0 64 64" role="img">
+              <circle cx="32" cy="32" r="30" fill="#0b3a47"/>
+              <path d="M18 30c1-10 8-16 14-16s13 6 14 16H18z" fill="#f6c400"/>
+              <path d="M16 30h32v6c0 8-7 14-16 14S16 44 16 36v-6z" fill="#ffd54d"/>
+              <rect x="14" y="30" width="36" height="4" rx="2" fill="#0b3a47" opacity=".25"/>
+              <rect x="20" y="18" width="3" height="12" rx="1.5" fill="#f6c400"/>
+              <rect x="30.5" y="16" width="3" height="14" rx="1.5" fill="#f6c400"/>
+              <rect x="41" y="18" width="3" height="12" rx="1.5" fill="#f6c400"/>
+            </svg>
+          </div>
 
-  <!-- TEXTO -->
-  <div class="brand-text">
-    <div class="brand-title">
-      <span class="brand-epi">PAINEL TÉCNICO DE</span>
-      <span class="brand-name">SEGURANÇA DO TRABALHO</span>
-    </div>
-    <div class="brand-sub">Equipamentos de segurança</div>
-  </div>
-</div>
+          <div class="brand-text">
+            <div class="brand-title">
+              <span class="brand-epi">PAINEL TÉCNICO DE</span>
+              <span class="brand-name">SEGURANÇA DO TRABALHO</span>
+            </div>
+            <div class="brand-sub">Equipamentos de segurança</div>
+          </div>
+        </div>
+
+        <div class="top-actions">
+          <span class="pill" id="rolePill" title="Nível atual">👤 Visitante</span>
+          <button class="btn btn-ghost" id="logoutBtn" title="Sair do modo técnico/admin" style="display:none;">🚪 Sair</button>
+        </div>
+      </div>
     </header>
 
     <div class="container">
       <nav class="tabs" aria-label="Navegação principal" role="tablist">
         <button class="tab" role="tab" data-tab="epis" aria-selected="true" title="Catálogo de EPIs">📒 EPIs</button>
+
+        <!-- 🔒 RESTRITAS -->
         <button class="tab" role="tab" data-tab="riscos" aria-selected="false" title="Avaliação de Riscos">🧪 Riscos</button>
+
         <button class="tab" role="tab" data-tab="empresas" aria-selected="false" title="Gerador de frases por empresa">🏢 Frases</button>
+
+        <!-- 🔒 RESTRITA -->
         <button class="tab" role="tab" data-tab="treinamento" aria-selected="false" title="Plano de Ação 5W2H">📚 5W2H</button>
+
+        <!-- 🔒 RESTRITA -->
         <button class="tab" role="tab" data-tab="riscos_empresas" aria-selected="false" title="Riscos por empresa">📋 Riscos/Empresa</button>
+
         <button class="tab" role="tab" data-tab="nrs" aria-selected="false" title="Normas Regulamentadoras">📖 NRs</button>
+
+        <!-- 🔒 RESTRITA -->
         <button class="tab" role="tab" data-tab="painel_tecnico" aria-selected="false" title="Painel técnico e FAQ">🛠 Painel</button>
       </nav>
     </div>
@@ -703,7 +685,7 @@
         <div id="catalog" class="grid" aria-live="polite"></div>
       </section>
 
-      <!-- ===== RISCOS ===== -->
+      <!-- ===== RISCOS (RESTRITO) ===== -->
       <section id="riscos" aria-label="Avaliação de Riscos">
         <div class="section-head">
           <div>
@@ -722,7 +704,7 @@
         <div class="grid" id="riskCards"></div>
       </section>
 
-      <!-- ===== FRASES EMPRESA ===== -->
+      <!-- ===== FRASES EMPRESA (LIVRE) ===== -->
       <section id="empresas" aria-label="Frases com Empresa">
         <div class="section-head">
           <div>
@@ -758,7 +740,7 @@
         </div>
       </section>
 
-      <!-- ===== 5W2H ===== -->
+      <!-- ===== 5W2H (RESTRITO) ===== -->
       <section id="treinamento" aria-label="Plano de ação 5W2H">
         <div class="section-head">
           <div>
@@ -769,7 +751,7 @@
         <div class="grid" id="w2hGrid"></div>
       </section>
 
-      <!-- ===== RISCOS POR EMPRESA ===== -->
+      <!-- ===== RISCOS POR EMPRESA (RESTRITO) ===== -->
       <section id="riscos_empresas" aria-label="Riscos por Empresa">
         <div class="section-head">
           <div>
@@ -786,7 +768,7 @@
         <div id="listaRiscosEmpresas" class="grid"></div>
       </section>
 
-      <!-- ===== NRs ===== -->
+      <!-- ===== NRs (LIVRE) ===== -->
       <section id="nrs" aria-label="Normas Regulamentadoras">
         <div class="section-head">
           <div>
@@ -797,7 +779,7 @@
         <div class="grid" id="nrGrid"></div>
       </section>
 
-      <!-- ===== PAINEL TÉCNICO ===== -->
+      <!-- ===== PAINEL TÉCNICO (RESTRITO) ===== -->
       <section id="painel_tecnico" aria-label="Painel Técnico">
         <div class="section-head">
           <div>
@@ -825,7 +807,6 @@
         </div>
       </section>
 
-      <!-- ✅ FOOTER FECHADO CORRETAMENTE -->
       <footer>
         <div class="row" style="justify-content:space-between">
           <div>
@@ -839,7 +820,7 @@
       </footer>
     </main>
 
-    <!-- ===== FLOATING PANEL (agora fora do footer ✅) ===== -->
+    <!-- ===== FLOATING PANEL ===== -->
     <div class="fab-panel" id="fabPanel" aria-label="Painel flutuante">
       <button class="fab-main" id="fabMain" title="Abrir painel">☰</button>
       <div class="fab-actions">
@@ -847,15 +828,15 @@
       </div>
     </div>
 
-     <!-- ===== TOAST ===== -->
+    <!-- ===== TOAST ===== -->
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
   </div>
 
-  <!-- ===== SENHA (bloqueia tudo) ===== -->
+  <!-- ===== MODAL DE SENHA (ABAS RESTRITAS) ===== -->
   <div class="backdrop" id="passBackdrop" role="dialog" aria-modal="true" aria-label="Acesso restrito">
     <div class="modal">
-      <h3>🔒 Acesso restrito</h3>
-      <p class="hint">Digite a senha para liberar o painel.</p>
+      <h3>🔒 Área restrita</h3>
+      <p class="hint">Digite a senha para liberar as abas restritas.</p>
 
       <div class="pass-row">
         <input id="passInput" type="password" placeholder="Senha..." autocomplete="off" />
@@ -869,7 +850,7 @@
 
       <div class="err" id="passErr">Senha incorreta. Tente novamente.</div>
       <div class="muted" style="margin-top:10px; font-weight:900;">
-        Dica: você pode trocar a senha no JS em <code>SENHA_CORRETA</code>.
+        Acesso controlado por níveis.
       </div>
     </div>
   </div>
@@ -878,8 +859,6 @@
     /* =====================
        CONFIG / UTIL
     ====================== */
-    const SENHA_CORRETA = "SG393";
-
     const SOUND = { click: "click.mp3", ok: "success.mp3" };
 
     function playSound(type){
@@ -928,27 +907,33 @@
     });
 
     /* =====================
-       PASSWORD GATE (hash + sessão + níveis)
+       AUTH (SÓ PARA ABAS RESTRITAS)
     ====================== */
-    const app = document.getElementById("app");
     const passBackdrop = document.getElementById("passBackdrop");
     const passInput = document.getElementById("passInput");
     const passErr = document.getElementById("passErr");
     const passToggle = document.getElementById("passToggle");
     const passConfirm = document.getElementById("passConfirm");
 
+    const rolePill = document.getElementById("rolePill");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    // abas que exigem senha
+    const RESTRICTED_TABS = new Set(["riscos","treinamento","riscos_empresas","painel_tecnico"]);
+
+    // sessão de 30 min quando desbloqueia
     const SESSION_TTL_MS = 30 * 60 * 1000;
 
-    const PASS_HASH = {
-      visitante: "9fb79328a55e1cc48758a1c1a638586741d702e175a1120ee93713b1259f3e38",
-      tecnico:   "fa05ac8f16c53bca04af0a0fac6ea22c84efeab1e512bdde6665ffe23773c23a",
-      admin:     "53938d90671cb71d99cf526718cc6c65c0280d485eb7ef471452451738108220"
-    };
+    // anti-tentativa
+    const LOCK_KEY = "sst_lock";
+    const MAX_FAILS = 5;
+    const LOCK_MS = 2 * 60 * 1000; // 2 min
 
-    const ROLE_ALLOW = {
-      visitante: ["epis", "nrs"],
-      tecnico:   ["epis","nrs","riscos","treinamento","riscos_empresas","empresas","painel_tecnico"],
-      admin:     ["epis","riscos","empresas","treinamento","riscos_empresas","nrs","painel_tecnico"]
+    // ✅ SOMENTE HASH (não guarda senha em texto)
+    // Troque os hashes se quiser trocar a senha.
+    const PASS_HASH = {
+      tecnico: "fa05ac8f16c53bca04af0a0fac6ea22c84efeab1e512bdde6665ffe23773c23a",
+      admin:  "53938d90671cb71d99cf526718cc6c65c0280d485eb7ef471452451738108220"
     };
 
     function showPass(){
@@ -990,41 +975,79 @@
       sessionStorage.removeItem("sst_session");
     }
 
-    function applyRoleUI(role){
-      const allowed = new Set(ROLE_ALLOW[role] || []);
-      document.querySelectorAll(".tab").forEach(btn=>{
-        const tabId = btn.dataset.tab;
-        const ok = allowed.has(tabId);
-        btn.style.display = ok ? "" : "none";
-      });
+    function getLock(){
+      try{ return JSON.parse(localStorage.getItem(LOCK_KEY) || "null"); }catch(_){ return null; }
+    }
+    function setLock(obj){ localStorage.setItem(LOCK_KEY, JSON.stringify(obj)); }
+    function clearLock(){ localStorage.removeItem(LOCK_KEY); }
 
-      const active = document.querySelector("main section.active")?.id;
-      if(!active || !allowed.has(active)){
-        const first = [...allowed][0] || "epis";
-        showSection(first);
-      }
+    function isLocked(){
+      const l = getLock();
+      if(!l) return false;
+      if(Date.now() > l.until){ clearLock(); return false; }
+      return true;
     }
 
-    function unlock(role){
-      setSession(role);
-      hidePass();
-      app.hidden = false;
-      applyRoleUI(role);
-      toast(`Acesso liberado (${role}).`, "ok");
+    function registerFail(){
+      const l = getLock() || { fails: 0, until: 0 };
+      l.fails += 1;
+      if(l.fails >= MAX_FAILS){
+        l.until = Date.now() + LOCK_MS;
+      }
+      setLock(l);
+    }
+
+    function getRole(){
+      const s = getSession();
+      return s?.role || "visitante";
+    }
+
+    function updateRoleUI(){
+      const role = getRole();
+      rolePill.textContent =
+        role === "admin"  ? "👑 Admin" :
+        role === "tecnico" ? "🛠 Técnico" :
+        "👤 Visitante";
+
+      logoutBtn.style.display = (role === "visitante") ? "none" : "";
+      applyTabLocks(role);
+    }
+
+    function applyTabLocks(role){
+      const unlocked = (role === "tecnico" || role === "admin");
+
+      document.querySelectorAll(".tab").forEach(btn=>{
+        const id = btn.dataset.tab;
+        if(RESTRICTED_TABS.has(id)){
+          btn.setAttribute("aria-disabled", unlocked ? "false" : "true");
+          btn.title = unlocked ? btn.title : "Requer senha (Técnico/Admin)";
+        }else{
+          btn.setAttribute("aria-disabled", "false");
+        }
+      });
     }
 
     async function confirmPass(){
+      if(isLocked()){
+        toast("Muitas tentativas. Aguarde 2 minutos.", "warn");
+        return;
+      }
+
       const typed = passInput.value || "";
       const h = await sha256(typed);
 
       let role = null;
       if(h === PASS_HASH.admin) role = "admin";
       else if(h === PASS_HASH.tecnico) role = "tecnico";
-      else if(h === PASS_HASH.visitante) role = "visitante";
 
       if(role){
-        unlock(role);
+        clearLock();
+        setSession(role);
+        hidePass();
+        updateRoleUI();
+        toast(`Acesso liberado (${role}).`, "ok");
       }else{
+        registerFail();
         passErr.classList.add("show");
         passInput.value = "";
         passInput.focus();
@@ -1044,24 +1067,17 @@
       if(e.key === "Enter") confirmPass();
     });
 
-    function boot(){
-      // ✅ SEM TEMA ESCURO: força claro sempre
-      document.documentElement.removeAttribute("data-theme");
-      localStorage.removeItem("theme");
-
-      const session = getSession();
-      if(!session){
-        clearSession();
-        app.hidden = true;
-        showPass();
-      }else{
-        app.hidden = false;
-        applyRoleUI(session.role);
-      }
-    }
+    logoutBtn.addEventListener("click", ()=>{
+      clearSession();
+      updateRoleUI();
+      toast("Você saiu do modo restrito.", "ok");
+      // se estiver numa aba restrita, volta pro EPIs
+      const active = document.querySelector("main section.active")?.id;
+      if(active && RESTRICTED_TABS.has(active)) showSection("epis");
+    });
 
     /* =====================
-       NAV / SECTIONS
+       NAV / SECTIONS (com bloqueio por aba)
     ====================== */
     function showSection(id){
       document.querySelectorAll("main section").forEach(s => s.classList.remove("active"));
@@ -1076,21 +1092,45 @@
 
     document.querySelectorAll(".tab").forEach(btn=>{
       btn.addEventListener("click", ()=>{
-        showSection(btn.dataset.tab);
+        const tabId = btn.dataset.tab;
+
+        // bloqueia só as abas restritas
+        const role = getRole();
+        const unlocked = (role === "tecnico" || role === "admin");
+
+        if(RESTRICTED_TABS.has(tabId) && !unlocked){
+          toast("Acesso restrito. Digite a senha.", "warn");
+          showPass();
+          playSound("click");
+          return;
+        }
+
+        showSection(tabId);
         playSound("click");
       });
     });
 
+    // atalhos ALT+ (mantém, mas respeita bloqueio)
     document.addEventListener("keydown", (e)=>{
       if(!e.altKey) return;
       const map = {
         "1":"epis","2":"riscos","3":"empresas","4":"treinamento",
         "5":"riscos_empresas","6":"nrs","7":"painel_tecnico"
       };
-      if(map[e.key]){
-        showSection(map[e.key]);
-        toast("Seção: " + map[e.key], "ok");
+      const tabId = map[e.key];
+      if(!tabId) return;
+
+      const role = getRole();
+      const unlocked = (role === "tecnico" || role === "admin");
+
+      if(RESTRICTED_TABS.has(tabId) && !unlocked){
+        toast("Acesso restrito. Digite a senha.", "warn");
+        showPass();
+        return;
       }
+
+      showSection(tabId);
+      toast("Seção: " + tabId, "ok");
     });
 
     /* =====================
@@ -1117,6 +1157,7 @@
       { categoria: "🥾 Calçados", nome: "Bota de PVC Meio Cano (Branco/Preto) - Bracol", ca: "37.456", imagem: "https://lojaagrometal.fbitsstatic.net/img/p/bota-pvc-preto-cano-medio-39-com-forro-ca-36-025-innpro-73005/259515.jpg?w=1000&h=1000&v=no-change&qs=ignore" },
       { categoria: "🥾 Calçados", nome: "Bota de Seguranca em couro Nobuck com cadarço Dubai Eletrista bico PVC- Bracol", ca: "48.383", imagem: "https://http2.mlstatic.com/D_NQ_NP_761173-MLB89078178731_072025-O-bota-botina-de-seguranca-coturno-nobuck-marluvas-epi-com-ca.webp" },
       { categoria: "🥾 Calçados", nome: "Bota de Segurança Bicode Composite NR10Eletricista - Bracol", ca: "38.530", imagem: "https://imgs.search.brave.com/esoJvDJc19lu3PTbzs5h7fqKk5SlIa6SfFq74C2gxaw/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9odHRw/Mi5tbHN0YXRpYy5j/b20vRF9RX05QXzJY/XzY0MDA1OS1NTEI4/MDQ0NDk1MTk1MV8x/MTIwMjQtRS1ib3Rh/LWJvdGluYS1zZWd1/cmFuY2EtYnJhY29s/LWVsZXRyaWNpc3Rh/LW5yMTAtYmljby1j/b21wb3NpdGUud2Vi/cA" },
+
       { categoria: "🧤 Luvas", nome: "Luva de Algodão Tricotada Mesclada - Volk", ca: "25.773", imagem: "https://i.imgur.com/xN1BFLa.png" },
       { categoria: "🧤 Luvas", nome: "Luva de Malha Neotato PU Preta - Volk", ca: "30.916", imagem: "https://i.imgur.com/c9CLP9E.png" },
       { categoria: "🧤 Luvas", nome: "Luva de Látex Multiuso para Uso Químico/Biológico (Amarela/Azul) - Danny", ca: "39.564", imagem: "https://i.imgur.com/hsiXIQa.png" },
@@ -1133,39 +1174,49 @@
       { categoria: "🧤 Luvas", nome: "Luva Hand Nítrilo Lona - Handex", ca: "44.524", imagem: "https://i.imgur.com/fcOGOPT.png" },
       { categoria: "🧤 Luvas", nome: "Luva Hand Oil Cut - Handex", ca: "39.416", imagem: "https://i.imgur.com/50GGoXw.png" },
       { categoria: "🧤 Luvas", nome: "Luva De Raspa", ca: "10.074", imagem: "https://imgs.search.brave.com/7DZ1k3hMEXbJdMexzAI0qt_s1V3pFI5BXoPgs4MqbXE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudGNkbi5jb20u/YnIvaW1nL2ltZ19w/cm9kLzEyNjI0NzEv/bHV2YV9taXN0YV9k/ZV92YXF1ZXRhX3Jh/c3BhX2Nhbm9fbG9u/Z29fcF8yMF9jbXNf/Y19hXzQwMzE5XzI4/MTVfMV9lNzVmMzM2/ZWU5NjY4NjQ3ZDUz/YzY1N2VlNzhiNGZj/NC5qcGc" },
+
       { categoria: "🦾 Mangotes", nome: "Mangote Anti-Corte e Térmico 45cm - Delta Plus", ca: "41.361", imagem: "https://www.americanvek.com.br/cdn/shop/files/mangote-de-protecao-40cm-anticorte-nivel-5-com-fio-de-aco-seiki-ca39062-peca-1172807310_500x246.jpg?v=1749676771" },
       { categoria: "🦾 Mangotes", nome: "Mangote de Raspa Soldador com Elásticos 40cm - Zanel", ca: "16.073", imagem: "https://www.ferpam.com.br/media/mf_webp/jpg/media/catalog/product/cache/7f3660905effcfdd27a3ab16f16ab037/t/_/t_redu_o_13_-compressed.webp" },
+
       { categoria: "🦺 Aventais", nome: "Avental de Raspa 120x60cm sem Emendas - Zanel", ca: "13.989", imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_883677-MLB31757432415_082019-F-10-un-avental-de-raspa-couro-soldador-s-emenda-120x060-epi.webp" },
       { categoria: "🦺 Aventais", nome: "Avental de PVC Branco - Maicol", ca: "37.729", imagem: "https://images.tcdn.com.br/img/img_prod/1145511/avental_pvc_maicol_branco_1_20x0_60_ca_37729_685_1_f228876937efd1395a38329a3ad49eef.jpg" },
       { categoria: "🦺 Aventais", nome: "Avental De Proteção De PVC Cores Balask - Branco", ca: "6.429", imagem: "https://http2.mlstatic.com/D_NQ_NP_786060-MLU76630545889_052024-O.webp" },
       { categoria: "🦺 Aventais", nome: "Avental De Proteção De PVC Cores Balask - Preto", ca: "6.429", imagem: "https://http2.mlstatic.com/D_NQ_NP_729531-MLU72636555305_112023-O.webp" },
       { categoria: "🦺 Aventais", nome: "Avental de Vinil Transparente Tira Soldada", ca: "38.316", imagem: "https://d3bhvz7al37iy6.cloudfront.net/Custom/Content/Products/10/51/1051169_avental-de-vinil-transparente-tira-soldada-ca-37475_z1_638821262518773542.webp" },
+
       { categoria: "😷 Máscaras", nome: "Máscara PFF1 com ProSafety - Delta Plus", ca: "38.501", imagem: "https://www.astrodistribuidora.com/media/catalog/product/cache/1/image/600x/9df78eab33525d08d6e5fb8d27136e95/r/e/respirador_pff1_com_v_lvula.jpeg" },
       { categoria: "😷 Máscaras", nome: "Máscara N95 PF2 - Nutriex Safety", ca: "46.868", imagem: "https://http2.mlstatic.com/D_NQ_NP_697910-MLU70618800016_072023-O.webp" },
       { categoria: "😷 Máscaras", nome: "Máscara PFF2 - Delta Plus", ca: "38.503", imagem: "https://www.astrodistribuidora.com/media/catalog/product/cache/1/image/600x/9df78eab33525d08d6e5fb8d27136e95/r/e/respirador_pff2_com_v_lvula.jpeg" },
+
       { categoria: "📌 Epis", nome: "Creme Protetor Luva Quimica 3em1 - Nutriex", ca: "43.802", imagem: "https://www.astrodistribuidora.com/media/tmp/webp/catalog/product/cache/1/image/600x/9df78eab33525d08d6e5fb8d27136e95/s/a/sabonete_desengraxante_esfoliante_limpa_m_os_biodegrad_vel_fast_orange_bombona_4l_-_luvex_img_1_1__png.webp" },
       { categoria: "📌 Epis", nome: "Cinturao de Segurança Steelflex com 1 ponto CQCT1111 + Talabarte Duplo em Y Com Fita Tubular", ca: "45.069", imagem:"https://d3bhvz7al37iy6.cloudfront.net/Custom/Content/Products/10/53/1053591_cinturao-de-seguranca-steelflex-com-1-ponto-cqct1111-talabarte-duplo-em-y-com-fita-tubular-_m3_637826022890604517.webp" },
       { categoria: "📌 Epis", nome: "Macacão de Seguranca Branco - SteelFlex", ca: "39.707", imagem: "https://d3bhvz7al37iy6.cloudfront.net/Custom/Content/Products/10/48/1048195_macacao-de-seguranca-steelflex-branco-ca-39707_m3_637358851517696820.webp" },
       { categoria: "📌 Epis", nome: "Luva Vinil Sem Pó Descartavel c/100 - Descarpack", ca: "44.050", imagem: "https://loja.descarpack.com.br/media/catalog/product/l/u/luva-vinil-procedimento-nao-cirurgico-sem-po-p-descarpack-0541101-1-para-que-indicado_2.jpg?auto=webp&format=pjpg&width=1600&height=2000&fit=cover" },
       { categoria: "📌 Epis", nome: "Mascara De Solda", ca: "14.199", imagem:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpxGO5zYA_C4G3PiMpmRrci4FUG6ujoM8yAg&s" },
+
       { categoria: "🧥 Vestuário Térmico", nome: "Japona Térmica Frigorífica Azul Marinho - Maicol", ca: "10.975", imagem: "https://safetytrab.com.br/wp-content/uploads/2018/04/Japona-Termica-Camara-Fria-Baixa-Temperatura-Maicol-CA-10975.jpg.webp" },
       { categoria: "🧥 Vestuário Térmico", nome: "Calça De Nylon Térmica Impermeável Para Câmara Fria - Maicol", ca: "10.976", imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_948835-MLB78618348261_082024-F.webp" },
       { categoria: "🧥 Vestuário Térmico", nome: "Capuz Balaclava Térmico para Câmara Fria Suedine - Maicol", ca: "10.979", imagem: "https://images.tcdn.com.br/img/img_prod/626581/capuz_balaclava_suedine_maicol_1063_variacao_6239_1_af993d65a8dc368e7488518fa0726ba8.png" },
       { categoria: "🧥 Vestuário Térmico", nome: "Meião Térmico - Maicol", ca: "10.977", imagem: "https://safetytrab.com.br/wp-content/uploads/2018/04/Mei%C3%A3o-T%C3%A9rmico-para-C%C3%A2mara-Fria-Maicol.jpg.webp" },
       { categoria: "🧥 Vestuário Térmico", nome: "Luva Térmica Frigorífica em Nylon Baixa Temperatura -35º - Maicol", ca: "10.978", imagem: "https://safetytrab.com.br/wp-content/uploads/2018/04/Luva-de-Seguran%C3%A7a-T%C3%A9rmica-em-Nylon-Maicol-CA-10.978.jpg.webp" },
       { categoria: "🧥 Vestuário Térmico", nome: "Bota Térmica", ca: "42.632", imagem: "https://safetytrab.com.br/wp-content/uploads/2018/04/Meia-T%C3%A9rmica-Botinha-Maicol.jpg" },
+
       { categoria: "👷‍ Vestuário", nome: "Camisa Com Refletivo Para Eletricista Cinza - Maicol", ca: "44.108", imagem: "https://d1ql0a3e3j9mcx.cloudfront.net/Custom/Content/Products/57/86/5786_camisa-eletricista-nr10-cinza-com-refletivo-maicol_l1_637934046958088869.webp" },
       { categoria: "👷‍ Vestuário", nome: "Calça Classe 2 Cinza Com Refletivo - Maicol", ca: "44.109", imagem: "https://d1ql0a3e3j9mcx.cloudfront.net/Custom/Content/Products/58/38/5838_calca-eletricista-nr10-com-refletivo-maicol_z1_637934927655407307.webp" },
       { categoria: "👷‍ Vestuário", nome: "Blusão PVC Forrado Com Capuz", ca: "29.790", imagem: "https://www.ledan.com.br/slideWF/images/calca-e-blusao-pvc-forrado/calca-e-blusao-pvc-forrado1.jpg" },
       { categoria: "👷‍ Vestuário", nome: "Calça De Chuva Em PVC Forrada Amarela", ca: "37.536", imagem: "https://d3bhvz7al37iy6.cloudfront.net/Custom/Content/Products/10/46/1046987_calca-de-chuva-em-pvc-forrada-amarela-ca-28191-_z4_637669591007837495.webp" },
+
       { categoria: "🦺 Colete", nome: "Colete Tipo X Laranja Steelflex", ca: "38.175", imagem: "https://www.steelflex.pro/wp-content/uploads/2021/08/COLETE-REFLETIVO-X1.png" },
       { categoria: "🦺 Colete", nome: "Colete SteelFlex Refletivo Laranja Fluorescente", ca: "42.716", imagem: "https://www.steelflex.pro/wp-content/uploads/2021/08/colete-refletivo-4-bolsos-laranja.png" },
+
       { categoria: "🛡 Proteção Facial", nome: "Protetor Facial Jabre Carneira Hipoalergênica com Regulagem por Catraca Tamanho 8 - Delta Plus", ca: "47.620", imagem: "https://images.tcdn.com.br/img/img_prod/1033319/protetor_facial_jabre_8_delta_plus_ca_47620_1699_1_04f95abaf05adc053f1561dba26a2d78.jpg" },
       { categoria: "🛡 Proteção Facial", nome: "Protetor Facial com Carneira Hipoalergênica com regulagem e fácil ajuste - Delta Plus", ca: "10.975", imagem: "https://d3bhvz7al37iy6.cloudfront.net/Custom/Content/Products/10/67/1067058_protetor-facial-jabre-delta-plus-carneira-hipoalergenica-com-regulagem-ajuste-facil-tamanho-8-ca-47620_z1_638227684320944177.webp" },
       { categoria: "🛡 Proteção Facial", nome: "Protetor Facial Telado Dystray - Ideal Para Roçadeira", ca: "36.802", imagem: "https://elastobor.vtexassets.com/arquivos/ids/213582/PROTETOR-F%EF%BF%BDCIL-DYSTRAY-TELADO-COM-CATRACA.jpg?v=637557443744600000" },
+
       { categoria: "👓 Óculos", nome: "Óculos de Segurança Ampla Visão - Galeras Clear", ca: "35.268", imagem: "https://hiperfer.cdn.magazord.com.br/img/2023/07/produto/13687/14734-1-oculos-de-seguranca-com-ampla-visao-galeras-clear-deltaplus.jpg?ims=500x500" },
       { categoria: "👓 Óculos", nome: "Óculos Proteção Sobrepor Antirrisco Hekla Incolor - Delta Plus", ca: "38.253", imagem: "https://ccp.vteximg.com.br/arquivos/ids/240080-535-535/oculos-de-proteco-delta-plus-hekla-clear-ca-38253-D_NQ_NP_873213-MLB26641061700_012018-F.jpg?v=636843803319300000" },
       { categoria: "👓 Óculos", nome: "Óculos de Segurança tipo RJ Vvision 100 incolor - Volk", ca: "42.716", imagem: "https://volkdobrasil.com.br/wp-content/uploads/2024/08/oculos-vvision100-incolor-600x600.jpg" },
+
       { categoria: "🎧 Proteção Auditiva", nome: "Abafador de Ruído Combat 10DB - Maicol", ca: "10.977", imagem: "https://images.tcdn.com.br/img/img_prod/860085/abafador_concha_combat_10db_prosafety_ca_19405_175_1_20201214023621.jpg" },
       { categoria: "🎧 Proteção Auditiva", nome: "Abafador de Ruído SoftSlim 18DB - Camper", ca: "33.135", imagem: "https://images.tcdn.com.br/img/img_prod/652260/abafador_de_ruido_18_db_soft_slim_cod_800200_camper_5653_1_829cc44eecca796fb5e0ca7592040551_20230823104822.jpg" },
       { categoria: "🎧 Proteção Auditiva", nome: "Abafador de Ruído ConfortPlus 26DB - Camper", ca: "48.054", imagem: "https://images.tcdn.com.br/img/img_prod/652260/abafador_de_ruidos_26_db_confort_plus_camper_4258_1_29963934d741bf4bf802579cf35404ff_20230823104818.jpg" },
@@ -1239,7 +1290,7 @@
     ];
 
     /* =====================
-       RENDER: EPIs
+       RENDER: EPIs (lazy + batches)
     ====================== */
     const catalog = document.getElementById("catalog");
     const categoryFilter = document.getElementById("categoryFilter");
@@ -1254,7 +1305,7 @@
 
       div.innerHTML = `
         <div class="epi-img">
-          <img data-src="${e.imagem}" alt="${e.nome}" loading="lazy">
+          <img data-src="${e.imagem}" alt="${e.nome}" loading="lazy" decoding="async">
         </div>
         <div class="muted" style="font-weight:950;">${e.categoria}</div>
         <h3>${e.nome}</h3>
@@ -1277,7 +1328,6 @@
           if(src){
             img.src = src;
             img.removeAttribute("data-src");
-            img.decoding = "async";
           }
           imgObserver.unobserve(img);
         }
@@ -1300,7 +1350,9 @@
           frag.appendChild(makeEpiCard(list[i], i));
         }
         catalog.appendChild(frag);
+
         catalog.querySelectorAll('img[data-src]').forEach(img=>obs.observe(img));
+
         idx = end;
         if(idx < list.length) requestAnimationFrame(pump);
       }
@@ -1470,12 +1522,17 @@
       URL.revokeObjectURL(url);
       toast("TXT exportado.", "ok");
     });
-   
+
     /* =====================
        INIT
     ====================== */
     window.addEventListener("DOMContentLoaded", ()=>{
-      boot();
+      // força claro (sem tema escuro)
+      document.documentElement.removeAttribute("data-theme");
+      localStorage.removeItem("theme");
+
+      // aplica locks conforme sessão
+      updateRoleUI();
 
       populateCategories();
       renderEpis(epis);
@@ -1484,8 +1541,6 @@
       renderRiscosEmpresas(riscosEmpresas);
       renderNRs();
       renderFAQ();
-
-      document.getElementById("statusPill").textContent = "✅ Online";
     });
   </script>
 </body>
